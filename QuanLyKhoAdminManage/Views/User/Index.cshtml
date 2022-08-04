@@ -1,0 +1,87 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoAppLication.System.Users.UserVm>
+
+@{
+    ViewData["Title"] = "Danh sách tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+setTimeout(function() {
+    $('#msgAlert').fadeOut('slow');
+}, 2000);
+      
+    </script>
+}
+<style>
+    th,tr,td{
+        vertical-align:middle !important;
+        text-align:center;
+    }
+</style>
+   <div class="container-fluid px-4">
+                        <h1 class="mt-4 text-center">Danh sách tài khoản</h1>
+                        <ol class="breadcrumb mb-4">
+                        </ol>
+                        <div class="card-header">   
+                                <i class="fas fa-table me-1"></i>
+                                <a asp-action="CreateUser" asp-controller="User" class = "btn btn-success">Tạo mới</a>
+                            </div>
+                            <div class="card-body">
+                                @if(ViewBag.SuccessMsg != null)
+        {
+            <div id="msgAlert" class="alert alert-success" role="alert">
+                @ViewBag.SuccessMsg
+                </div>
+        }   
+       <div class="table-responsive">
+                <table class="table table-bordered" id = "datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tên
+                            </th>
+                            <th>
+                                Họ
+                            </th>
+                            <th>
+                                Số điện Thoại
+                            </th>
+                            <th>
+                                Tài khoản
+                             </th>
+                            <th>
+                                Email
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         @foreach (var item in Model.Items) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                             </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td width="20px">
+                                @Html.ActionLink("Xem", "Details", new {  id = item.Id  }, new {@class = "btn bg-info text-decoration-none text-light"})<span style="display :block;text-align:center">---------</span> 
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id  }, new {@class = "btn bg-info text-decoration-none text-light"})
+                            </td>
+                        </tr>
+}
+                    </tbody>
+                </table>
+            </div>
+                                @await Component.InvokeAsync("Pager",Model)
+                            </div>
+   </div>

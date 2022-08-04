@@ -1,0 +1,37 @@
+﻿@model QuanLyKhoViewModels.Catalog.Products.ProductViewBindingModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center p-4">Chi tiết sản phẩm</h1>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Ngày nhập</th>
+      <th scope="col">Mã sản phẩm</th>
+      <th scope="col">Tên sản phẩm</th>
+      <th scope="col">Số lượng</th>
+      <th scope="col">Giá nhập</th>
+      <th scope="col">Giá bán</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>@Html.DisplayFor(model => model.ImportDate)</td>
+      <td>@Html.DisplayFor(model => model.importID)</td>
+      <td>@Html.DisplayFor(model => model.Name)</td>
+      <td>@Html.DisplayFor(model => model.Quantity)</td>
+      <td>@Html.DisplayFor(model => model.origin)</td>
+      <td>@Html.DisplayFor(model => model.SalesPrice)</td>
+    </tr>
+  </tbody>
+</table>
+<div>
+    <a class="btn btn-primary" asp-action="Index">Trở về danh sách</a>
+</div>

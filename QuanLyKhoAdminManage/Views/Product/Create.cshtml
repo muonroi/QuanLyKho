@@ -1,0 +1,69 @@
+﻿@model QuanLyKhoViewModels.System.Products.ProductCreateRequest
+
+@{
+    ViewData["Title"] = "Tạo mới sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+        <div class="wrapper wrapper--w680">
+            <div class="card card-1">
+                <div class="card-body">
+                    <h2 class="title">Nhập thông tin sản phẩm</h2>
+                    <form asp-action="Create" method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                         <div class="row row-space">
+                             <div class="col-2">
+                                  <div class="input-group">
+                                        <input asp-for="Id" class="input--style-1" type="text" placeholder="Mã sản phẩm">
+                                  </div>
+                                  <span asp-validation-for="Id" class="text-danger"></span>
+                             </div>
+                              <div class="col-2">
+                                  <div class="input-group">
+                                        <input asp-for="Name" class="input--style-1" type="text" placeholder="Tên sản phẩm">
+                                        
+                                  </div>
+                                   <span asp-validation-for="Name" class="text-danger"></span>
+                             </div>
+                         </div>
+                       
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input asp-for="ImportDate" class="input--style-1 js-datepicker" type="text" placeholder="Ngày nhập">
+                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                </div>
+                                <span asp-validation-for="ImportDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                        <input asp-for="Quantity" class="input--style-1" type="number" placeholder="Số lượng">
+                                       
+                                  </div>
+                                  <span asp-validation-for="Quantity" class="text-danger"></span>
+                            </div>
+                             
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input asp-for="OriginPrice" class="input--style-1" type="text" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Giá nhập">
+                                </div>
+                                    <span asp-validation-for="OriginPrice" class="text-danger"></span>
+
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input asp-for="SalesPrice" class="input--style-1" type="text" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Giá bán">
+                                    
+                                </div>
+                                <span asp-validation-for="SalesPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="p-t-20">
+                            <button class="btn btn--radius btn--green" type="submit">Nhập</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+

@@ -1,0 +1,26 @@
+﻿@model QuanLyKhoViewModels.System.Products.ProductDeleteRequest
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Bạn thật sự muốn xóa sản phẩm này?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductID)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <label asp-for="ProductID"></label>
+        <input asp-for="ProductID" type="text" readonly/>
+        <input type="submit" value="Xóa" class="tn btn-danger btn-sm"/>
+        <a asp-action="Index">Trở về danh sách</a>
+    </form>
+</div>

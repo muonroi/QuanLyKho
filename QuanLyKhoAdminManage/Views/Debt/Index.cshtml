@@ -1,0 +1,138 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoViewModels.System.Debt.DebtVm>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+setTimeout(function() {
+    $('#msgAlert').fadeOut('slow');
+}, 2000);
+      
+    </script>
+}
+@section xs{
+     <script type="text/javascript">
+        $(function () {
+            $("#FindProducts").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Debt/AutoComplete/',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#hfProduct").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    </script>
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12 d-flex align-items-center">
+                   @Html.ActionLink("Xóa tất cả", "DeleteAll", new { id = 1 }, new {@class = "btn bg-danger text-decoration-none text-light"})
+                </div>
+                <div class="col-md-6 col-xs-12">
+                      @using (Html.BeginForm("Index", "Debt", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
+                    {
+                        <div class="row d-flex">
+                            <div class="col-md-4 d-flex" style="flex:auto">
+                                <input id="FindProducts" type="text" placeholder="Tìm kiếm" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                                <input type="hidden" id="hfProduct" name="CustomerId"/> 
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                            </div>                               
+                        </div>
+                        <br/><br/>
+                    @ViewBag.Message
+                   }
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive" >
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã hóa đơn
+                            </th>
+                            <th>
+                                Ngày tạo
+                            </th>
+                            <th>
+                                Mã sản phẩm
+                            </th>
+                            <th>
+                                Mã khách hàng
+                            </th>
+                            <th>
+                                Số Tiền
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreateDateDebt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GuestID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalDebt)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new {@class = "btn bg-info text-decoration-none text-danger"})
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+    </div>
+</div>
