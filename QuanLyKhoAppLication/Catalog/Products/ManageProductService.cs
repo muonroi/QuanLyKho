@@ -80,16 +80,21 @@ namespace QuanLyKhoAppLication.Catalog.Products
                             return new ApiSuccessResult<bool>();
                         }
                     }
-                    else if (request.debttotal <= 0)
+                    else if (request.debttotal <= 0 && productsExID != null)
+                    {
+                        await _dbcontext.SaveChangesAsync();
+                        return new ApiSuccessResult<bool>();
+                    }
+                    else if (request.debttotal <= 0 && productsExID == null)
                     {
                         var ExproAnDebt = await _dbcontext.Exproducts.AddAsync(products);
+
                         if (ExproAnDebt != null)
                         {
                             await _dbcontext.SaveChangesAsync();
                             return new ApiSuccessResult<bool>();
                         }
                     }
-
                 }
             }
             else
@@ -246,15 +251,19 @@ namespace QuanLyKhoAppLication.Catalog.Products
            
             return new ApiErrorResult<bool>("Thêm sản phẩm không thành công");
         }
-        public async Task<PagedResult<ProductViewDetalModel>> Report()
+        public async Task<PagedResult<ProductViewDetalModel>> Report(string username)
         {
             var querySearch = from debt in _dbcontext.Exproducts
+                              from em in _dbcontext.appusers
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
-                              select new { debt, pro,guest };
+                              where em.UserName.Equals(username)
+                              select new { debt, pro,guest,em};
             var data = await querySearch.
                  Select(x => new ProductViewDetalModel()
                  {
+                     EmL = x.em.LastName,
+                     EmF = x.em.FirstName,
                      FirtName = x.guest.FirtName,
                      LastName = x.guest.LastName,
                      PhoneNumber = x.guest.PhoneNumber,

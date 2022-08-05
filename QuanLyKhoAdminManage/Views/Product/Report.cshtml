@@ -1,4 +1,5 @@
 ﻿@using QuanLyKhoViewModels.Common
+@using System.Globalization;
 @model PagedResult<QuanLyKhoViewModels.Catalog.Products.ProductViewDetalModel>
 @{
 	Layout = null;
@@ -14,32 +15,19 @@
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
 <div class="page-content container">
     <div class="page-header text-blue-d2">
         <h1 class="page-title text-secondary-d1">
             Hóa đơn
             <small class="page-info">
                 <i class="fa fa-angle-double-right text-80"></i>
-                Mã: #111-222
+                Mã: @ViewBag.IDBILL
+                @ViewBag.Vehicle_tr
             </small>
         </h1>
-
-        <div class="page-tools">
-            <div class="action-buttons">
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
-                    <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-                    Print
-                </a>
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
-                    <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
-                    Export
-                </a>
-            </div>
-        </div>
     </div>
 
     <div class="container px-0">
@@ -49,7 +37,7 @@
                     <div class="col-12">
                         <div class="text-center text-150">
                             <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-                            <span class="text-default-d3">MyShop.com</span>
+                            <span class="text-default-d3">HÓA ĐƠN BÁN HÀNG</span>
                         </div>
                     </div>
                 </div>
@@ -71,7 +59,8 @@
                         <div class="text-grey-m2">
                             @foreach (var item in @Model.Items)
                             {
-                                    <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">@item.PhoneNumber</b></div>
+                                <p class="d-none">@{string s = String.Format("{0:###-###-####}", @item.PhoneNumber);}</p>
+                                    <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">@s</b></div>
                                     break;
                             }
                         </div>
@@ -85,38 +74,144 @@
                                 Hóa đơn
                             </div>
 
-                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Mã hóa đơn:</span> #111-222</div>
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Mã hóa đơn:</span> @ViewBag.IDBILL</div>
 
-                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Ngày tạo: </span>@DateTime.UtcNow</div>
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Ngày tạo: </span>@DateTime.Now</div>
 
-                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#07ff7a">Đã TT</span></div>
+                           @{ if (!ViewBag.Issucess)
+                                    {
+                                           <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#07ff7a">Đã TT</span></div>
+                                        
+                                    }
+                                    else
+                                    {
+                                           <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#ffc107">Trả sau</span></div>
+                                        
+                                    }
+                           }
+                               
                         </div>
                     </div>
                     <!-- /.col -->
                 </div>
 
                 <div class="mt-4">
-                     
-                    <div class="row text-600 text-white bgc-default-tp1 py-0">
-                        <div class="border-right border-dark d-none d-sm-block col-1 text-center py-25">STT</div>
-                        <div class="border-right border-dark col-9 col-sm-5 text-center py-25">Tên hàng</div>
-                        <div class="border-right border-dark d-none d-sm-block col-4 col-sm-2 text-center">Số lượng</div>
-                        <div class="border-right border-dark d-none d-sm-block col-sm-2 text-center">Giá bán</div>
-                        <div class="border-right border-dark col-2 text-center">Giá tiền</div>
+                     <div class="d-none d-sm-block col-9 py-25">1. Nội Dung Hóa đơn</div>
+                    <div class="row text-600 text-black py-0 d-flex align-items-center">
+                        <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">STT</div>
+                        <div class="border-right border-top border-dark col-9 col-sm-5 text-center py-25">Tên hàng</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-4 col-sm-2 text-center py-25">Số lượng</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-sm-2 text-center py-25">Giá bán</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Giá tiền</div>
                     </div>
-
+                    @{string tongtien = null,tongno = null,ss = null;
+                        decimal totaltien = default;
+                    }
                     <div class="text-95 text-secondary-d3">
-                        @{int i = 1;}
+                            @{
+                                int i = 1; decimal sumtol = 0; int quan = 0;
+                            }
+                            @foreach (var item in @Model.Items)
+                       {
+                                <p class="d-none" >@(quan+=Convert.ToInt32(item.Quantity))</p>
+                           
+                                <p class="d-none" >@(sumtol += (Convert.ToDecimal(item.SalesPrice) * Convert.ToDecimal(@item.Quantity)))</p>
+                                <div class="row mb-2 mb-sm-0 py-0">
+                            <div class="border-top border-left border-right border-dark d-none d-sm-block col-1 text-center">@(i++)</div>
+                            <div class="border-top border-right border-dark col-9 col-sm-5 text-center">@item.Name</div>
+                            <div class="border-top border-right border-dark d-none d-sm-block col-2 text-center">@item.Quantity</div>
+                                    @{
+                                        CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+                                        string a = item.SalesPrice.ToString("#,###", cul.NumberFormat);
+                                        decimal sums = (Convert.ToDecimal(item.SalesPrice) * Convert.ToDecimal(@item.Quantity));
+                                        string b = sums.ToString("#,###", cul.NumberFormat);
+                                        tongtien = sumtol.ToString("#,###", cul.NumberFormat);
+                                        tongno = ViewBag.TotalDebt.ToString("#,###", cul.NumberFormat);
+                                        totaltien = sumtol + ViewBag.TotalDebt;
+                                        ss = totaltien.ToString("#,###", cul.NumberFormat);
+                                    }
+                            <div class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@(a) Vnđ</div>
+                            <div class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@(b) Vnđ</div>
+                        </div>
+                       }
+                    </div>
+                    <div class="row mb-2 mb-sm-0 py-0 border-top border-dark">
+                       <table class="table table-info" style="border-style:hidden">
+                            <tbody>
+                              <tr>
+                                <td style="width: 66%" class="text-right" colspan="3">Tổng số lượng: @quan</td>
+                                <td  class="text-right" colspan="2">Tổng tiền: @(tongtien) Vnđ</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <div class="d-none d-sm-block col-5 py-25">2. Công nợ</div>
+                    <div class="row text-600 text-black py-0 d-flex align-items-center">
+                        <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">Mã HĐ</div>
+                        <div class="border-right border-top border-dark col-9 col-sm-5 text-center py-25">Ngày</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-4 col-sm-2 text-center py-25">Xe</div>
+                    </div>
+                    <div class="text-95 text-secondary-d3">
                        @foreach (var item in @Model.Items)
                        {
                         <div class="row mb-2 mb-sm-0 py-0">
-                            <div class="border border-dark d-none d-sm-block col-1 text-center">@(i++)</div>
-                            <div class="border border-dark col-9 col-sm-5 text-center">@item.Name</div>
-                            <div class="border border-dark d-none d-sm-block col-2 text-center">@item.Quantity</div>
-                            <div class="border border-dark d-none d-sm-block col-2 text-95 text-center">@(String.Format(ViewBag.Info,"{0:#.000} Vnđ",Convert.ToDecimal(item.SalesPrice)/1000))</div>
-                            <div class="border border-dark col-2 text-secondary-d2 text-center">@(String.Format(ViewBag.Info,"{0:#.000} Vnđ",(Convert.ToDecimal(item.SalesPrice) * Convert.ToDecimal(@item.Quantity))/1000))</div>
+                            <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@ViewBag.IDBILL</div>
+                            <div class="border-top border-bottom border-right border-dark col-9 col-sm-5 text-center">@DateTime.Now</div>
+                            <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-center">@TempData["views"]</div>
                         </div>
-                       }
+                                break;
+                            }
+                    </div>
+                    <div class="row mb-2 mb-sm-0 py-0">
+                       <table class="table table-info" style="border-style:hidden">
+                            <tbody>
+                              <tr>
+                                <td  class="text-right" colspan="2">Tổng tiền nợ: @(tongno) Vnđ</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-none d-sm-block col-5 py-25">3. Xác nhận</div>
+                   
+                     <div class="row mb-2 mb-sm-0 py-0">
+                       <table class="table table-bordered">
+                       <thead>
+                       <tr>
+                       <th></th>
+                       <th style="text-align:center; vertical-align:middle; padding-top:120px">Nhà xe nhận hàng</th>
+                       <th></th>
+                       <th></th>
+                       <th style="text-align:center; vertical-align:middle; padding-top:120px">Người lập phiếu</th>
+                       <th></th>
+                       <th style="text-align:center; vertical-align:middle; padding-top:120px">Khách hàng</th>
+                       </tr>
+                            
+                       </thead>
+                            <tbody>
+                              <tr>
+                               <td></td>
+                               <td style="text-align:center; vertical-align:middle; padding-top:120px">Nhà xe</td>
+                               <td></td>
+                               <td></td>
+                               <td style="text-align:center; vertical-align:middle; padding-top:120px">
+                                @foreach (var item in @Model.Items)
+                                {
+                                     @item.EmL
+                                    break;
+                                }
+                               </td>
+                               <td></td>
+                               <td style="text-align:center; vertical-align:middle; padding-top:120px">
+                               @foreach (var item in @Model.Items)
+                                {
+                                     @item.LastName
+                                    break;
+                                }
+                               </td>
+                              </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="row border-b-2 brc-default-l2"></div>
@@ -128,10 +223,10 @@
                         <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
                             <div class="row my-2">
                                 <div class="col-7 text-right">
-                                    Tổng tiền nợ
+                                   
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-120 text-secondary-d1">@(String.Format(ViewBag.Info,"{0:#.000} Vnđ",Convert.ToDecimal(ViewBag.TotalDebt)/1000))</span>
+                                    <span class="text-120 text-secondary-d1"></span>
                                 </div>
                             </div>
 
@@ -145,18 +240,18 @@
                             </div>
 
                             <div class="row my-2 align-items-center bgc-primary-l3 p-2">
-                                <div class="col-7 text-right">
+                                <div class="col-5 text-right">
                                     Tổng tiền
                                 </div>
-                                <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2">@(String.Format(ViewBag.Info,"{0:#.000} Vnđ",Convert.ToDecimal(ViewBag.TotalSum)/1000))</span>
+                                <div class="col-7">
+                                    <span class="text-150 text-success-d3 opacity-2">@(ss) Vnđ</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div>
+                    <div class="d-flex justify-content-center">
                         <span class="text-secondary-d1 text-105 text-center">Cám ơn bạn đã mua hàng</span>
                     </div>
                 </div>
@@ -285,8 +380,5 @@ hr {
 }
 </style>
 
-<script type="text/javascript">
-
-</script>
 </body>
 </html>

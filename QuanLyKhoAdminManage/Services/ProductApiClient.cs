@@ -114,9 +114,9 @@ namespace QuanLyKhoAdminManage.Services
 
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
-        public async Task<PagedResult<ProductViewDetalModel>> Report()
+        public async Task<PagedResult<ProductViewDetalModel>> Report(string username)
         {
-            var data = await GetAsync<PagedResult<ProductViewDetalModel>>($"/api/Product/report");
+            var data = await GetAsync<PagedResult<ProductViewDetalModel>>($"/api/Product/report/{username}");
             return data;
         }
 

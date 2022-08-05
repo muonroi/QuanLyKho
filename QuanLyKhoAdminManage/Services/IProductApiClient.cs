@@ -16,7 +16,7 @@ namespace QuanLyKhoAdminManage.Services
         Task<ApiResult<ProductCreateExRequest>> GetByIdEx(string id);
         Task<ApiResult<bool>> CreateEXProduct(ProductCreateExRequest request);
         Task<ProductVm> GetById(int id, string languageId);
-        Task<PagedResult<ProductViewDetalModel>> Report();
+        Task<PagedResult<ProductViewDetalModel>> Report(string username);
         Task<decimal> SumToTal();
         Task<decimal> Sumdebt();
         // Task<List<ProductVm>> GetFeaturedProducts(string languageId, int take);

@@ -5,7 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <hr />
-
+@section confirm {
+    <script>
+      function myFunction() {
+        let vehicle_tr = prompt("Nhập vào xe vận chuyển");
+        let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
+          if (vehicle_tr != null && vehicle_take != null) {
+              backendfunc(vehicle_tr, vehicle_take);
+          }
+          else
+              window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
+    function backendfunc(vehicle_tr,vehicle_take) {
+        $.ajax({
+            url: "/Product/Report",
+            //type: "POST",
+            data: { "vehicle_trs": vehicle_tr, "vehicle_takes": vehicle_take},
+            success: function (res) {
+                $("#convertnum").html(res);
+            },
+            error: function (hata, ajaxoptions, throwerror) {
+                $("#convertnum").html("convert failed");
+            }
+        });
+    }
+}
+</script>
+}
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
@@ -55,14 +80,14 @@
                             <div class="col-2">
                                 <div class="input-group">
                                      <label  asp-for="SalesPrice" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"  class="control-label">Giá bán</label>
-                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="number"readonly>
+                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"readonly>
                                 </div>
                                 <span asp-validation-for="SalesPrice" class="text-danger"></span>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                       <label asp-for="debttotal"  class="control-label">Số tiền nợ</label>
-                                    <input asp-for="debttotal" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" class="input--style-1" type="number">
+                                    <input asp-for="debttotal" data-type="currency" class="input--style-1" type="text">
                                 </div>
                                  <span asp-validation-for="debttotal" class="text-danger"></span>
                             </div>
@@ -77,13 +102,12 @@
                             </div>
                             <div class="col-2">
                                 <div class="p-t-20">
-                                <input asp-action="Report" class="btn bg-primary btn--radius btn--dark " type="submit" value="Xuất hóa đơn"/>
+                                    <form>
+                                        <input asp-action="Report" class="btn bg-primary btn--radius btn--dark " type="submit" value="Xuất hóa đơn"/>
+                                    </form>
                                 </div>
-                              
                             </div>
                         </div>
-
-                       
                     </form>
                 </div>
             </div>

@@ -91,10 +91,10 @@ namespace QuanLyKhoBackendapi.Controllers
             }
             return Ok(CreateProduct);
         }
-        [HttpGet("report")]
-        public async Task<IActionResult> Report()
+        [HttpGet("report/{username}")]
+        public async Task<IActionResult> Report(string username)
         {
-            var DelProduct = await _manageProductService.Report();
+            var DelProduct = await _manageProductService.Report(username);
             return Ok(DelProduct);
 
         }

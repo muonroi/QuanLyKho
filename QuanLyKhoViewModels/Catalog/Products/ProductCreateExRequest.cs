@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -16,6 +17,7 @@ namespace QuanLyKhoViewModels.Catalog.Products
         public decimal SalesPrice { get; set; }
         public decimal ToTalSum { get; set; }
         [DataType(DataType.Currency)]
+        [DefaultValue(true)]
         public decimal debttotal { get; set; }
         public string GuestID { get; set; }
     }

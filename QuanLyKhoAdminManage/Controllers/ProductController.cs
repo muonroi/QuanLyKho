@@ -1,36 +1,43 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using QuanLyKhoAdminManage.Services;
 using QuanLyKhoData.EF;
 using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.System.Products;
-using System.Globalization;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace QuanLyKhoAdminManage.Controllers
 {
     public class ProductController : BaseController
     {
+        private string strings { get; set; }
+        private string vh_tr { get; set; }
+        private string vh_take { get; set; }
         QuanLyKhoDbContext _context;
         private readonly IProductApiClient _ProductApiClient;
         private readonly IConfiguration _configuration;
         public ProductController(IProductApiClient userApiClient,
-            IConfiguration configuration, QuanLyKhoDbContext context)
+            IConfiguration configuration, QuanLyKhoDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _ProductApiClient = userApiClient;
             _configuration = configuration;
+            var httpContext = new HttpContextAccessor().HttpContext;
+            strings = httpContext.User.Identity.Name;
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
-
+            
             var request = new GetManageProductPagingRequest()
             {
                 Keyword = keyword,
@@ -200,7 +207,6 @@ namespace QuanLyKhoAdminManage.Controllers
                 Paragraph para9 = new Paragraph(@$"Giá Tiền: {request.SalesPrice} Vnđ", f);
                 para9.Alignment = Element.ALIGN_RIGHT;
                 document.Add(para9);
-
                 document.Close();
                 pdfWriter.Close();
                 var constant = ms.ToArray();
@@ -209,10 +215,9 @@ namespace QuanLyKhoAdminManage.Controllers
            
         }
         [HttpPost]
-        public async Task<IActionResult> Sales([FromForm] ProductCreateExRequest request, string btn = "")
+        public async Task<IActionResult> Sales([FromForm] ProductCreateExRequest request, string status = "")
         {
-
-            if (btn.Equals("Xuất hóa đơn"))
+            if (status.Equals("Xuất hóa đơn"))
             {
                return RedirectToAction("Report");
             }
@@ -226,10 +231,11 @@ namespace QuanLyKhoAdminManage.Controllers
             {
                 PDF(request);
                 TempData["result"] = "Bán sản phẩm thành công!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Sales");
 
             }
-            ModelState.AddModelError($"", result.Message);
+            result.Message = "Vui lòng nhập đủ thông tin!";
+            ModelState.AddModelError($"{result.Message}","");
             return View(request);
         }
         [HttpGet]
@@ -275,16 +281,33 @@ namespace QuanLyKhoAdminManage.Controllers
 
             return Json(customers);
         }
-        public async Task<IActionResult> Report()
+        [HttpGet]
+        public IActionResult Getdata(string vehicle_trs)
         {
-           var data = await _ProductApiClient.Report();
+            var a = Json(vehicle_trs);
+            return a;
+        }
+        public async Task<IActionResult> Report(string vehicle_trs)
+        {
+            var data = await _ProductApiClient.Report(strings);
             decimal sumtt = await _ProductApiClient.SumToTal();
             decimal sumdebts = await _ProductApiClient.Sumdebt();
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            Random res = new Random();
+            String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int size = 4;
+            String ran = "";
+            for (int i = 0; i < size; i++)
+            {
+                int x = res.Next(26);
+
+                ran = ran + str[x];
+            }
+            ViewBag.Issucess = sumdebts > 0?true:false;
+            ViewBag.IDBILL = ran;
             ViewBag.Info = info;
             ViewBag.TotalSum = sumtt;
             ViewBag.TotalDebt = sumdebts;
-
             return View(data);
         }
     }

@@ -22,7 +22,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         Task<List<ProductViewModel>> GetAllExport();
         Task<List<ProductViewModel>> GetAllImport();
         Task<ApiResult<ProductViewBindingModel>> GetImportByID(string ID);
-        Task<PagedResult<ProductViewDetalModel>> Report();
+        Task<PagedResult<ProductViewDetalModel>> Report(string username);
         Task<decimal> SumToTal();
         Task<decimal> Sumdebt();
     }

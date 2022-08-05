@@ -29,5 +29,8 @@ namespace QuanLyKhoViewModels.Catalog.Products
         public string LastName { get; set; }
         [Display(Name = "Số điện thoại")]
         public int PhoneNumber { get; set; }
+        public string EmL { get; set; }
+        public string EmF { get; set; }
+
     }
 }
