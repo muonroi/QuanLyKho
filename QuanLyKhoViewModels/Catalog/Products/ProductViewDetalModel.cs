@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-
+using QuanLyKhoData.Entities;
 namespace QuanLyKhoViewModels.Catalog.Products
 {
     public class ProductViewDetalModel
@@ -31,6 +31,5 @@ namespace QuanLyKhoViewModels.Catalog.Products
         public int PhoneNumber { get; set; }
         public string EmL { get; set; }
         public string EmF { get; set; }
-
     }
 }

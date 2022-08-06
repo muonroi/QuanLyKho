@@ -34,7 +34,7 @@
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
-                    <h2 class="title">Registration Info</h2>
+                    <h2 class="title">Lập hóa đơn bán hàng</h2>
                     <form asp-action="Sales" asp-controller="Product" method="POST">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="row row-space">
@@ -79,7 +79,7 @@
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                     <label  asp-for="SalesPrice" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"  class="control-label">Giá bán</label>
+                                     <label asp-for="SalesPrice" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"  class="control-label">Giá bán</label>
                                     <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"readonly>
                                 </div>
                                 <span asp-validation-for="SalesPrice" class="text-danger"></span>

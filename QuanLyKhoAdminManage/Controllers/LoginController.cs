@@ -36,7 +36,6 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginRequest request)
         {
-            TempData["user"] = request.UserName;
             if (!ModelState.IsValid)
                 return View(ModelState);
 

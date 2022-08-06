@@ -28,6 +28,9 @@
                 @ViewBag.Vehicle_tr
             </small>
         </h1>
+         <small class="page-info page-title text-secondary-d1">
+                <img class="img-fluid rounded float-left" src="/images/d876f2461797d5c98c86.jpg"/>
+         </small>
     </div>
 
     <div class="container px-0">
@@ -80,12 +83,12 @@
 
                            @{ if (!ViewBag.Issucess)
                                     {
-                                           <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#07ff7a">Đã TT</span></div>
+                                               <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#07ff7a">Đã TT</span></div>
                                         
                                     }
                                     else
                                     {
-                                           <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#ffc107">Trả sau</span></div>
+                                               <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Trạng thái: </span> <span class="badge badge-warning badge-pill px-25 " style="background-color:#ffc107">Trả sau</span></div>
                                         
                                     }
                            }
@@ -150,6 +153,8 @@
                         <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">Mã HĐ</div>
                         <div class="border-right border-top border-dark col-9 col-sm-5 text-center py-25">Ngày</div>
                         <div class="border-right border-top border-dark d-none d-sm-block col-4 col-sm-2 text-center py-25">Xe</div>
+                         <div class="border-right border-top border-dark d-none d-sm-block col-sm-2 text-center py-25">Tên Hàng</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Số tiền nợ</div>
                     </div>
                     <div class="text-95 text-secondary-d3">
                        @foreach (var item in @Model.Items)
@@ -158,15 +163,20 @@
                             <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@ViewBag.IDBILL</div>
                             <div class="border-top border-bottom border-right border-dark col-9 col-sm-5 text-center">@DateTime.Now</div>
                             <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-center">@TempData["views"]</div>
-                        </div>
-                                break;
+                            <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-95 text-center">@item.Name</div>
+                                    <div class="border-top border-bottom border-right border-dark col-2 text-secondary-d2 text-center">@{ string ttdeb = null;
+                                            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+                                            ttdeb= item.debttotal > 0? item.debttotal.ToString("#,###", cul.NumberFormat): "0";
+                                        }@ttdeb Vnđ</div>
+                                </div>
+                                //break;
                             }
                     </div>
                     <div class="row mb-2 mb-sm-0 py-0">
                        <table class="table table-info" style="border-style:hidden">
                             <tbody>
                               <tr>
-                                <td  class="text-right" colspan="2">Tổng tiền nợ: @(tongno) Vnđ</td>
+                                <td  class="col-7 text-right" colspan="2">Tổng tiền nợ: @(tongno) Vnđ</td>
                               </tr>
                             </tbody>
                         </table>
@@ -175,7 +185,7 @@
                     <div class="d-none d-sm-block col-5 py-25">3. Xác nhận</div>
                    
                      <div class="row mb-2 mb-sm-0 py-0">
-                       <table class="table table-bordered">
+                       <table class="table table-bordered table-striped">
                        <thead>
                        <tr>
                        <th></th>
@@ -184,7 +194,7 @@
                        <th></th>
                        <th style="text-align:center; vertical-align:middle; padding-top:120px">Người lập phiếu</th>
                        <th></th>
-                       <th style="text-align:center; vertical-align:middle; padding-top:120px">Khách hàng</th>
+                       <th class="borer-right" style=" text-align:center; vertical-align:middle; padding-top:120px">Khách hàng</th>
                        </tr>
                             
                        </thead>
@@ -202,7 +212,7 @@
                                 }
                                </td>
                                <td></td>
-                               <td style="text-align:center; vertical-align:middle; padding-top:120px">
+                               <td class="borer-right" style="text-align:center; vertical-align:middle; padding-top:120px">
                                @foreach (var item in @Model.Items)
                                 {
                                      @item.LastName

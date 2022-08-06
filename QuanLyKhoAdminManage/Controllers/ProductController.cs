@@ -34,6 +34,7 @@ namespace QuanLyKhoAdminManage.Controllers
             _configuration = configuration;
             var httpContext = new HttpContextAccessor().HttpContext;
             strings = httpContext.User.Identity.Name;
+           
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
@@ -225,13 +226,11 @@ namespace QuanLyKhoAdminManage.Controllers
             {
                 return View();
             }
-            
             var result = await _ProductApiClient.CreateEXProduct(request);
             if (result.IsSuccessed)
             {
-                PDF(request);
                 TempData["result"] = "Bán sản phẩm thành công!";
-                return RedirectToAction("Sales");
+                return RedirectToAction("Index");
 
             }
             result.Message = "Vui lòng nhập đủ thông tin!";

@@ -259,7 +259,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
                               where em.UserName.Equals(username)
                               select new { debt, pro,guest,em};
-            var data = await querySearch.
+            var data = await querySearch.Distinct().
                  Select(x => new ProductViewDetalModel()
                  {
                      EmL = x.em.LastName,
