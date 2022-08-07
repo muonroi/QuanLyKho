@@ -13,6 +13,7 @@ namespace QuanLyKhoData.Entities
         public decimal debttotal { get; set; }
         public string GuestID { get; set; }
         public string importID { get; set; }
-
+        public decimal weight { get; set; }
+        public bool status { get; set; } 
     }
 }

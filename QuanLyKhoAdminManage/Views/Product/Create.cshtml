@@ -4,9 +4,23 @@
     ViewData["Title"] = "Tạo mới sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Script{
+    <script>
+setTimeout(function() {
+    $('#msgAlert').fadeOut('slow');
+}, 2000);
+      
+    </script>
+}
         <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
+                    @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-danger" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
                     <h2 class="title">Nhập thông tin sản phẩm</h2>
                     <form asp-action="Create" method="POST">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -29,10 +43,9 @@
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="ImportDate" class="input--style-1 js-datepicker" type="text" placeholder="Ngày nhập">
-                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    <input asp-for="ImportDate" class="input--style-1" type="date" placeholder="Ngày nhập">
                                 </div>
-                                <span asp-validation-for="ImportDate" class="text-danger"></span>
+                                    <span asp-validation-for="ImportDate" class="text-danger"></span>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
@@ -46,17 +59,25 @@
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="OriginPrice" class="input--style-1" type="text" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Giá nhập">
+                                    <input asp-for="OriginPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá nhập">
                                 </div>
                                     <span asp-validation-for="OriginPrice" class="text-danger"></span>
 
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="SalesPrice" class="input--style-1" type="text" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Giá bán">
+                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá bán">
                                     
                                 </div>
                                 <span asp-validation-for="SalesPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                         <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input asp-for="ToTalSum" class="input--style-1" type="number" placeholder="Quy Cách">
+                                </div>
+                                    <span asp-validation-for="ToTalSum" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="p-t-20">

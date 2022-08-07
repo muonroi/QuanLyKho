@@ -48,8 +48,12 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
                     }
                     if (productsExID != null)
+                    {
                         productsExID.Quantity += request.Quantity;
-                    
+                        productsExID.weight += request.Quantity * request.ToTalSum;
+                        productsExID.debttotal += request.debttotal;
+                    }
+
                     else if(productsExID == null)
                     {
                         products = new ExportProduct()
@@ -60,7 +64,9 @@ namespace QuanLyKhoAppLication.Catalog.Products
                             ToTalSum = request.ToTalSum,
                             ExDate = request.ExDate,
                             debttotal = request.debttotal,
-                            GuestID = request.GuestID
+                            GuestID = request.GuestID,
+                            weight = request.ToTalSum * request.Quantity,
+                            status = true
                         };
                         var expro = await _dbcontext.Exproducts.AddAsync(products);
                     }
@@ -192,6 +198,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                 Quantity = querySearch.Quantity,
                 SalesPrice = querySearch.SalesPrice,
                 origin = querySearch.OriginPrice,
+                ToTalSum = querySearch.ToTalSum,
                 ImportDate = querySearch.ImportDate,
             };
 
@@ -238,7 +245,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                     Quantity = request.Quantity,
                     OriginPrice = request.OriginPrice,
                     SalesPrice = request.SalesPrice,
-                   // ToTalSum = request.ToTalSum,
+                    ToTalSum = request.ToTalSum,
                     ImportDate = request.ImportDate
                 };
                 var result = await _dbcontext.Improducts.AddAsync(products);
@@ -258,6 +265,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
                               where em.UserName.Equals(username)
+                              where debt.status.Equals(true)
                               select new { debt, pro,guest,em};
             var data = await querySearch.Distinct().
                  Select(x => new ProductViewDetalModel()
@@ -274,6 +282,8 @@ namespace QuanLyKhoAppLication.Catalog.Products
                      Quantity = x.debt.Quantity,
                      SalesPrice = x.debt.SalesPrice,
                      debttotal = x.debt.debttotal,
+                     weight = x.debt.weight,
+                     ToTalSum = x.debt.ToTalSum
                  }).ToListAsync();
             int totalRow = await querySearch.CountAsync();
             var pageResult = new PagedResult<ProductViewDetalModel>()

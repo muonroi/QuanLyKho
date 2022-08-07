@@ -103,6 +103,10 @@ setTimeout(function() {
                             </th>
 
                             <th>
+                                Quy cách
+                            </th>
+
+                            <th>
 
                                 Chức năng
 
@@ -127,6 +131,9 @@ setTimeout(function() {
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Quantity)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.ToTalSum)
                                 </td>
                                 <td>
                                     @Html.ActionLink("Xem", "Details", new { id = item.Id }, new {@class = "btn bg-info text-decoration-none text-light"}) |

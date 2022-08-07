@@ -19,6 +19,10 @@ namespace QuanLyKhoViewModels.Catalog.Products
         [DataType(DataType.Currency)]
         [DefaultValue(true)]
         public decimal debttotal { get; set; }
+        [Display(Name = "Mã khách hàng")]
         public string GuestID { get; set; }
+        public bool status { get; set; }
+        public decimal weight { get; set; }
+
     }
 }

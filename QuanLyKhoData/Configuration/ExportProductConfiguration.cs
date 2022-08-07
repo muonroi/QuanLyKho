@@ -25,6 +25,10 @@ namespace QuanLyKhoData.Configuration
                 .HasDefaultValue(0);
             builder.Property(x => x.ToTalSum)
                 .HasDefaultValue(0);
+            builder.Property(x => x.weight)
+                .HasDefaultValue(0);
+            builder.Property(x => x.status)
+                .HasDefaultValue(true);
         }
     }
 }

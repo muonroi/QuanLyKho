@@ -31,5 +31,7 @@ namespace QuanLyKhoViewModels.Catalog.Products
         public int PhoneNumber { get; set; }
         public string EmL { get; set; }
         public string EmF { get; set; }
+        public bool status { get; set; }
+        public decimal weight { get; set; }
     }
 }

@@ -8,8 +8,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>Hóa đơn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -32,7 +30,6 @@
                 <img class="img-fluid rounded float-left" src="/images/d876f2461797d5c98c86.jpg"/>
          </small>
     </div>
-
     <div class="container px-0">
         <div class="row mt-4">
             <div class="col-12 col-lg-12">
@@ -44,10 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- .row -->
-
                 <hr class="row brc-default-l1 mx-n1 mb-4" />
-
                 <div class="row">
                     <div class="col-sm-6">
                         <div>
@@ -57,18 +51,16 @@
                                      <span class="text-600 text-110 text-blue align-middle">@(String.Format("{0} {1}",item.FirtName,item.LastName))</span>
                                     break;
                                 }
-                           
                         </div>
                         <div class="text-grey-m2">
                             @foreach (var item in @Model.Items)
                             {
                                 <p class="d-none">@{string s = String.Format("{0:###-###-####}", @item.PhoneNumber);}</p>
-                                    <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">@s</b></div>
+                                <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i><b class="text-600">@s</b></div>
                                     break;
                             }
                         </div>
                     </div>
-                    <!-- /.col -->
 
                     <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
                         <hr class="d-sm-none" />
@@ -100,11 +92,13 @@
 
                 <div class="mt-4">
                      <div class="d-none d-sm-block col-9 py-25">1. Nội Dung Hóa đơn</div>
-                    <div class="row text-600 text-black py-0 d-flex align-items-center">
-                        <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">STT</div>
-                        <div class="border-right border-top border-dark col-9 col-sm-5 text-center py-25">Tên hàng</div>
-                        <div class="border-right border-top border-dark d-none d-sm-block col-4 col-sm-2 text-center py-25">Số lượng</div>
-                        <div class="border-right border-top border-dark d-none d-sm-block col-sm-2 text-center py-25">Giá bán</div>
+                    <div class="row text-800 text-black py-0 d-flex align-items-center">
+                         <div class="border-right border-left border-top border-dark d-none d-sm-block text-center py-25 col-sm-1">STT</div>
+                        <div class="border-right border-top border-dark col-sm-2 text-center py-25">Tên hàng</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Quy Cách</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Trọng lượng</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-1 text-center py-25">SL</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-2 text-center py-25">Giá bán</div>
                         <div class="border-right border-top border-dark col-2 text-center py-25">Giá tiền</div>
                     </div>
                     @{string tongtien = null,tongno = null,ss = null;
@@ -114,15 +108,20 @@
                             @{
                                 int i = 1; decimal sumtol = 0; int quan = 0;
                             }
-                            @foreach (var item in @Model.Items)
+                       @foreach (var item in @Model.Items)
                        {
-                                <p class="d-none" >@(quan+=Convert.ToInt32(item.Quantity))</p>
-                           
-                                <p class="d-none" >@(sumtol += (Convert.ToDecimal(item.SalesPrice) * Convert.ToDecimal(@item.Quantity)))</p>
-                                <div class="row mb-2 mb-sm-0 py-0">
-                            <div class="border-top border-left border-right border-dark d-none d-sm-block col-1 text-center">@(i++)</div>
-                            <div class="border-top border-right border-dark col-9 col-sm-5 text-center">@item.Name</div>
-                            <div class="border-top border-right border-dark d-none d-sm-block col-2 text-center">@item.Quantity</div>
+                            <p class="d-none" >@(quan+=Convert.ToInt32(item.Quantity))</p>                          
+                            <p class="d-none" >@(sumtol += (Convert.ToDecimal(item.SalesPrice) * Convert.ToDecimal(@item.Quantity)))</p>
+                            <div class="row mb-2 mb-sm-0 py-0">
+                            <div class="border-top border-left border-right border-dark d-none d-sm-block text-center col-sm-1">@(i++)</div>
+                            <div class="border-top border-right border-dark col-sm-2 text-center">@item.Name</div>
+                            <div class="border-top border-right border-dark col-2 text-center">@item.ToTalSum</div>
+                            @{
+                                CultureInfo culs = CultureInfo.GetCultureInfo("vi-VN");
+                                string we = item.weight.ToString("#,###", culs.NumberFormat);
+                            }
+                            <div class="border-top border-right border-dark col-2 text-center">@we Kg</div>
+                            <div class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@item.Quantity</div>
                                     @{
                                         CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
                                         string a = item.SalesPrice.ToString("#,###", cul.NumberFormat);
@@ -142,7 +141,7 @@
                        <table class="table table-info" style="border-style:hidden">
                             <tbody>
                               <tr>
-                                <td style="width: 66%" class="text-right" colspan="3">Tổng số lượng: @quan</td>
+                                <td style="width: 64%" class="text-right" colspan="3">Tổng số lượng: @quan</td>
                                 <td  class="text-right" colspan="2">Tổng tiền: @(tongtien) Vnđ</td>
                               </tr>
                             </tbody>
@@ -150,7 +149,7 @@
                     </div>
                      <div class="d-none d-sm-block col-5 py-25">2. Công nợ</div>
                     <div class="row text-600 text-black py-0 d-flex align-items-center">
-                        <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">Mã HĐ</div>
+                        <div class="border-right border-left border-top border-dark d-none d-sm-block col-1 text-center py-25">Mã SP</div>
                         <div class="border-right border-top border-dark col-9 col-sm-5 text-center py-25">Ngày</div>
                         <div class="border-right border-top border-dark d-none d-sm-block col-4 col-sm-2 text-center py-25">Xe</div>
                          <div class="border-right border-top border-dark d-none d-sm-block col-sm-2 text-center py-25">Tên Hàng</div>
@@ -160,7 +159,7 @@
                        @foreach (var item in @Model.Items)
                        {
                         <div class="row mb-2 mb-sm-0 py-0">
-                            <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@ViewBag.IDBILL</div>
+                            <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@item.importID</div>
                             <div class="border-top border-bottom border-right border-dark col-9 col-sm-5 text-center">@DateTime.Now</div>
                             <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-center">@TempData["views"]</div>
                             <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-95 text-center">@item.Name</div>

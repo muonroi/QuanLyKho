@@ -27,7 +27,7 @@ namespace QuanLyKhoAdminManage.Controllers
         private readonly IProductApiClient _ProductApiClient;
         private readonly IConfiguration _configuration;
         public ProductController(IProductApiClient userApiClient,
-            IConfiguration configuration, QuanLyKhoDbContext context, IHttpContextAccessor httpContextAccessor)
+            IConfiguration configuration, QuanLyKhoDbContext context)
         {
             _context = context;
             _ProductApiClient = userApiClient;
@@ -263,7 +263,9 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
 
             }
-            ModelState.AddModelError("", result.Message);
+            result.Message = "404";
+            ViewBag.SuccessMsg = "Vui lòng thử lại";
+            ModelState.AddModelError($"{result.Message}", result.Message);
             return View(request);
         }
         [HttpPost]
