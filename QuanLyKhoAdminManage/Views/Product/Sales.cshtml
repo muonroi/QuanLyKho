@@ -31,6 +31,21 @@
 }
 </script>
 }
+
+@section RedirectReport{
+    <script>
+        function Report()
+    {
+   $.ajax({
+      url: 'urlToController',
+      data: { id: id }
+   }).done(function() {
+      alert('Added'); 
+   });
+    }
+    </script>
+    
+}
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
