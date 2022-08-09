@@ -15,7 +15,7 @@ setTimeout(function() {
         <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
-                    @if (ViewBag.SuccessMsg != null)
+                @if (ViewBag.SuccessMsg != null)
                 {
                     <div id="msgAlert" class="alert alert-danger" role="alert">
                         @ViewBag.SuccessMsg
@@ -33,28 +33,24 @@ setTimeout(function() {
                              </div>
                               <div class="col-2">
                                   <div class="input-group">
-                                        <input asp-for="Name" class="input--style-1" type="text" placeholder="Tên sản phẩm">
-                                        
+                                        <input asp-for="Name" class="input--style-1" type="text" placeholder="Tên sản phẩm">  
                                   </div>
                                    <span asp-validation-for="Name" class="text-danger"></span>
                              </div>
                          </div>
-                       
                         <div class="row row-space">
-                            <div class="col-2">
+                           <div class="col-2">
                                 <div class="input-group">
-                                    <input value="@DateTime.Now" readonly asp-for="ImportDate" class="input--style-1" type="date" placeholder="Ngày nhập">
+                                    <input asp-for="ToTalSum" class="input--style-1" type="number" placeholder="Quy Cách">
                                 </div>
-                                    <span asp-validation-for="ImportDate" class="text-danger"></span>
+                                    <span asp-validation-for="ToTalSum" class="text-danger"></span>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                         <input asp-for="Quantity" class="input--style-1" type="number" placeholder="Số lượng">
-                                       
                                   </div>
                                   <span asp-validation-for="Quantity" class="text-danger"></span>
                             </div>
-                             
                         </div>
                         <div class="row row-space">
                             <div class="col-2">
@@ -62,22 +58,20 @@ setTimeout(function() {
                                     <input asp-for="OriginPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá nhập">
                                 </div>
                                     <span asp-validation-for="OriginPrice" class="text-danger"></span>
-
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                     <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá bán">
-                                    
                                 </div>
                                 <span asp-validation-for="SalesPrice" class="text-danger"></span>
                             </div>
                         </div>
                          <div class="row row-space">
-                            <div class="col-2">
+                              <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="ToTalSum" class="input--style-1" type="number" placeholder="Quy Cách">
+                                    <input value="@DateTime.Now" readonly asp-for="ImportDate" class="input--style-1" type="date" placeholder="Ngày nhập">
                                 </div>
-                                    <span asp-validation-for="ToTalSum" class="text-danger"></span>
+                                    <span asp-validation-for="ImportDate" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="p-t-20">

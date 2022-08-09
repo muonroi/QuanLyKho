@@ -1,4 +1,4 @@
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,12 +34,12 @@ namespace QuanLyKhoAdminManage
             services.AddHttpClient();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(option =>
-            {
-                option.LoginPath = "/Login/Index";
-                option.AccessDeniedPath = "/Login/Forbidden/";
+                {
+                    option.LoginPath = "/Login/Index";
+                    option.AccessDeniedPath = "/Login/Forbidden/";
 
-            });
-           
+                });
+
             services.AddControllersWithViews()
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             services.AddSession(
@@ -51,21 +51,22 @@ namespace QuanLyKhoAdminManage
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<IDebtApiServices, DebtApiServices>();
             services.AddTransient<IEmpApiServices, EmpApiServices>();
+            services.AddTransient<IGuestApiServices, GuestApiServices>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddReact();
 
             // Make sure a JS engine is registered, or you will get an error!
             services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
               .AddV8();
-           
+
             IMvcBuilder builder = services.AddRazorPages();
             var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            #if DEBUG
-                if (enviroment == Environments.Development)
-	            {
-                     builder.AddRazorRuntimeCompilation();
-	            }
-            #endif
+#if DEBUG
+            if (enviroment == Environments.Development)
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

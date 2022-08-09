@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QuanLyKhoAppLication.Catalog.Debts;
 using QuanLyKhoAppLication.Catalog.Emp;
+using QuanLyKhoAppLication.Catalog.Guests;
 using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoAppLication.Catalog.Users;
 using QuanLyKhoData.EF;
@@ -46,7 +47,7 @@ namespace QuanLyKhoBackendapi
             services.AddTransient<IPublicManageUsers, PublicManageUsers>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
-         //   services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IPublicManageGuests, PublicManageGuests>();
             services.AddControllers()
                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             services.AddIdentity<AppUser, AppRole>()
