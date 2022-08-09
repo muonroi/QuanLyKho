@@ -25,13 +25,12 @@ namespace QuanLyKhoData.EF
             modelBuilder.ApplyConfiguration(new GuestConfiguration());
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
-        //  modelBuilder.ApplyConfiguration(new UserInProductsConfiguration());
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaim");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRole").HasKey(x => new { x.RoleId, x.UserId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaim");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserToken").HasKey(x => x.UserId);
-
+            
             modelBuilder.BaseData();
             //base.OnModelCreating(modelBuilder);
         }

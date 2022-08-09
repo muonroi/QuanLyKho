@@ -65,10 +65,6 @@ namespace QuanLyKhoAdminManage.Controllers
                 DebtID = id
             });
         }
-        public SelectList GetGuestID(QuanLyKhoDbContext _context)
-        {
-            return (SelectList)(ViewData["Guest"] = new SelectList(_context.guests.Select(x => x.ID).ToList(), "Id"));
-        }
         [HttpPost]
         public async Task<IActionResult> Delete(DebtDeleteRequest request)
         {
@@ -89,10 +85,12 @@ namespace QuanLyKhoAdminManage.Controllers
         }
 
         [HttpGet("deleteall")]
-        public IActionResult DeleteAll()
+        public IActionResult DeleteAll(string id)
         {
-            GetGuestID(_context);
-            return View();
+            return View(new DebtDeleteRequest()
+            {
+                DebtID = id
+            });
         }
         [HttpPost("deleteall")]
         public async Task<IActionResult> DeleteAll(DebtDeleteRequest request)
@@ -101,7 +99,7 @@ namespace QuanLyKhoAdminManage.Controllers
                 return View();
 
             var result = await _ProductApiClient.DeleteDebtAll(request.DebtID);
-            
+
             if (result.IsSuccessed)
             {
                 TempData["result"] = "Xóa tất cả hóa đơn thành công";
@@ -114,5 +112,37 @@ namespace QuanLyKhoAdminManage.Controllers
 
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Edit(DebtDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _ProductApiClient.DeleteDebtAll(request.DebtID);
+
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa tất cả hóa đơn thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string keyword, string id, int pageIndex = 1, int pageSize = 2)
+        {
+            var request = new GetManageDebtPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var result = await _ProductApiClient.GetDebtByGuestID(request,id);
+            return View(result);
+        }
     }
 }

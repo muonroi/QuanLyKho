@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QuanLyKhoAppLication.Catalog.Debts;
+using QuanLyKhoAppLication.Catalog.Emp;
 using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoAppLication.Catalog.Users;
 using QuanLyKhoData.EF;
@@ -51,6 +52,7 @@ namespace QuanLyKhoBackendapi
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<QuanLyKhoDbContext>()
                 .AddDefaultTokenProviders();
+            services.AddTransient<IEmpManage, EmpManage>();
             // services.AddTransient<IConfiguration, Configuration>();
             //services.AddControllersWithViews();
             //services.AddControllers().AddFluentValidation();

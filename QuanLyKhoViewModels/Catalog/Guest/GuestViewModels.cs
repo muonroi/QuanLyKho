@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuanLyKhoViewModels.Catalog.Products
+namespace QuanLyKhoViewModels.Catalog.Guest
 {
     public class GuestViewModels
     {

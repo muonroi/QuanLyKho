@@ -18,10 +18,10 @@ namespace QuanLyKhoBackendapi.Controllers
         {
             _publicManageDebts = publicManageDebts;
         }
-        [HttpGet("{ID}")]
-        public async Task<IActionResult> GetDebByIdGuest(string ID)
+        [HttpGet("detail/{ID}")]
+        public async Task<IActionResult> GetDebByIdGuest(string ID, [FromQuery] GetManageDebtPagingRequest request)
         {
-            var debt  = await _publicManageDebts.GetDebtByGuestID(ID);
+            var debt  = await _publicManageDebts.GetDebtByGuestID(request,ID);
             return Ok(debt);
         }
         [HttpGet("paging")]

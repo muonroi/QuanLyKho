@@ -1,0 +1,48 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoViewModels.System.Debt.DebtVm>
+@{
+    ViewData["Title"] = "Chi tiết đơn nợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="table-responsive" >
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã sản phẩm</th>
+            <th>Mã khách hàng</th>
+            <th>Ngày tạo</th>
+             <th>Họ</th>
+            <th>Tên</th>
+            <th>Số tiền nợ</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Items) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuestID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDateDebt)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.GuestFName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuestLName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDebt)
+            </td>
+           
+           
+        </tr>
+}
+    </tbody>
+</table>
+@await Component.InvokeAsync("Pager", Model)
+</div>
+            

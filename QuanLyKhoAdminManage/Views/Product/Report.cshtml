@@ -1,6 +1,7 @@
 ﻿@using QuanLyKhoViewModels.Common
 @using System.Globalization;
-@model PagedResult<QuanLyKhoViewModels.Catalog.Products.ProductViewDetalModel>
+@using QuanLyKhoViewModels.Catalog.Exporduct;
+@model PagedResult<ProductViewDetalModel>
 @{
 	Layout = null;
 }
@@ -96,8 +97,8 @@
                          <div class="border-right border-left border-top border-dark d-none d-sm-block text-center py-25 col-sm-1">STT</div>
                         <div class="border-right border-top border-dark col-sm-2 text-center py-25">Tên hàng</div>
                         <div class="border-right border-top border-dark col-2 text-center py-25">Quy Cách</div>
-                        <div class="border-right border-top border-dark col-2 text-center py-25">Trọng lượng</div>
                         <div class="border-right border-top border-dark d-none d-sm-block col-1 text-center py-25">SL</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Trọng lượng</div>
                         <div class="border-right border-top border-dark d-none d-sm-block col-2 text-center py-25">Giá bán</div>
                         <div class="border-right border-top border-dark col-2 text-center py-25">Giá tiền</div>
                     </div>
@@ -120,8 +121,8 @@
                                 CultureInfo culs = CultureInfo.GetCultureInfo("vi-VN");
                                 string we = item.weight.ToString("#,###", culs.NumberFormat);
                             }
-                            <div class="border-top border-right border-dark col-2 text-center">@we Kg</div>
                             <div class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@item.Quantity</div>
+                            <div class="border-top border-right border-dark col-2 text-center">@we Kg</div>
                                     @{
                                         CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
                                         string a = item.SalesPrice.ToString("#,###", cul.NumberFormat);
@@ -388,6 +389,6 @@ hr {
     vertical-align: bottom!important;
 }
 </style>
-
 </body>
+
 </html>

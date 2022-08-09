@@ -24,7 +24,6 @@ namespace QuanLyKhoData.Configuration
             builder.Property(x => x.SumDayWorked).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.SumDayOff).IsRequired().HasDefaultValue(0);
 
-
         }
     }
 }

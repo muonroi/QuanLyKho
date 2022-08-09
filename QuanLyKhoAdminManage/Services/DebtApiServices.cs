@@ -57,6 +57,14 @@ namespace QuanLyKhoAdminManage.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
+        public async Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID)
+        {
+            var data = await GetAsync<PagedResult<DebtVm>>($"/api/debt/detail/{ID}?pageIndex={request.PageIndex}" +
+                $"&pageSize={request.PageSize}" +
+                $"&keyword={request.Keyword}");
+            return data;
+        }
+
         public async Task<PagedResult<DebtVm>> GetPagings(GetManageDebtPagingRequest request)
         {
             var data = await GetAsync<PagedResult<DebtVm>>(

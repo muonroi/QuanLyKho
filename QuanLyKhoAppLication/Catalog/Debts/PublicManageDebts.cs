@@ -2,7 +2,6 @@
 using QuanLyKhoData.EF;
 using QuanLyKhoData.Entities;
 using QuanLyKhoViewModels.Catalog.Debt;
-using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.Common;
 using QuanLyKhoViewModels.System.Debt;
 using System;
@@ -74,22 +73,24 @@ namespace QuanLyKhoAppLication.Catalog.Debts
 
         public async Task<PagedResult<DebtVm>> GetAllDebt(GetManageDebtPagingRequest request)
         {
-
             var querySearch = (from deb in _dbcontext.debts
                                join pro in _dbcontext.Improducts on deb.ProductID equals pro.Id
-                               select new { deb, pro });
+                               join guest in _dbcontext.guests on deb.GuestID equals guest.ID
+                               select new { deb, guest});
+           
             if (!string.IsNullOrEmpty(request.Keyword))
                 querySearch = querySearch.Where(x => x.deb.GuestID.Contains(request.Keyword));
-            int totalRow = await querySearch.CountAsync();
-            var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
-                Select(x => new DebtVm()
+            
+            var data = await querySearch.GroupBy(c => new { c.deb.GuestID, c.guest.FirtName, c.guest.LastName })
+                .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+                .Select(c => new DebtVm()
                 {
-                    ID = x.deb.ID,
-                    GuestID = x.deb.GuestID,
-                    ProductID = x.deb.ProductID,
-                    CreateDateDebt = x.deb.CreateDateDebt,
-                    TotalDebt = x.deb.TotalDebt
+                    GuestID = c.Key.GuestID,
+                    GuestFName = c.Key.FirtName,
+                    GuestLName = c.Key.LastName,
+                    TotalDebt = c.Sum((x => x.deb.TotalDebt)),
                 }).ToListAsync();
+            int totalRow = data.Count();
             var pageResult = new PagedResult<DebtVm>()
             {
                 TotalRecords = totalRow,
@@ -98,23 +99,50 @@ namespace QuanLyKhoAppLication.Catalog.Debts
                 Items = data
             };
             return pageResult;
+            //var querySearch = (from deb in _dbcontext.debts
+            //                   join pro in _dbcontext.Improducts on deb.ProductID equals pro.Id
+            //                   select new { deb, pro });
+            //if (!string.IsNullOrEmpty(request.Keyword))
+            //    querySearch = querySearch.Where(x => x.deb.GuestID.Contains(request.Keyword));
+            //int totalRow = await querySearch.CountAsync();
+            //var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
+            //    Select(x => new DebtVm()
+            //    {
+            //        ID = x.deb.ID,
+            //        GuestID = x.deb.GuestID,
+            //        ProductID = x.deb.ProductID,
+            //        CreateDateDebt = x.deb.CreateDateDebt,
+            //        TotalDebt = x.deb.TotalDebt
+            //    }).ToListAsync();
+
         }
 
-        public async Task<List<DebtByUserViewModels>> GetDebtByGuestID(string ID)
+        public async Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID)
         {
             var querySearch = from debt in _dbcontext.debts
+                              join gu in _dbcontext.guests on debt.GuestID equals gu.ID
                               where debt.GuestID.Equals(ID)
-                              select debt;
-          var data = await querySearch.
-               Select(x => new DebtByUserViewModels()
+                              select new { gu, debt };
+          var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
+               Select(x => new DebtVm()
                {
-                   ID = x.ID,
-                   GuestID = x.GuestID,
-                   ProductID =x.ProductID,
-                   CreateDateDebt = x.CreateDateDebt,
-                   TotalDebt = x.TotalDebt
+                   ID = x.debt.ID,
+                   GuestID = x.debt.GuestID,
+                   ProductID = x.debt.ProductID,
+                   CreateDateDebt = x.debt.CreateDateDebt,
+                   GuestFName = x.gu.FirtName,
+                   GuestLName = x.gu.LastName,
+                   TotalDebt = x.debt.TotalDebt
                }).ToListAsync();
-            return data;
+            int totalRow = querySearch.Count();
+            var pageResult = new PagedResult<DebtVm>()
+            {
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
+            };
+            return pageResult;
         }
 
        

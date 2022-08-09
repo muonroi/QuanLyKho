@@ -1,6 +1,4 @@
-﻿using QuanLyKhoData.Entities;
-using QuanLyKhoViewModels.Catalog.Debt;
-using QuanLyKhoViewModels.Catalog.Products;
+﻿using QuanLyKhoViewModels.Catalog.Debt;
 using QuanLyKhoViewModels.Common;
 using QuanLyKhoViewModels.System.Debt;
 using System;
@@ -13,7 +11,7 @@ namespace QuanLyKhoAppLication.Catalog.Debts
     public interface IPublicManageDebts
     {
         Task<int> Create(DebtCreateRequest request);
-        Task<List<DebtByUserViewModels>> GetDebtByGuestID(string ID);
+        Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request, string ID);
         Task<PagedResult<DebtVm>> GetAllDebt(GetManageDebtPagingRequest request);
         Task<ApiResult<bool>> Delete(int iddebt);
         Task<ApiResult<bool>> DeleteALL(string guestID);

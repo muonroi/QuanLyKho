@@ -15,5 +15,7 @@ namespace QuanLyKhoData.Entities
         public decimal Salary { get; set; }
         public int SumDayOff { get; set; }
         public int SumDayWorked { get; set; }
+        public virtual string username { get; set; }
+        public string appUser { get; set; }
     }
 }

@@ -52,9 +52,8 @@ setTimeout(function() {
     <div class="card mb-12">
         <div class="card-header">
             <div class="row">
-                <div class="col-md-6 col-xs-12 d-flex align-items-center">
-                   @Html.ActionLink("Xóa tất cả", "DeleteAll", new { id = 1 }, new {@class = "btn bg-danger text-decoration-none text-light"})
-                </div>
+                
+             
                 <div class="col-md-6 col-xs-12">
                       @using (Html.BeginForm("Index", "Debt", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
                     {
@@ -85,21 +84,9 @@ setTimeout(function() {
                 <table class="table table-bordered" >
                     <thead>
                         <tr>
-                            <th>
-                                Mã hóa đơn
-                            </th>
-                            <th>
-                                Ngày tạo
-                            </th>
-                            <th>
-                                Mã sản phẩm
-                            </th>
-                            <th>
-                                Mã khách hàng
-                            </th>
-                            <th>
-                                Số Tiền
-                            </th>
+                           <th>Mã khách hàng</th>
+                           <th>Họ tên khách hàng</th>
+                           <th>Tổng số tiền nợ</th>
                             <th>
                                 Chức năng
                             </th>
@@ -110,22 +97,19 @@ setTimeout(function() {
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreateDateDebt)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ProductID)
-                                </td>
-                                <td>
                                     @Html.DisplayFor(modelItem => item.GuestID)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.GuestFName) @Html.DisplayFor(modelItem => item.GuestLName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TotalDebt)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new {@class = "btn bg-info text-decoration-none text-danger"})
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new {@class = "btn bg-info text-decoration-none text-white"})
+                                     @Html.ActionLink("Xem chi tiết", "Details", new { id = item.GuestID }, new {@class = "btn bg-info text-decoration-none text-white"})
+                                    @Html.ActionLink("Xóa tất cả", "DeleteAll", new { id = item.GuestID }, new {@class = "btn bg-danger text-decoration-none text-light"})
+
                                 </td>
                             </tr>
                         }

@@ -20,5 +20,8 @@ namespace QuanLyKhoViewModels.System.Debt
         public string ProductID { get; set; }
         [Display(Name = "Mã khách hàng")]
         public string GuestID { get; set; }
+        public string GuestFName { get; set; }
+        public string GuestLName { get; set; }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using QuanLyKhoViewModels.Catalog.Products;
+using QuanLyKhoViewModels.Catalog.Exporduct;
 using System;
 using System.Collections.Generic;
 using System.Text;

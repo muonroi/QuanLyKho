@@ -5,23 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>DeleteAll</h1>
-
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    
-    <form asp-action="DeleteAll" method="POST">
-       <div class="input-group">
-          <div class="rs-select2 js-select-simple select--no-search">
-              <select class="form-select" asp-for="DebtID" asp-items="ViewBag.Guest">
-                   <option disabled="disabled" selected="selected">--Chọn mã khách hàng--</option>
-              </select>
-               <div class="select-dropdown"></div>
-          </div>
-                   <span asp-validation-for="DebtID" class="text-danger"></span>
-          
-       </div>
-        <input type = "submit" value="Xóa" class="btn btn-danger"/>
+    <form asp-action="DeleteAll">
+       <label asp-for="DebtID"></label>
+        <input asp-for="DebtID" type="text" readonly/>
+        <input asp-action="DeleteAll" type = "submit" value="Xóa" class="btn btn-danger"/>
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

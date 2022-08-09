@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using QuanLyKhoData.Entities;
-namespace QuanLyKhoViewModels.Catalog.Products
+
+namespace QuanLyKhoViewModels.Catalog.Exporduct
 {
     public class ProductViewDetalModel
     {

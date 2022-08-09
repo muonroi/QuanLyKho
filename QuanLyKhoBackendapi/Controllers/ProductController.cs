@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QuanLyKhoAppLication.Catalog.Products;
+using QuanLyKhoViewModels.Catalog.Exporduct;
 using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.System.Products;
 using System;
@@ -47,6 +48,15 @@ namespace QuanLyKhoBackendapi.Controllers
         {
             var products = await _manageProductService.GetImportByID(id);
             
+            if (products == null)
+                BadRequest("Cannot find product");
+            return Ok(products);
+        }
+        [HttpGet("getim/{id}")]
+        public async Task<IActionResult> BindingsImport(string id)
+        {
+            var products = await _manageProductService.GetByIdim(id);
+
             if (products == null)
                 BadRequest("Cannot find product");
             return Ok(products);
@@ -109,6 +119,20 @@ namespace QuanLyKhoBackendapi.Controllers
         public async Task<IActionResult> debttotal()
         {
             var DelProduct = await _manageProductService.Sumdebt();
+            return Ok(DelProduct);
+
+        }
+        [HttpGet("deleteexport")]
+        public async Task<IActionResult> deleteexport()
+        {
+            var DelProduct = await _manageProductService.SetFalse();
+            return Ok(DelProduct);
+
+        }
+        [HttpPost("Update/{ID}")]
+        public async Task<IActionResult> Update(string ID, [FromBody] ProductEditRequest request)
+        {
+            var DelProduct = await _manageProductService.Update(ID, request);
             return Ok(DelProduct);
 
         }

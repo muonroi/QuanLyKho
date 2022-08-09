@@ -9,11 +9,7 @@ using QuanLyKhoApplication.Catalog.Products;
 using QuanLyKhoViewModels.Common;
 using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.System.Products;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Graphics;
-using System.IO;
+using QuanLyKhoViewModels.Catalog.Exporduct;
 
 namespace QuanLyKhoAppLication.Catalog.Products
 {
@@ -29,7 +25,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
             ExportProduct products = null;
             Debt debt = null;
             var guest = await _dbcontext.guests.FindAsync(request.GuestID);
-            var productsExID = await _dbcontext.Exproducts.Where(x =>x.importID.Equals(request.importID)).FirstOrDefaultAsync();
+            var productsExID = await _dbcontext.Exproducts.Where(x =>x.importID.Equals(request.importID)).Where(x =>x.status.Equals(true)).FirstOrDefaultAsync();
             if (guest != null)
             {
                 if (request.Quantity <= total)
@@ -138,28 +134,49 @@ namespace QuanLyKhoAppLication.Catalog.Products
             return Total;
         }
 
-        public async Task<bool> Update(ProductEditRequest request)
+        public async Task<ApiResult<bool>> Update(string ID,ProductEditRequest request)
         {
-            throw new NotImplementedException();
+            var productim = await _dbcontext.Improducts.FindAsync(ID);
+            if (productim != null)
+            {
+                productim.Name = request.Name;
+                productim.SalesPrice = request.SalesPrice;
+                productim.Quantity = request.Quantity;
+                productim.ToTalSum = request.ToTalSum;
+                var result = _dbcontext.Improducts.Update(productim);
+                if (result != null)
+                {
+                    await _dbcontext.SaveChangesAsync();
+                    return new ApiSuccessResult<bool>();
+                }
+            }
+
+            return new ApiErrorResult<bool>("Thêm sản phẩm không thành công");
         }
 
-        public Task<bool> UpdatePrice(int productID, decimal price)
+        public int CountEx()
         {
-            throw new NotImplementedException();
+            var count = (from product in _dbcontext.Exproducts
+                         where product.status.Equals(false)
+                         select product).Count();
+            return count;
         }
-        public async Task<List<ProductViewModel>> GetAllExport()
+        public async Task<List<ExportProduct>> GetAllExport()
         {
             var querySearch = from product in _dbcontext.Exproducts
+                              where product.status.Equals(false)
                               select product;
-
             var data = await querySearch.
-               Select(x => new ProductViewModel()
+               Select(x => new ExportProduct()
                {
-                   
-                   Id = x.importID,
+                   importID = x.importID,
                    SalesPrice = x.SalesPrice,
                    ToTalSum = x.ToTalSum,
-                   ImportDate = x.ExDate,
+                   ExDate = x.ExDate,
+                   Quantity = x.Quantity,
+                   weight = x.weight,
+                   debttotal = x.debttotal,
+
                }).ToListAsync();
             return data;
         }
@@ -183,6 +200,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                    SalesPrice = x.SalesPrice,
                    ToTalSum = x.ToTalSum,
                    ImportDate = x.ImportDate,
+
                }).ToListAsync();
             return data;
         }
@@ -190,7 +208,6 @@ namespace QuanLyKhoAppLication.Catalog.Products
         public async Task<ApiResult<ProductViewBindingModel>> GetImportByID(string ID)
         {
             var querySearch = await _dbcontext.Improducts.Where(x => x.Id.StartsWith(ID)).FirstOrDefaultAsync();
-
             var data = new ProductViewBindingModel()
             {
                 Name = querySearch.Name,
@@ -200,6 +217,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                 origin = querySearch.OriginPrice,
                 ToTalSum = querySearch.ToTalSum,
                 ImportDate = querySearch.ImportDate,
+                
             };
 
             return new ApiSuccessResult<ProductViewBindingModel>(data);
@@ -301,6 +319,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
             var querySearch = from debt in _dbcontext.Exproducts
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
+                              where debt.status.Equals(true)
                               select new { debt, pro, guest };
             var totalRow = await querySearch.SumAsync(x => x.debt.SalesPrice);
             return totalRow;
@@ -310,9 +329,36 @@ namespace QuanLyKhoAppLication.Catalog.Products
             var querySearch = from debt in _dbcontext.Exproducts
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
+                              where debt.status.Equals(true) 
                               select new { debt, pro, guest };
             var totalRow = await querySearch.SumAsync(x => x.debt.debttotal);
             return totalRow;
+        }
+        [Obsolete]
+        public async Task<int> SetFalse()
+        {
+            var result = _dbcontext.Database.ExecuteSqlCommand("update exportproduct set status = 0 where status = 1");
+
+            if (result > 0)
+            {
+                await _dbcontext.SaveChangesAsync();
+                return 1;
+            }
+            return -1;
+        }
+
+        public async Task<ApiResult<ProductEditRequest>> GetByIdim(string id)
+        {
+            var querySearch = await _dbcontext.Improducts.Where(x => x.Id.StartsWith(id)).FirstOrDefaultAsync();
+            var data = new ProductEditRequest()
+            {
+                Name = querySearch.Name,
+                Quantity = querySearch.Quantity,
+                SalesPrice = querySearch.SalesPrice,
+                ToTalSum = querySearch.ToTalSum,
+            };
+
+            return new ApiSuccessResult<ProductEditRequest>(data);
         }
     }
 }

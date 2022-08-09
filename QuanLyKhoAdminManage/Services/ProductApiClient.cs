@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoUtilities.Constants;
+using QuanLyKhoViewModels.Catalog.Exporduct;
 using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.Common;
 using QuanLyKhoViewModels.System.Products;
@@ -135,6 +137,42 @@ namespace QuanLyKhoAdminManage.Services
         {
             var data = await GetAsync<decimal>($"/api/Product/debtotal");
             return data;
+        }
+
+        public async Task<int> SetFalse()
+        {
+            var data = await GetAsync<int>($"/api/Product/deleteexport");
+            return data;
+        }
+
+        public async Task<ApiResult<bool>> Update(string ID, ProductEditRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddr"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/api/product/Update/{ID}", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<ProductEditRequest>> GetByIdim(string id)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddr"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.GetAsync($"/api/product/getim/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<ProductEditRequest>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<ProductEditRequest>>(body);
         }
     }
 }

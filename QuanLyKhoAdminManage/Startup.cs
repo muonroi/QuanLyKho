@@ -47,10 +47,10 @@ namespace QuanLyKhoAdminManage
                 {
                     opt.IdleTimeout = TimeSpan.FromMinutes(30);
                 });
-
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<IDebtApiServices, DebtApiServices>();
+            services.AddTransient<IEmpApiServices, EmpApiServices>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddReact();
 

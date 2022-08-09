@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuanLyKhoViewModels.Catalog.Products
+namespace QuanLyKhoViewModels.Catalog.Debt
 {
-    public class DebtByUserViewModels
+    public class DebtCreateRequest
     {
         public int ID { get; set; }
         public DateTime CreateDateDebt { get; set; }

@@ -1,4 +1,4 @@
-﻿@model QuanLyKhoViewModels.Catalog.Products.ProductCreateExRequest
+﻿@model QuanLyKhoViewModels.Catalog.Exporduct.ProductCreateExRequest
 
 @{
     ViewData["Title"] = "Sales";
@@ -8,6 +8,38 @@
 @section confirm {
     <script>
       function myFunction() {
+          alert('ss')
+    //    let vehicle_tr = prompt("Nhập vào xe vận chuyển");
+    //    let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
+    //      if (vehicle_tr != null && vehicle_take != null) {
+    //          backendfunc(vehicle_tr, vehicle_take);
+    //      }
+    //      else
+    //          window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
+    //function backendfunc(vehicle_tr,vehicle_take) {
+    //   $.ajax({
+    //        type: 'POST',
+    //        url: '/Product/Sales',
+    //        // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
+    //        data: "vehicle_tr": vehicle_tr,"vehicle_take": vehicle_take,
+    //        success: function (result) {
+    //            alert('Successfully received Data ');
+    //            console.log(result);
+    //        },
+    //        error: function () {
+    //            alert('Failed to receive the Data');
+    //            console.log('Failed ');
+    //        }
+    //    })
+    }
+}
+</script>
+}
+
+@section RedirectReport{
+
+   @* <script>
+      function ss() {
         let vehicle_tr = prompt("Nhập vào xe vận chuyển");
         let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
           if (vehicle_tr != null && vehicle_take != null) {
@@ -16,34 +48,52 @@
           else
               window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
     function backendfunc(vehicle_tr,vehicle_take) {
-        $.ajax({
-            url: "/Product/Report",
-            //type: "POST",
-            data: { "vehicle_trs": vehicle_tr, "vehicle_takes": vehicle_take},
-            success: function (res) {
-                $("#convertnum").html(res);
+       $.ajax({
+            type: 'POST',
+            url: '/Product/Sales',
+            // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
+            data: "vehicle_tr": vehicle_tr,"vehicle_take": vehicle_take,
+            success: function (result) {
+                alert('Successfully received Data ');
+                console.log(result);
             },
-            error: function (hata, ajaxoptions, throwerror) {
-                $("#convertnum").html("convert failed");
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
             }
-        });
+        })
     }
 }
-</script>
-}
+</script>*@
 
-@section RedirectReport{
-    <script>
-        function Report()
-    {
-   $.ajax({
-      url: 'urlToController',
-      data: { id: id }
-   }).done(function() {
-      alert('Added'); 
-   });
+
+     <script>
+function ss() {
+    let vehicle_tr = prompt("Nhập vào xe vận chuyển");
+    let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
+    if (vehicle_tr != null && vehicle_take != null) {
+        backendfunc(vehicle_tr, vehicle_take);
     }
-    </script>
+    else
+        window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
+}
+    function backendfunc(vehicle_tr,vehicle_take) {
+       $.ajax({
+            type: 'POST',
+            url: '/Product/Sales',
+            // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
+            data: "vehicle_tr": vehicle_tr,"vehicle_take": vehicle_take,
+            success: function (result) {
+                alert('Successfully received Data ');
+                console.log(result);
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
+            }
+        })
+    }
+</script>
     
 }
 <div class="wrapper wrapper--w680">
@@ -71,13 +121,7 @@
                         </div>
                        
                         <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label asp-for="ExDate" class="control-label"></label>
-                                    <input asp-for="ExDate" class="input--style-1 js-datepicker" type="date">
-                                </div>
-                                 <span asp-validation-for="ExDate" class="text-danger"></span>
-                            </div>
+                           
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
@@ -90,6 +134,13 @@
                                       <span asp-validation-for="GuestID" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-2">
+                                     <div class="input-group">
+                                      <label asp-for="ToTalSum"  class="control-label">Quy Cách</label>
+                                        <input readonly asp-for="ToTalSum" data-type="currency" class="input--style-1" type="text">
+                                </div>
+                                 <span asp-validation-for="ToTalSum" class="text-danger"></span>
+                                </div>
                         </div>
                        
                         <div class="row row-space">
@@ -110,20 +161,12 @@
                         </div>
                         <div class="row row-space">
                               <div class="col-2">
-                                     <div class="input-group">
-                                      <label asp-for="ToTalSum"  class="control-label">Quy Cách</label>
-                                        <input readonly asp-for="ToTalSum" data-type="currency" class="input--style-1" type="text">
+                                <div class="input-group">
+                                    <label asp-for="ExDate" class="control-label"></label>
+                                    <input asp-for="ExDate" class="input--style-1 js-datepicker" type="text" value="@DateTime.Now" readonly>
                                 </div>
-                                 <span asp-validation-for="ToTalSum" class="text-danger"></span>
-                                </div>
-                                 <div class="col-2">
-                                     <div class="input-group">
-                                      <label asp-for="ToTalSum"  class="control-label">Trọng lượng</label>
-                                      <input asp-for="debttotal" data-type="currency" class="input--style-1" data-type="currency"  type="text">
-                                </div>
-                                 <span asp-validation-for="debttotal" class="text-danger"></span>
-                                </div>
-
+                                 <span asp-validation-for="ExDate" class="text-danger"></span>
+                            </div>
                          </div>
                         <div class="row row-space">
                             <div class="col-2">
@@ -133,9 +176,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="p-t-20">
-                                    <form>
-                                        <input asp-action="Report" class="btn bg-primary btn--radius btn--dark " type="submit" value="Xuất hóa đơn"/>
-                                    </form>
+                                     <input onclick="ss()" asp-action="Report" class="btn bg-primary btn--radius btn--dark" type = "submit" value = "Xuất hóa đơn" />
                                 </div>
                             </div>
                         </div>
