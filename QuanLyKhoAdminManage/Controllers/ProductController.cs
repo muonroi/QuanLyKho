@@ -202,7 +202,7 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");  
             }
             decimal sumtt = await _ProductApiClient.SumToTal();
-            decimal sumdebts = await _ProductApiClient.Sumdebt();
+            decimal sumdebts = await _ProductApiClient.Sumdebt(true);
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
             Random res = new Random();
             String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

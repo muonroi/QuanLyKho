@@ -14,6 +14,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using JavaScriptEngineSwitcher.V8;
 using React.AspNet;
+using QuanLyKhoUtilities.Constants;
 
 namespace QuanLyKhoAdminManage
 {
@@ -29,7 +30,8 @@ namespace QuanLyKhoAdminManage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<QuanLyKhoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuanLyKho")));
+            services.AddDbContext<QuanLyKhoDbContext>(options => 
+            options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionSTR)));
             services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

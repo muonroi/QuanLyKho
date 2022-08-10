@@ -115,10 +115,10 @@ namespace QuanLyKhoBackendapi.Controllers
             return Ok(DelProduct);
 
         }
-        [HttpGet("debtotal")]
-        public async Task<IActionResult> debttotal()
+        [HttpGet("debtotal/{check}")]
+        public async Task<IActionResult> debttotal(bool check)
         {
-            var DelProduct = await _manageProductService.Sumdebt();
+            var DelProduct = await _manageProductService.Sumdebt(check);
             return Ok(DelProduct);
 
         }

@@ -27,7 +27,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         Task<ApiResult<ProductViewBindingModel>> GetImportByID(string ID);
         Task<PagedResult<ProductViewDetalModel>> Report(string username);
         Task<decimal> SumToTal();
-        Task<decimal> Sumdebt();
+        Task<decimal> Sumdebt(bool check);
         Task<int> SetFalse();
     }
 }

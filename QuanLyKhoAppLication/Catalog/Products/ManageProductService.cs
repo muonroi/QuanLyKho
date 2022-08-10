@@ -324,12 +324,12 @@ namespace QuanLyKhoAppLication.Catalog.Products
             var totalRow = await querySearch.SumAsync(x => x.debt.SalesPrice);
             return totalRow;
         }
-        public async Task<decimal> Sumdebt()
+        public async Task<decimal> Sumdebt(bool check)
         {
             var querySearch = from debt in _dbcontext.Exproducts
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
-                              where debt.status.Equals(true) 
+                              where debt.status.Equals(check) 
                               select new { debt, pro, guest };
             var totalRow = await querySearch.SumAsync(x => x.debt.debttotal);
             return totalRow;

@@ -21,7 +21,7 @@ namespace QuanLyKhoAdminManage.Services
         Task<ProductVm> GetById(int id, string languageId);
         Task<PagedResult<ProductViewDetalModel>> Report(string username);
         Task<decimal> SumToTal();
-        Task<decimal> Sumdebt();
+        Task<decimal> Sumdebt(bool check);
         Task<int> SetFalse();
         Task<ApiResult<bool>> Update(string ID, ProductEditRequest request);
 
