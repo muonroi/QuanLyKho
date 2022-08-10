@@ -96,6 +96,7 @@ function ss() {
 </script>
     
 }
+
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
@@ -154,7 +155,7 @@ function ss() {
                             <div class="col-2">
                                 <div class="input-group">
                                       <label asp-for="debttotal"  class="control-label">Số tiền nợ</label>
-                                    <input asp-for="debttotal" data-type="currency" class="input--style-1" type="text">
+                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" data-type="currency" class="input--style-1" type="text">
                                 </div>
                                  <span asp-validation-for="debttotal" class="text-danger"></span>
                             </div>
