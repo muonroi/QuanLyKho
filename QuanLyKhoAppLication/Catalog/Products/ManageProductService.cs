@@ -273,7 +273,6 @@ namespace QuanLyKhoAppLication.Catalog.Products
                     return new ApiSuccessResult<bool>();
                 }
             }
-           
             return new ApiErrorResult<bool>("Thêm sản phẩm không thành công");
         }
         public async Task<PagedResult<ProductViewDetalModel>> Report(string username)

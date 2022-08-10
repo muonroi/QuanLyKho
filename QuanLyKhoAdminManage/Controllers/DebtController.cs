@@ -38,6 +38,10 @@ namespace QuanLyKhoAdminManage.Controllers
             {
                 ViewBag.SuccessMsg = TempData["result"];
             }
+            if (TempData["err"] != null)
+            {
+                ViewBag.Err = TempData["err"];
+            }
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
             ViewBag.Info = info;
             return View(data);
@@ -78,8 +82,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
 
 
         }
@@ -106,8 +110,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
 
 
         }
@@ -126,9 +130,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
-            return View(request);
-
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
 
         }
 

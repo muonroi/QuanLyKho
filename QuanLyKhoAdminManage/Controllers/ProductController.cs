@@ -78,10 +78,10 @@ namespace QuanLyKhoAdminManage.Controllers
                     return RedirectToAction("Index");
                 }
 
-                ModelState.AddModelError("", result.Message);
-                return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
 
-           
+
         }
         public SelectList GetGuestID(QuanLyKhoDbContext _context)
         {
@@ -110,9 +110,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
 
             }
-            result.Message = "Vui lòng nhập đủ thông tin!";
-            ModelState.AddModelError($"{result.Message}","");
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Details(string id)
@@ -140,10 +139,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
 
             }
-            result.Message = "404";
-            ViewBag.SuccessMsg = "Vui lòng thử lại";
-            ModelState.AddModelError($"{result.Message}", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Update(string ID)
@@ -167,10 +164,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
 
             }
-            result.Message = "404";
-            ViewBag.SuccessMsg = "Vui lòng thử lại";
-            ModelState.AddModelError($"{result.Message}", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
         }
         [HttpPost]
         public IActionResult AutoComplete(string prefix)

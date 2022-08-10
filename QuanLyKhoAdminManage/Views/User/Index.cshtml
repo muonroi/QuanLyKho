@@ -34,6 +34,12 @@ setTimeout(function() {
                 @ViewBag.SuccessMsg
                 </div>
         }   
+        @if (ViewBag.Err != null)
+                {
+                    <div id="msgAlert" class="alert alert-danger" role="alert">
+                        @ViewBag.Err
+                    </div>
+                }
        <div class="table-responsive">
                 <table class="table table-bordered" id = "datatablesSimple">
                     <thead>

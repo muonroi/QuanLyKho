@@ -44,6 +44,10 @@ namespace QuanLyKhoAdminManage.Controllers
             {
                 ViewBag.SuccessMsg = TempData["result"];
             }
+            else if (TempData["err"] != null)
+            {
+                ViewBag.Err = TempData["err"];
+            }
             return View(data.ResultObj);
         }
         [HttpGet]
@@ -73,8 +77,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Logout()
         {
@@ -100,8 +104,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
 
             }
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
         }
     }
 }

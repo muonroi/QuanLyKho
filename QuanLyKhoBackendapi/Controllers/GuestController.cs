@@ -34,10 +34,6 @@ namespace QuanLyKhoBackendapi.Controllers
         public async Task<IActionResult> ImportProduct([FromBody] GuestCreateRequest request)
         {
             var CreateProduct = await _publicManageEmps.Create(request);
-            if (!CreateProduct.IsSuccessed)
-            {
-                return BadRequest(request);
-            }
             return Ok(CreateProduct);
         }
     }

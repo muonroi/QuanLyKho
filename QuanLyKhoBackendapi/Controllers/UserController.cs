@@ -30,10 +30,6 @@ namespace QuanLyKhoBackendapi.Controllers
                 return BadRequest(ModelState);
             }
             var resultToken = await _user.Authenticate(request);
-            if (string.IsNullOrEmpty(resultToken.ResultObj))
-            {
-                return BadRequest(resultToken);
-            }
             return Ok(resultToken);
         }
         [HttpPost("authenticates")]
@@ -45,10 +41,6 @@ namespace QuanLyKhoBackendapi.Controllers
                 return BadRequest(ModelState);
             }
             var resultToken = await _user.Register(request);
-            if (!resultToken.ResultObj)
-            {
-                return BadRequest(resultToken);
-            }
             return Ok(resultToken);
         }
         [HttpGet("paging")]

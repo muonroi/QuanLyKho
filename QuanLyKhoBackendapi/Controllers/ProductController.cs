@@ -37,9 +37,6 @@ namespace QuanLyKhoBackendapi.Controllers
         public async Task<IActionResult> GetImportProductsByID(string id)
         {
             var products = await _manageProductService.GetImportByID(id);
-
-            if (products == null)
-                BadRequest("Cannot find product");
             return Ok(products);
         }
 
@@ -47,18 +44,12 @@ namespace QuanLyKhoBackendapi.Controllers
         public async Task<IActionResult> BindingsImportByID(string id)
         {
             var products = await _manageProductService.GetImportByID(id);
-            
-            if (products == null)
-                BadRequest("Cannot find product");
             return Ok(products);
         }
         [HttpGet("getim/{id}")]
         public async Task<IActionResult> BindingsImport(string id)
         {
             var products = await _manageProductService.GetByIdim(id);
-
-            if (products == null)
-                BadRequest("Cannot find product");
             return Ok(products);
         }
         [HttpPost("ExportProduct")]
@@ -66,10 +57,6 @@ namespace QuanLyKhoBackendapi.Controllers
         {
             var total =  _manageProductService.GetTotal(request.importID);
             var CreateProduct = await _manageProductService.CreateEx(request, total);
-            if (!CreateProduct.IsSuccessed)
-            {
-                return BadRequest(request);
-            }
             return Ok(CreateProduct);
         }
         [HttpDelete("{id}")]
@@ -95,10 +82,6 @@ namespace QuanLyKhoBackendapi.Controllers
         public async Task<IActionResult> ImportProduct([FromBody] ProductCreateRequest request)
         {
             var CreateProduct = await _manageProductService.Create(request);
-            if (!CreateProduct.IsSuccessed)
-            {
-                return BadRequest(request);
-            }
             return Ok(CreateProduct);
         }
         [HttpGet("report/{username}")]
