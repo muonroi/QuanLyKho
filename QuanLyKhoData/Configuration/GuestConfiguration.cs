@@ -16,7 +16,7 @@ namespace QuanLyKhoData.Configuration
             builder.Property(x => x.FirtName).IsRequired().IsUnicode().HasMaxLength(50);
             builder.Property(x => x.LastName).IsRequired().IsUnicode().HasMaxLength(50);
             builder.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(10);
-            builder.Property(x => x.Email).IsRequired().HasMaxLength(20).IsUnicode(false);
+            builder.Property(x => x.Email).IsRequired().HasMaxLength(50).IsUnicode(false);
             builder.Property(x => x.Dob).IsRequired().HasDefaultValue(DateTime.Now);
         }
     }

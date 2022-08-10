@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuanLyKhoAppLication.Catalog.Guests;
 using QuanLyKhoViewModels.Catalog.Guest;
 using System.Threading.Tasks;
@@ -20,6 +21,24 @@ namespace QuanLyKhoBackendapi.Controllers
         {
             var debt = await _publicManageEmps.GetAllEmp(request);
             return Ok(debt);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var DelProduct = await _publicManageEmps.Delete(id);
+            return Ok(DelProduct);
+
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ImportProduct([FromBody] GuestCreateRequest request)
+        {
+            var CreateProduct = await _publicManageEmps.Create(request);
+            if (!CreateProduct.IsSuccessed)
+            {
+                return BadRequest(request);
+            }
+            return Ok(CreateProduct);
         }
     }
 }

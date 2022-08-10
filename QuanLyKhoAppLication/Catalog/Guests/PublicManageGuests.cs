@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuanLyKhoData.EF;
+using QuanLyKhoData.Entities;
 using QuanLyKhoViewModels.Catalog.Emp;
 using QuanLyKhoViewModels.Catalog.Guest;
 using QuanLyKhoViewModels.Common;
@@ -17,14 +18,54 @@ namespace QuanLyKhoAppLication.Catalog.Guests
         {
             _dbcontext = dbcontext;
         }
-        public Task<int> Create(GuestCreateRequest request)
+
+        public async Task<ApiResult<bool>> Create(GuestCreateRequest request)
         {
-            throw new NotImplementedException();
+                var productim = await _dbcontext.guests.FindAsync(request.ID);
+                //var Email = await 
+                if (productim == null)
+                {
+                    var products = new Guest()
+                    {
+                        ID = request.ID,
+                        LastName = request.LastName,
+                        FirtName = request.FirtName,
+                        Dob = request.Dob,
+                        PhoneNumber = request.PhoneNumber,
+                        Email = request.Email,
+                    };
+                    var result = await _dbcontext.guests.AddAsync(products);
+                    if (result != null)
+                    {
+                        await _dbcontext.SaveChangesAsync();
+                        return new ApiSuccessResult<bool>();
+                    }
+                    
+                }
+            return new ApiErrorResult<bool>("Thêm thất bại");
         }
 
-        public Task<ApiResult<bool>> Delete(int iddebt)
+        public async Task<ApiResult<bool>> Delete(string ID)
         {
-            throw new NotImplementedException();
+            var product = await _dbcontext.guests.FindAsync(ID);
+            var checkdebt = await _dbcontext.debts.Where(x => x.GuestID.Equals(ID)).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                return new ApiErrorResult<bool>("Khách hàng không tồn tại");
+            }
+            if (checkdebt != null)
+            {
+                return new ApiErrorResult<bool>("Khách hàng đang còn nợ không thể xóa");
+            }
+            var reult = _dbcontext.guests.Remove(product);
+            if (reult != null)
+            {
+                await _dbcontext.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+
+            }
+
+            return new ApiErrorResult<bool>("Xóa không thành công");
         }
 
         public async Task<PagedResult<GuestViewModels>> GetAllEmp(GetManageGuestPagingRequest request)
@@ -58,5 +99,7 @@ namespace QuanLyKhoAppLication.Catalog.Guests
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

@@ -18,7 +18,10 @@
     </dl>
     
     <form asp-action="Delete">
-        <label asp-for="ProductID"></label>
+        @{if( ViewBag.ErrorMsg != null){
+            <label class="text-danger">@ViewBag.ErrorMsg</label>
+            }
+        }
         <input asp-for="ProductID" type="text" readonly/>
         <input type="submit" value="Xóa" class="tn btn-danger btn-sm"/>
         <a asp-action="Index">Trở về danh sách</a>

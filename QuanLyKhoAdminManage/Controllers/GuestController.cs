@@ -31,10 +31,58 @@ namespace QuanLyKhoAdminManage.Controllers
             {
                 ViewBag.SuccessMsg = TempData["result"];
             }
+            if (TempData["err"] != null)
+            {
+                ViewBag.Err = TempData["err"];
+            }
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
             ViewBag.Info = info;
             return View(data);
         }
+        [HttpGet]
+        public IActionResult Delete(string id)
+        {
+            return View(new GuestDelRequest()
+            {
+                GuestID = id
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(GuestDelRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
 
+            var result = await _services.DeleteGuest(request.GuestID);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa khách hàng thành công";
+                return RedirectToAction("Index");
+            }
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] GuestCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var result = await _services.CreateGuest(request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Thêm khách thành công!";
+                return RedirectToAction("Index");
+
+            }
+            TempData["err"] = result.Message;
+            return RedirectToAction("Index");
+        }
     }
 }
