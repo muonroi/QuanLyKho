@@ -1,7 +1,7 @@
 ﻿@model QuanLyKhoViewModels.System.Products.ProductCreateRequest
 
 @{
-    ViewData["Title"] = "Tạo mới sản phẩm";
+    ViewData["Title"] = "Nhập sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Script{
@@ -42,14 +42,14 @@ setTimeout(function() {
                            <div class="col-2">
                                 <div class="input-group">
                                      <select asp-for="ToTalSum" class="form-select">
-                                             <option disabled="disabled" selected="selected">--Quy Cách(kg)--</option>
-                                             <option value="5">5</option>
-                                             <option value="10">10</option>
-                                             <option value="15">15</option>
-                                             <option value="20">20</option>
-                                             <option value="25">25</option>
-                                             <option value="50">50</option>
-                                             <option value="100">100</option>
+                                             <option disabled="disabled" >--Quy Cách(kg)--</option>
+                                             <option selected="selected" value="5">5Kg</option>
+                                             <option value="10">10Kg</option>
+                                             <option value="15">15Kg</option>
+                                             <option value="20">20Kg</option>
+                                             <option value="25">25Kg</option>
+                                             <option value="50">50Kg</option>
+                                             <option value="100">100Kg</option>
                                         </select>
   
                                 </div>
@@ -65,13 +65,13 @@ setTimeout(function() {
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="OriginPrice" data-type="currency" class="input--style-1" type="text"  placeholder="1.000.000 vnđ">
+                                    <input asp-for="OriginPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá nhập: 1.000.000 vnđ">
                                 </div>
                                     <span asp-validation-for="OriginPrice" class="text-danger"></span>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"  placeholder="1.000.000 vnđ">
+                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá bán: 1.000.000 vnđ">
                                 </div>
                                 <span asp-validation-for="SalesPrice" class="text-danger"></span>
                             </div>
@@ -79,7 +79,7 @@ setTimeout(function() {
                          <div class="row row-space">
                               <div class="col-2">
                                 <div class="input-group">
-                                    <input value="@DateTime.Now" readonly asp-for="ImportDate" class="input--style-1" type="text" placeholder="Ngày nhập">
+                                    <input asp-for="ImportDate" class="input--style-1" type="text" value="@DateTime.Now" readonly>
                                 </div>
                                     <span asp-validation-for="ImportDate" class="text-danger"></span>
                             </div>
