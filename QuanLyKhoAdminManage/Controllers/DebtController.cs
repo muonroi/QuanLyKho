@@ -136,7 +136,7 @@ namespace QuanLyKhoAdminManage.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(string keyword, string id, int pageIndex = 1, int pageSize = 2)
+        public async Task<IActionResult> Details(string keyword, string id, int pageIndex = 1, int pageSize = 10)
         {
             var request = new GetManageDebtPagingRequest()
             {
