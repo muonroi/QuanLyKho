@@ -15,17 +15,17 @@
                         data: { "guID": x },
                         type: "GET",
                         success: function (data) {
-                           document.querySelector(".test").innerHTML = @TempData["guest"];
+                           $('.test').val(@TempData["guest"]); 
                         },
                         
                         error: function (response) {
-                          document.querySelector(".test").innerHTML = @TempData["guest"];
+                           $('.test').val(@TempData["guest"]); 
                         },
                         failure: function (response) {
-                           document.querySelector(".test").innerHTML = @TempData["guest"];
+                           $('.test').val(@TempData["guest"]); 
                         }
                     });
-        document.querySelector(".test").innerHTML = @TempData["guest"];
+                   $('.test').val(@TempData["guest"]); 
     }
 // function backendfunc(vehicle_tr) {
 //       $.ajax({
