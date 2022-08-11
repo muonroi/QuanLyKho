@@ -19,9 +19,9 @@ namespace QuanLyKhoViewModels.System.Products
         public string Name { get; set; }
         [Display(Name = "Số lượng nhập")]
         public int Quantity { get; set; }
-        [DataType(DataType.Currency)]
+     
         public decimal OriginPrice { get; set; }
-        [DataType(DataType.Currency)]
+        
         public decimal SalesPrice { get; set; }
         public decimal ToTalSum { get; set; }
     }
