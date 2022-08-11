@@ -15,7 +15,7 @@ namespace QuanLyKhoAdminManage.Controllers
             _services = services;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
 
             var request = new GetManageGuestPagingRequest()

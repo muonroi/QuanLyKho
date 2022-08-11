@@ -35,7 +35,7 @@ namespace QuanLyKhoAdminManage.Controllers
             strings = httpContext.User.Identity.Name;
            
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             
             var request = new GetManageProductPagingRequest()

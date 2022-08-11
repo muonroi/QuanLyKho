@@ -22,7 +22,7 @@ namespace QuanLyKhoAdminManage.Controllers
             _ProductApiClient = userApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
 
             var request = new GetManageDebtPagingRequest()
