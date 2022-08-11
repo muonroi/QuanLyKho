@@ -88,18 +88,20 @@ namespace QuanLyKhoAdminManage.Controllers
         {
             return (SelectList)(ViewData["Guest"] = new SelectList(_context.guests.Select(x =>x.ID).ToList(), "Id"));
         }
+        [HttpGet]
         public async Task<IActionResult> GetSales(string guID)
         {
-            TempData["guest"] = 100;
+            TempData["guest"] = "100";
             var totaldeb = await _context.debts.Where(x => x.GuestID.Equals(guID)).SumAsync(x => x.TotalDebt);
             TempData["guest"] = totaldeb.ToString();
             return Ok();
         }
         [HttpGet]
-        public async Task<IActionResult> Sales(string id,string guID)
+        public async Task<IActionResult> Sales(string id)
         {
             var result = await _ProductApiClient.GetByIdEx(id);
             ViewBag.IDS = id;
+            
             GetGuestID(_context);
             return View(result.ResultObj);
         }

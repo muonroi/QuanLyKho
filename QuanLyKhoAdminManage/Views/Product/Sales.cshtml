@@ -13,23 +13,19 @@
          $.ajax({
                         url: '/Product/GetSales/',
                         data: { "guID": x },
-                      //  type: "GET",
+                        type: "GET",
                         success: function (data) {
-                            var s = document.querySelector(".test");
-                            s.value = @TempData["guest"];
+                           document.querySelector(".test").innerHTML = @TempData["guest"];
                         },
                         
                         error: function (response) {
-                            var s = document.querySelector(".test");
-                            s.value = @TempData["guest"];
+                          document.querySelector(".test").innerHTML = @TempData["guest"];
                         },
                         failure: function (response) {
-                            var s = document.querySelector(".test");
-                            s.value = @TempData["guest"];
+                           document.querySelector(".test").innerHTML = @TempData["guest"];
                         }
                     });
-      
-});
+        document.querySelector(".test").innerHTML = @TempData["guest"];
     }
 // function backendfunc(vehicle_tr) {
 //       $.ajax({
