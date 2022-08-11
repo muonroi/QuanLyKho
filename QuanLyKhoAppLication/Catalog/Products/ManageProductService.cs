@@ -188,19 +188,21 @@ namespace QuanLyKhoAppLication.Catalog.Products
         public async Task<List<ProductViewModel>> GetAllImport()
         {
             var querySearch = from product in _dbcontext.Improducts
-                              select product;
+                              join ex in _dbcontext.Exproducts on product.Id equals ex.importID
+                              join de in _dbcontext.guests on ex.GuestID equals de.ID
+                              select new {product, de};
 
             var data = await querySearch.
                Select(x => new ProductViewModel()
                {
-                   Id = x.Id,
-                   Name = x.Name,
-                   Quantity = x.Quantity,
-                   OriginPrice = x.OriginPrice,
-                   SalesPrice = x.SalesPrice,
-                   ToTalSum = x.ToTalSum,
-                   ImportDate = x.ImportDate,
-
+                   Id = x.product.Id,
+                   Name = x.product.Name,
+                   Quantity = x.product.Quantity,
+                   OriginPrice = x.product.OriginPrice,
+                   SalesPrice = x.product.SalesPrice,
+                   ToTalSum = x.product.ToTalSum,
+                   ImportDate = x.product.ImportDate,
+                  
                }).ToListAsync();
             return data;
         }

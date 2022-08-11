@@ -6,34 +6,48 @@
 }
 <hr />
 @section confirm {
-    <script>
-      function myFunction() {
-          alert('ss')
-    //    let vehicle_tr = prompt("Nhập vào xe vận chuyển");
-    //    let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
-    //      if (vehicle_tr != null && vehicle_take != null) {
-    //          backendfunc(vehicle_tr, vehicle_take);
-    //      }
-    //      else
-    //          window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
-    //function backendfunc(vehicle_tr,vehicle_take) {
-    //   $.ajax({
-    //        type: 'POST',
-    //        url: '/Product/Sales',
-    //        // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
-    //        data: "vehicle_tr": vehicle_tr,"vehicle_take": vehicle_take,
-    //        success: function (result) {
-    //            alert('Successfully received Data ');
-    //            console.log(result);
-    //        },
-    //        error: function () {
-    //            alert('Failed to receive the Data');
-    //            console.log('Failed ');
-    //        }
-    //    })
+<script>
+    function viewroomSelected()
+    {
+        var x = document.querySelector(".form-select").value;
+         $.ajax({
+                        url: '/Product/GetSales/',
+                        data: { "guID": x },
+                      //  type: "GET",
+                        success: function (data) {
+                            $(".test").val(@TempData["guest"]);
+                        },
+                        
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                    @{if (TempData["guest"] == null) TempData["guest"] = "0";}
+                    var text = document.querySelector(".test");
+                    text.value = @TempData["guest"].ToString();
+       }
+       
     }
-}
 </script>
+// function backendfunc(vehicle_tr) {
+//       $.ajax({
+//            type: 'GET',
+//            url: '/Product/Sales',
+//            data: "guID": vehicle_tr
+//            success: function (result) {
+//                alert('Successfully received Data ');
+//                console.log(result);
+//            },
+//            error: function () {
+//                alert('Failed to receive the Data');
+//                console.log('Failed ');
+//            }
+//        })
+//}
+
 }
 
 @section RedirectReport{
@@ -67,7 +81,7 @@
 </script>*@
 
 
-     <script>
+<script>
 function ss() {
     let vehicle_tr = prompt("Nhập vào xe vận chuyển");
     let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
@@ -97,6 +111,7 @@ function ss() {
     
 }
 
+<p id="demo"></p>
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
@@ -127,7 +142,7 @@ function ss() {
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
                                          <label asp-for="GuestID" class="control-label">Mã khách hàng</label>
-                                        <select class="form-select" name="guestID" asp-items="ViewBag.Guest">
+                                        <select  class="form-select" name="guestID" asp-items="ViewBag.Guest" onchange="viewroomSelected()">
                                              <option disabled="disabled" selected="selected">--Chọn mã khách hàng--</option>
                                         </select>
                                          <div class="select-dropdown"></div>
@@ -154,8 +169,8 @@ function ss() {
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                      <label asp-for="debttotal"  class="control-label">Số tiền nợ</label>
-                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" data-type="currency" class="input--style-1" type="text">
+                                      <label asp-for="debttotal"  class="test control-label">Số tiền nợ</label>
+                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" class="input--style-1" type="text">
                                 </div>
                                  <span asp-validation-for="debttotal" class="text-danger"></span>
                             </div>
@@ -172,7 +187,7 @@ function ss() {
                         <div class="row row-space">
                             <div class="col-2">
                                  <div class="p-t-20">
-                                    <button class="btn btn--radius btn--green" type="submit">Tạo hóa đơn</button>
+                                    <button class="btn btn--radius btn--green" type="submit">Bán hàng</button>
                                 </div>
                             </div>
                             <div class="col-2">

@@ -45,7 +45,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">@User.Identity.Name</a></li>
                         <li> <form method="post" asp-controller="User" asp-action="Logout">
-                            <button type="submit" class="dropdown-item" value="Logout">Logout</button>
+                            <button type="submit" class="dropdown-item" value="Logout">Đăng xuất</button>
                         </form>
                         </li>
                        
@@ -58,14 +58,14 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Thống kê</div>
+                            @*<div class="sb-sidenav-menu-heading">Thống kê</div>*@
                            @* <a class="nav-link" href="index.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Thống kê doanh thu
                             </a>*@
                             <div class="sb-sidenav-menu-heading">Hàng hóa</div>
                             <a class="nav-link" asp-action="Index" asp-controller="Product">
-                                <i class="fas fa-columns"> </i> &emsp; Nhập hàng
+                                <i class="fas fa-columns"> </i> &emsp; Quản lý hàng hóa
                                 
                             </a>
                            
@@ -252,5 +252,13 @@ function formatCurrency(input, blur) {
 }
 
     </script>
+     <script>
+      function getdata() {
+         var select = document.querySelector('.form-select').value;
+          alert(select);
+    }
+    
+}
+</script>
     </body>
 </html>
