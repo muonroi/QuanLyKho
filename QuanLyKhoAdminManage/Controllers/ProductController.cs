@@ -90,8 +90,9 @@ namespace QuanLyKhoAdminManage.Controllers
         }
         public async Task<IActionResult> GetSales(string guID)
         {
+            TempData["guest"] = 100;
             var totaldeb = await _context.debts.Where(x => x.GuestID.Equals(guID)).SumAsync(x => x.TotalDebt);
-            TempData["guest"] = totaldeb;
+            TempData["guest"] = totaldeb.ToString();
             return Ok();
         }
         [HttpGet]

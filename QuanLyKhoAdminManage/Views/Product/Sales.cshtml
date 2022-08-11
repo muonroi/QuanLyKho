@@ -6,7 +6,7 @@
 }
 <hr />
 @section confirm {
-<script>
+    <script>
     function viewroomSelected()
     {
         var x = document.querySelector(".form-select").value;
@@ -15,23 +15,22 @@
                         data: { "guID": x },
                       //  type: "GET",
                         success: function (data) {
-                            $(".test").val(@TempData["guest"]);
+                            var s = document.querySelector(".test");
+                            s.value = @TempData["guest"];
                         },
                         
                         error: function (response) {
-                            alert(response.responseText);
+                            var s = document.querySelector(".test");
+                            s.value = @TempData["guest"];
                         },
                         failure: function (response) {
-                            alert(response.responseText);
+                            var s = document.querySelector(".test");
+                            s.value = @TempData["guest"];
                         }
                     });
-                    @{if (TempData["guest"] == null) TempData["guest"] = "0";}
-                    var text = document.querySelector(".test");
-                    text.value = @TempData["guest"].ToString();
-       }
-       
+      
+});
     }
-</script>
 // function backendfunc(vehicle_tr) {
 //       $.ajax({
 //            type: 'GET',
@@ -47,7 +46,7 @@
 //            }
 //        })
 //}
-
+</script>
 }
 
 @section RedirectReport{
@@ -169,8 +168,8 @@ function ss() {
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                      <label asp-for="debttotal"  class="test control-label">Số tiền nợ</label>
-                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" class="input--style-1" type="text">
+                                      <label asp-for="debttotal"  class="control-label">Số tiền nợ</label>
+                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" class="test input--style-1" type="text">
                                 </div>
                                  <span asp-validation-for="debttotal" class="text-danger"></span>
                             </div>
