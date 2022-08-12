@@ -259,7 +259,10 @@ namespace QuanLyKhoAdminManage.Controllers
             if (!string.IsNullOrEmpty(term))
             {
                 var states = await _context.guests.ToListAsync();
-                var data = states.Where(a => a.ID.Contains(term, StringComparison.OrdinalIgnoreCase)).ToList().AsReadOnly();
+                var data = states.Where(a => a.ID.Contains(term, StringComparison.OrdinalIgnoreCase)
+                || a.LastName.Contains(term, StringComparison.OrdinalIgnoreCase)
+                || a.PhoneNumber.ToString().Contains(term, StringComparison.OrdinalIgnoreCase
+                )).ToList().AsReadOnly();
                 return Ok(data);
             }
             else
