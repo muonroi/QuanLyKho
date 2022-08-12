@@ -79,22 +79,12 @@ namespace QuanLyKhoAdminManage.Controllers
                 TempData["result"] = "Xóa sản phẩm thành công";
                 return RedirectToAction("Index");
             }
-
             TempData["err"] = result.Message;
             return RedirectToAction("Index");
-
-
         }
         public SelectList GetGuestID(QuanLyKhoDbContext _context)
         {
             return (SelectList)(ViewData["Guest"] = new SelectList(_context.guests.Select(x => x.ID).ToList(), "Id"));
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetSales(string guID)
-        {
-            var totaldeb = await _context.debts.Where(x => x.GuestID.Equals(guID)).SumAsync(x => x.TotalDebt);
-            // HttpContext.Session.SetString("Person", "Mudassar");
-            return Ok();
         }
         [HttpPost]
         public async Task<IActionResult> AjaxMethod(string sessionName)

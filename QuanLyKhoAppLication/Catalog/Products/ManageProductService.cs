@@ -83,12 +83,12 @@ namespace QuanLyKhoAppLication.Catalog.Products
                             return new ApiSuccessResult<bool>();
                         }
                     }
-                    else if (request.debttotal <= 0 && productsExID != null)
+                    else if (request.StatusDebt.Equals("true") && productsExID != null)
                     {
                         await _dbcontext.SaveChangesAsync();
                         return new ApiSuccessResult<bool>();
                     }
-                    else if (request.debttotal <= 0 && productsExID == null)
+                    else if (request.StatusDebt.Equals("true") && productsExID == null)
                     {
                         var ExproAnDebt = await _dbcontext.Exproducts.AddAsync(products);
 

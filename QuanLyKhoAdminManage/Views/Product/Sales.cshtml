@@ -18,14 +18,14 @@
                         if (response != null) {
                             $(".test").val(response)
                         } else {
-                            alert("Session object not found.");
+                            $(".test").val("0")
                         }
                     },
                     failure: function (response) {
-                        alert(response.responseText);
+                        $(".test").val("0");
                     },
                     error: function (response) {
-                        alert(response.responseText);
+                        $(".test").val("0");
                     }
          });
     }
@@ -92,8 +92,6 @@ function ss() {
 </script>
     
 }
-
- Session:
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
@@ -152,7 +150,7 @@ function ss() {
                             <div class="col-2">
                                 <div class="input-group">
                                       <label asp-for="debttotal"  class="control-label">Số tiền nợ</label>
-                                    <input placeholder="1.000.000 vnđ" asp-for="debttotal" class="test input--style-1" type="text">
+                                    <input readonly placeholder="1.000.000 vnđ" asp-for="debttotal" class="test input--style-1" type="text">
                                 </div>
                                  <span asp-validation-for="debttotal" class="text-danger"></span>
                             </div>

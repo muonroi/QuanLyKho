@@ -99,21 +99,7 @@ namespace QuanLyKhoAppLication.Catalog.Debts
                 Items = data
             };
             return pageResult;
-            //var querySearch = (from deb in _dbcontext.debts
-            //                   join pro in _dbcontext.Improducts on deb.ProductID equals pro.Id
-            //                   select new { deb, pro });
-            //if (!string.IsNullOrEmpty(request.Keyword))
-            //    querySearch = querySearch.Where(x => x.deb.GuestID.Contains(request.Keyword));
-            //int totalRow = await querySearch.CountAsync();
-            //var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
-            //    Select(x => new DebtVm()
-            //    {
-            //        ID = x.deb.ID,
-            //        GuestID = x.deb.GuestID,
-            //        ProductID = x.deb.ProductID,
-            //        CreateDateDebt = x.deb.CreateDateDebt,
-            //        TotalDebt = x.deb.TotalDebt
-            //    }).ToListAsync();
+          
 
         }
 
