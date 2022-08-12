@@ -66,7 +66,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                         };
                         var expro = await _dbcontext.Exproducts.AddAsync(products);
                     }
-                    if (request.debttotal > 0)
+                    if (request.debttotal > 0 && request.StatusDebt.Equals("true"))
                     {
                         debt = new Debt()
                         {

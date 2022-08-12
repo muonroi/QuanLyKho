@@ -9,7 +9,34 @@
     <script>
     function viewroomSelected()
     {
-        var x = document.querySelector(".form-select").value;
+        var x = document.querySelector(".cs").value;
+         $.ajax({
+                        url: '/Product/GetSales/',
+                        data: { "guID": x },
+                        type: "GET",
+                        success: function (data) {
+                            $(".test").autocomplete({
+                            source: '/Product/GetSales/'                  
+                             });
+                        },
+                        
+                        error: function (response) {
+                           $('.test').val(@TempData["guest"]); 
+                        },
+                        failure: function (response) {
+                           $('.test').val(@TempData["guest"]); 
+                        }
+                    });        
+            $('.test').val(@TempData["guest"]); 
+    }
+</script>
+}
+@section RedirectReport{
+
+  <script>
+
+      function senddata(){
+           var x = document.querySelector(".statusDebt").value;
          $.ajax({
                         url: '/Product/GetSales/',
                         data: { "guID": x },
@@ -26,54 +53,14 @@
                         }
                     });
                    $('.test').val(@TempData["guest"]); 
-    }
-// function backendfunc(vehicle_tr) {
-//       $.ajax({
-//            type: 'GET',
-//            url: '/Product/Sales',
-//            data: "guID": vehicle_tr
-//            success: function (result) {
-//                alert('Successfully received Data ');
-//                console.log(result);
-//            },
-//            error: function () {
-//                alert('Failed to receive the Data');
-//                console.log('Failed ');
-//            }
-//        })
-//}
-</script>
-}
+      }
 
-@section RedirectReport{
-
-   @* <script>
-      function ss() {
-        let vehicle_tr = prompt("Nhập vào xe vận chuyển");
-        let vehicle_take = prompt("Nhập vào nhà xe nhận hàng");
-          if (vehicle_tr != null && vehicle_take != null) {
-              backendfunc(vehicle_tr, vehicle_take);
-          }
-          else
-              window.alert("Vui lòng nhập đủ thông tin! nhấn F5 để thử lại!");
-    function backendfunc(vehicle_tr,vehicle_take) {
-       $.ajax({
-            type: 'POST',
-            url: '/Product/Sales',
-            // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
-            data: "vehicle_tr": vehicle_tr,"vehicle_take": vehicle_take,
-            success: function (result) {
-                alert('Successfully received Data ');
-                console.log(result);
-            },
-            error: function () {
-                alert('Failed to receive the Data');
-                console.log('Failed ');
-            }
-        })
-    }
-}
-</script>*@
+        $(function () {            
+            $("#tags").autocomplete({
+                source: '/Home/Test'                  
+            });
+        });
+    </script>
 
 
 <script>
@@ -137,7 +124,7 @@ function ss() {
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
                                          <label asp-for="GuestID" class="control-label">Mã khách hàng</label>
-                                        <select  class="form-select" name="guestID" asp-items="ViewBag.Guest" onchange="viewroomSelected()">
+                                        <select  class="cs form-select" name="guestID" asp-items="ViewBag.Guest" onchange="viewroomSelected()">
                                              <option disabled="disabled" selected="selected">--Chọn mã khách hàng--</option>
                                         </select>
                                          <div class="select-dropdown"></div>
@@ -177,6 +164,19 @@ function ss() {
                                     <input asp-for="ExDate" class="input--style-1 js-datepicker" type="text" value="@DateTime.Now" readonly>
                                 </div>
                                  <span asp-validation-for="ExDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-2">
+                                <label asp-for="StatusDebt" class="control-label">Hình thức thanh toán</label>
+                                <div class="input-group rs-select2 js-select-simple select--no-search">
+                                    
+                                   <select class="statusDebt form-select" name="StatusDebt" onchange="">
+                                             <option disabled="disabled">--Hình thức thanh toán--</option>
+                                             <option selected="selected" selected="selected" value="true">Đã TT</option>
+                                             <option selected="selected" value ="false">Trả sau</option>
+                                   </select>
+                                   <div class="select-dropdown"></div>
+                                </div>
+                                 <span asp-validation-for="StatusDebt" class="text-danger"></span>
                             </div>
                          </div>
                         <div class="row row-space">

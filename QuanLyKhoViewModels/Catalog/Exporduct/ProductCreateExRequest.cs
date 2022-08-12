@@ -21,9 +21,9 @@ namespace QuanLyKhoViewModels.Catalog.Exporduct
         public decimal debttotal { get; set; }
         [Display(Name = "Mã khách hàng")]
         public string GuestID { get; set; }
-        
         public bool status { get; set; }
         public decimal weight { get; set; }
+        public string StatusDebt { get; set; }
 
     }
 }
