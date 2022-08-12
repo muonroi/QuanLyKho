@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +37,7 @@ namespace QuanLyKhoAdminManage.Controllers
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-
+           
             var request = new GetManageProductPagingRequest()
             {
                 Keyword = keyword,
@@ -254,6 +253,19 @@ namespace QuanLyKhoAdminManage.Controllers
             return View(data);
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> Search(string term)
+        {
+            if (!string.IsNullOrEmpty(term))
+            {
+                var states = await _context.guests.ToListAsync();
+                var data = states.Where(a => a.ID.Contains(term, StringComparison.OrdinalIgnoreCase)).ToList().AsReadOnly();
+                return Ok(data);
+            }
+            else
+            {
+                return Ok();
+            }
+        }
     }
 }

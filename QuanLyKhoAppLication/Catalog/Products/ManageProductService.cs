@@ -25,91 +25,93 @@ namespace QuanLyKhoAppLication.Catalog.Products
             ExportProduct products = null;
             Debt debt = null;
             var guest = await _dbcontext.guests.FindAsync(request.GuestID);
-            var productsExID = await _dbcontext.Exproducts.Where(x =>x.importID.Equals(request.importID)).Where(x =>x.status.Equals(true)).FirstOrDefaultAsync();
-            var no = request.StatusDebt.Equals("false") ? request.SalesPrice : 0;
-            if (guest != null)
+            var checkguest = await _dbcontext.Exproducts.Where(x => x.status.Equals(true)).Select(x =>x.GuestID).FirstOrDefaultAsync();
+            if (checkguest != null)
             {
-                if (request.Quantity <= total)
+                var productsExID = await _dbcontext.Exproducts.Where(x => x.importID.Equals(request.importID)).Where(x => x.status.Equals(true)).FirstOrDefaultAsync();
+                var no = request.StatusDebt.Equals("false") ? request.SalesPrice : 0;
+                if (guest != null)
                 {
-                    if (total > 0)
+                    if (request.Quantity <= total)
                     {
-                        var productim = await _dbcontext.Improducts.FindAsync(request.importID);
-                        var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
-                        productupdate.Quantity = total - request.Quantity;
+                        if (total > 0)
+                        {
+                            var productim = await _dbcontext.Improducts.FindAsync(request.importID);
+                            var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
+                            productupdate.Quantity = total - request.Quantity;
+                        }
+                        else
+                        {
+                            var productim = _dbcontext.Improducts.FindAsync(request.importID);
+                            var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
+                            productupdate.Quantity = 0;
+
+                        }
+                        if (productsExID != null)
+                        {
+                            productsExID.Quantity += request.Quantity;
+                            productsExID.weight += request.Quantity * request.ToTalSum;
+                            productsExID.debttotal += request.debttotal;
+                        }
+
+                        else if (productsExID == null)
+                        {
+                            products = new ExportProduct()
+                            {
+                                importID = request.importID,
+                                Quantity = request.Quantity,
+                                SalesPrice = request.SalesPrice,
+                                ToTalSum = request.ToTalSum,
+                                ExDate = request.ExDate,
+                                debttotal = no,
+                                GuestID = request.GuestID,
+                                weight = request.ToTalSum * request.Quantity,
+                                status = true
+                            };
+                            var expro = await _dbcontext.Exproducts.AddAsync(products);
+                        }
+                        if (request.StatusDebt.Equals("false"))
+                        {
+                            debt = new Debt()
+                            {
+                                GuestID = request.GuestID,
+                                ProductID = request.importID,
+                                CreateDateDebt = request.ExDate,
+                                TotalDebt = request.SalesPrice
+                            };
+                            var adddebt = await _dbcontext.debts.AddAsync(debt);
+                            if (adddebt != null)
+                            {
+                                await _dbcontext.SaveChangesAsync();
+                                return new ApiSuccessResult<bool>();
+                            }
+                        }
+                        else if (request.StatusDebt.Equals("true") && productsExID != null)
+                        {
+                            await _dbcontext.SaveChangesAsync();
+                            return new ApiSuccessResult<bool>();
+                        }
+                        else if (request.StatusDebt.Equals("true") && productsExID == null)
+                        {
+                            var ExproAnDebt = await _dbcontext.Exproducts.AddAsync(products);
+
+                            if (ExproAnDebt != null)
+                            {
+                                await _dbcontext.SaveChangesAsync();
+                                return new ApiSuccessResult<bool>();
+                            }
+                        }
                     }
                     else
-                    {
-                        var productim = _dbcontext.Improducts.FindAsync(request.importID);
-                        var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
-                        productupdate.Quantity = 0;
-
-                    }
-                    if (productsExID != null)
-                    {
-                        productsExID.Quantity += request.Quantity;
-                        productsExID.weight += request.Quantity * request.ToTalSum;
-                        productsExID.debttotal += request.debttotal;
-                    }
-                  
-                    else if(productsExID == null)
-                    {
-                        products = new ExportProduct()
-                        {
-                            importID = request.importID,
-                            Quantity = request.Quantity,
-                            SalesPrice = request.SalesPrice,
-                            ToTalSum = request.ToTalSum,
-                            ExDate = request.ExDate,
-                            debttotal = no,
-                            GuestID = request.GuestID,
-                            weight = request.ToTalSum * request.Quantity,
-                            status = true
-                        };
-                        var expro = await _dbcontext.Exproducts.AddAsync(products);
-                    }
-                    if (request.StatusDebt.Equals("false"))
-                    {
-                        debt = new Debt()
-                        {
-                            GuestID = request.GuestID,
-                            ProductID = request.importID,
-                            CreateDateDebt = request.ExDate,
-                            TotalDebt = request.SalesPrice
-                        };
-                        var adddebt = await _dbcontext.debts.AddAsync(debt);
-                        if (adddebt != null)
-                        {
-                            await _dbcontext.SaveChangesAsync();
-                            return new ApiSuccessResult<bool>();
-                        }
-                    }
-                    else if (request.StatusDebt.Equals("true") && productsExID != null)
-                    {
-                        await _dbcontext.SaveChangesAsync();
-                        return new ApiSuccessResult<bool>();
-                    }
-                    else if (request.StatusDebt.Equals("true") && productsExID == null)
-                    {
-                        var ExproAnDebt = await _dbcontext.Exproducts.AddAsync(products);
-
-                        if (ExproAnDebt != null)
-                        {
-                            await _dbcontext.SaveChangesAsync();
-                            return new ApiSuccessResult<bool>();
-                        }
-                    }
+                        return new ApiErrorResult<bool>("Số lượng trong kho không đủ");
                 }
                 else
                 {
-                    return new ApiErrorResult<bool>("Số lượng trong kho không đủ");
-
+                    return new ApiErrorResult<bool>("Mã khách hàng không tồn tại");
                 }
-            }
+            }   
             else
-            {
-                return new ApiErrorResult<bool>("Mã khách hàng không tồn tại");
-            } 
-                
+                return new ApiErrorResult<bool>("Mỗi hóa đơn chỉ được chọn một mã khách hàng!");
             return new ApiErrorResult<bool>("Bán sản phẩm không thành công");
         }
         public async Task<ApiResult<bool>> Delete(string idProduct)
