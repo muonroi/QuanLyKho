@@ -43,7 +43,11 @@ setTimeout(function() {
         });
     </script>
 }
-   
+   <style>
+       .cursor-default{
+           cursor:default;
+       }
+   </style>
  <div class="container-fluid">
     <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
@@ -145,13 +149,33 @@ setTimeout(function() {
                                     @Html.ActionLink("Xem", "Details", new { id = item.Id }, new {@class = "btn bg-info text-decoration-none text-light"}) |
                                     @Html.ActionLink("Sửa", "Update", new {  id = item.Id }, new {@class = "btn bg-warning text-decoration-none text-light"}) |
                                     @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new {@class = "btn bg-danger text-decoration-none text-light"}) |
-                                    @Html.ActionLink("Bán", "Sales", new { id = item.Id }, new {@class = "btn bg-info text-decoration-none text-light"})
+                                    @{
+                                        if(item.Quantity <= 0)
+                                        {
+                                                    @Html.ActionLink("Bán", "Sales", new { id = item.Id }, new {@class = "cursor-default btn bg-secondary text-decoration-none text-light",onclick = "javascript:return false;",@title="Sản phẩm đã hết số lượng tồn"})
+                                        }
+                                        else
+                                                    @Html.ActionLink("Bán", "Sales", new { id = item.Id }, new {@class = " btn bg-info text-decoration-none text-light"})
+
+                                    }
                                 
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                <div class="row row-space">
+                            <div class="col-2">
+                                 <div class="p-t-20">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                          <form asp-action="Sales" asp-controller="Product" method="POST">
+                            <input asp-action="Report" class="btn bg-primary btn--radius btn--dark" type = "submit" value = "Xuất hóa đơn" />
+                        </form>    
+                        </div>
+                        </div>
             </div>
             @await Component.InvokeAsync("Pager", Model)
         </div>

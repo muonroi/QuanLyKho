@@ -9,9 +9,10 @@ using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoData.EF;
 using QuanLyKhoViewModels.Catalog.Exporduct;
 using QuanLyKhoViewModels.Catalog.Products;
+using QuanLyKhoViewModels.System.Debt;
 using QuanLyKhoViewModels.System.Products;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,11 +34,11 @@ namespace QuanLyKhoAdminManage.Controllers
             _configuration = configuration;
             var httpContext = new HttpContextAccessor().HttpContext;
             strings = httpContext.User.Identity.Name;
-           
+
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            
+
             var request = new GetManageProductPagingRequest()
             {
                 Keyword = keyword,
@@ -46,7 +47,7 @@ namespace QuanLyKhoAdminManage.Controllers
             };
             var data = await _ProductApiClient.GetPagings(request);
             ViewBag.Keyword = keyword;
-           
+
 
             if (TempData["result"] != null)
             {
@@ -69,15 +70,15 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(ProductDeleteRequest request)
         {
-                if (!ModelState.IsValid)
-                    return View();
+            if (!ModelState.IsValid)
+                return View();
 
-                var result = await _ProductApiClient.DeleteProduct(request.ProductID);
-                if (result.IsSuccessed)
-                {
-                    TempData["result"] = "Xóa sản phẩm thành công";
-                    return RedirectToAction("Index");
-                }
+            var result = await _ProductApiClient.DeleteProduct(request.ProductID);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
 
             TempData["err"] = result.Message;
             return RedirectToAction("Index");
@@ -86,17 +87,41 @@ namespace QuanLyKhoAdminManage.Controllers
         }
         public SelectList GetGuestID(QuanLyKhoDbContext _context)
         {
-            return (SelectList)(ViewData["Guest"] = new SelectList(_context.guests.Select(x =>x.ID).ToList(), "Id"));
+            return (SelectList)(ViewData["Guest"] = new SelectList(_context.guests.Select(x => x.ID).ToList(), "Id"));
         }
         [HttpGet]
         public async Task<IActionResult> GetSales(string guID)
         {
-            TempData["guest"] = "100";
             var totaldeb = await _context.debts.Where(x => x.GuestID.Equals(guID)).SumAsync(x => x.TotalDebt);
-            TempData["guest"] = totaldeb.ToString();
-            return Ok(totaldeb.ToString());
+            // HttpContext.Session.SetString("Person", "Mudassar");
+            return Ok();
         }
-       
+        [HttpPost]
+        public async Task<IActionResult> AjaxMethod(string sessionName)
+        {
+            var querySearch = (from deb in _context.debts
+                               join pro in _context.Improducts on deb.ProductID equals pro.Id
+                               join guest in _context.guests on deb.GuestID equals guest.ID
+                               select new { deb, guest });
+            var data = await querySearch.GroupBy(c => new { c.deb.GuestID, c.guest.FirtName, c.guest.LastName })
+                .Select(c => new DebtVm()
+                {
+                    GuestID = c.Key.GuestID,
+                    GuestFName = c.Key.FirtName,
+                    GuestLName = c.Key.LastName,
+                    TotalDebt = c.Sum((x => x.deb.TotalDebt)),
+                }).ToListAsync();
+            var moviesById = data.ToDictionary(keySelector: m => m.GuestID, elementSelector: m => m.TotalDebt);
+            foreach (var item in moviesById)
+            {
+                if (item.Key.Equals(sessionName))
+                {
+                    HttpContext.Session.SetString(sessionName, item.Value.ToString());
+                }
+            }
+
+            return Json(HttpContext.Session.GetString(sessionName));
+        }
         [HttpGet]
         public async Task<IActionResult> Sales(string id)
         {
@@ -106,7 +131,7 @@ namespace QuanLyKhoAdminManage.Controllers
             GetGuestID(_context);
             return View(result.ResultObj);
         }
-      
+
         [HttpPost]
         public async Task<IActionResult> Sales([FromForm] ProductCreateExRequest request)
         {
@@ -205,7 +230,7 @@ namespace QuanLyKhoAdminManage.Controllers
             if (data.TotalRecords == 0)
             {
                 TempData["err"] = "Không có sản phẩm bán";
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
             decimal sumtt = await _ProductApiClient.SumToTal();
             decimal sumdebts = await _ProductApiClient.Sumdebt(true);
@@ -219,7 +244,7 @@ namespace QuanLyKhoAdminManage.Controllers
                 int x = res.Next(26);
                 ran = ran + str[x];
             }
-            ViewBag.Issucess = sumdebts > 0?true:false;
+            ViewBag.Issucess = sumdebts > 0 ? true : false;
             ViewBag.IDBILL = ran;
             ViewBag.Info = info;
             ViewBag.TotalSum = sumtt;

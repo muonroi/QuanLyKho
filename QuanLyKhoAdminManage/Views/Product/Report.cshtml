@@ -157,18 +157,22 @@
                         <div class="border-right border-top border-dark col-2 text-center py-25">Số tiền nợ</div>
                     </div>
                     <div class="text-95 text-secondary-d3">
+                  
                        @foreach (var item in @Model.Items)
                        {
-                        <div class="row mb-2 mb-sm-0 py-0">
-                            <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@item.importID</div>
-                            <div class="border-top border-bottom border-right border-dark col-9 col-sm-5 text-center">@DateTime.Now</div>
-                            <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-center">@TempData["views"]</div>
-                            <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-95 text-center">@item.Name</div>
+                                if (item.debttotal > 0){
+                                    <div class="row mb-2 mb-sm-0 py-0">
+                                    <div class="border-left border-bottom border-top border-right border-dark d-none d-sm-block col-1 text-center">@item.importID</div>
+                                    <div class="border-top border-bottom border-right border-dark col-9 col-sm-5 text-center">@DateTime.Now</div>
+                                    <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-center">@TempData["views"]</div>
+                                    <div class="border-top border-bottom border-right border-dark d-none d-sm-block col-2 text-95 text-center">@item.Name</div>
                                     <div class="border-top border-bottom border-right border-dark col-2 text-secondary-d2 text-center">@{ string ttdeb = null;
                                             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
                                             ttdeb= item.debttotal > 0? item.debttotal.ToString("#,###", cul.NumberFormat): "0";
                                         }@ttdeb Vnđ</div>
                                 </div>
+                                }
+                                <div class="border-top border-bottom border-right border-dark col-2 text-secondary-d2 text-center">0 Vnđ</div>
                                 //break;
                             }
                     </div>

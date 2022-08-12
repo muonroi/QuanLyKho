@@ -26,6 +26,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
             Debt debt = null;
             var guest = await _dbcontext.guests.FindAsync(request.GuestID);
             var productsExID = await _dbcontext.Exproducts.Where(x =>x.importID.Equals(request.importID)).Where(x =>x.status.Equals(true)).FirstOrDefaultAsync();
+            var no = request.StatusDebt.Equals("false") ? request.SalesPrice : 0;
             if (guest != null)
             {
                 if (request.Quantity <= total)
@@ -49,7 +50,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                         productsExID.weight += request.Quantity * request.ToTalSum;
                         productsExID.debttotal += request.debttotal;
                     }
-
+                  
                     else if(productsExID == null)
                     {
                         products = new ExportProduct()
@@ -59,21 +60,21 @@ namespace QuanLyKhoAppLication.Catalog.Products
                             SalesPrice = request.SalesPrice,
                             ToTalSum = request.ToTalSum,
                             ExDate = request.ExDate,
-                            debttotal = request.debttotal,
+                            debttotal = no,
                             GuestID = request.GuestID,
                             weight = request.ToTalSum * request.Quantity,
                             status = true
                         };
                         var expro = await _dbcontext.Exproducts.AddAsync(products);
                     }
-                    if (request.debttotal > 0 && request.StatusDebt.Equals("true"))
+                    if (request.StatusDebt.Equals("false"))
                     {
                         debt = new Debt()
                         {
                             GuestID = request.GuestID,
                             ProductID = request.importID,
                             CreateDateDebt = request.ExDate,
-                            TotalDebt = request.debttotal
+                            TotalDebt = request.SalesPrice
                         };
                         var adddebt = await _dbcontext.debts.AddAsync(debt);
                         if (adddebt != null)
@@ -97,6 +98,11 @@ namespace QuanLyKhoAppLication.Catalog.Products
                             return new ApiSuccessResult<bool>();
                         }
                     }
+                }
+                else
+                {
+                    return new ApiErrorResult<bool>("Số lượng trong kho không đủ");
+
                 }
             }
             else
