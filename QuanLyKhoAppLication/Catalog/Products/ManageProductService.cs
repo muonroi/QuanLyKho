@@ -32,8 +32,6 @@ namespace QuanLyKhoAppLication.Catalog.Products
             Debt debt = null;
             var guest = await _dbcontext.guests.FindAsync(request.GuestID);
             var checkguest = await _dbcontext.Exproducts.Where(x => x.status.Equals(true)).Where(x => x.GuestID.Equals(request.GuestID)).Select(x => x.GuestID).FirstOrDefaultAsync();
-            if (checkguest != null || MyClass.count == 3)
-            {
                 var productsExID = await _dbcontext.Exproducts.Where(x => x.importID.Equals(request.importID)).Where(x => x.status.Equals(true)).FirstOrDefaultAsync();
                 var no = request.StatusDebt.Equals("false") ? request.SalesPrice : 0;
                 if (guest != null)
@@ -114,10 +112,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                 else
                 {
                     return new ApiErrorResult<bool>("Mã khách hàng không tồn tại");
-                }
-            }   
-            else
-                return new ApiErrorResult<bool>("Mỗi hóa đơn chỉ được chọn một mã khách hàng!");
+                }   
             return new ApiErrorResult<bool>("Bán sản phẩm không thành công");
         }
         public async Task<ApiResult<bool>> Delete(string idProduct)
