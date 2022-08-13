@@ -13,11 +13,17 @@ using QuanLyKhoViewModels.Catalog.Exporduct;
 
 namespace QuanLyKhoAppLication.Catalog.Products
 {
+    public static class MyClass
+    {
+        public static int count = 0;
+    }
     public class ManageProductService : IManageProductService
     {
+       
         private readonly QuanLyKhoDbContext _dbcontext;
         public ManageProductService(QuanLyKhoDbContext dbcontext)
         {
+            MyClass.count++;
             _dbcontext = dbcontext;
         }
         public async Task<ApiResult<bool>> CreateEx(ProductCreateExRequest request, int total)
@@ -25,8 +31,8 @@ namespace QuanLyKhoAppLication.Catalog.Products
             ExportProduct products = null;
             Debt debt = null;
             var guest = await _dbcontext.guests.FindAsync(request.GuestID);
-            var checkguest = await _dbcontext.Exproducts.Where(x => x.status.Equals(true)).Select(x =>x.GuestID).FirstOrDefaultAsync();
-            if (checkguest != null)
+            var checkguest = await _dbcontext.Exproducts.Where(x => x.status.Equals(true)).Where(x => x.GuestID.Equals(request.GuestID)).Select(x => x.GuestID).FirstOrDefaultAsync();
+            if (checkguest != null || MyClass.count == 3)
             {
                 var productsExID = await _dbcontext.Exproducts.Where(x => x.importID.Equals(request.importID)).Where(x => x.status.Equals(true)).FirstOrDefaultAsync();
                 var no = request.StatusDebt.Equals("false") ? request.SalesPrice : 0;
@@ -287,6 +293,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         }
         public async Task<PagedResult<ProductViewDetalModel>> Report(string username)
         {
+            MyClass.count = 0;
             var querySearch = from debt in _dbcontext.Exproducts
                               from em in _dbcontext.appusers
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
@@ -335,6 +342,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         }
         public async Task<decimal> Sumdebt(bool check)
         {
+
             var querySearch = from debt in _dbcontext.Exproducts
                               join pro in _dbcontext.Improducts on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
@@ -346,6 +354,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         [Obsolete]
         public async Task<int> SetFalse()
         {
+            MyClass.count = 0;
             var result = _dbcontext.Database.ExecuteSqlCommand("update exportproduct set status = 0 where status = 1");
 
             if (result > 0)

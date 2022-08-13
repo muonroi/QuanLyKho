@@ -13,7 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 namespace QuanLyKhoAdminManage.Controllers
 {
     public class LoginController : Controller
@@ -37,10 +37,14 @@ namespace QuanLyKhoAdminManage.Controllers
         {
             if (!ModelState.IsValid)
                 return View(ModelState);
-
+            if(request.RememberMe)
+            {
+               
+            }    
             var result = await _userApiClient.Authenticate(request);
             if (result.ResultObj == null)
             {
+                result.Message = "Error 494";
                 ModelState.AddModelError("", result.Message);
                 return View();
             }
