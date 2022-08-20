@@ -43,7 +43,26 @@ setTimeout(function() {
         });
     </script>
 }
-
+@section checks{
+     <script type="text/javascript">  
+        $(document).ready(function () {  
+            $('#DataTable').DataTable();  
+            $('#checkBoxAll').click(function () {  
+                if ($(this).is(":checked")) {  
+                    $(".chkCheckBoxId").prop("checked", true)  
+                }  
+                else {  
+                    $(".chkCheckBoxId").prop("checked", false)  
+                }  
+            });  
+        });  
+    </script> 
+}
+<style>
+    .dataTables_length{
+        display:none;
+    }
+</style>
 <div class="container-fluid">
     <h1 class="mt-4">Danh sách công nợ</h1>
     <ol class="breadcrumb mb-4">
@@ -51,26 +70,6 @@ setTimeout(function() {
         <li class="breadcrumb-item active">Danh sách công nợ</li>
     </ol>
     <div class="card mb-12">
-        <div class="card-header">
-            <div class="row">
-                
-             
-                <div class="col-md-6 col-xs-12">
-                      @using (Html.BeginForm("Index", "Debt", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
-                    {
-                        <div class="row d-flex">
-                            <div class="col-md-4 d-flex" style="flex:auto">
-                                <input id="FindProducts" type="text" placeholder="Mã khách hàng" value="@ViewBag.Keyword" name="keyword" class="form-control" />
-                                <input type="hidden" id="hfProduct" name="CustomerId"/> 
-                                <button type="submit" class="btn btn-primary">Tìm</button>
-                            </div>                               
-                        </div>
-                        <br/><br/>
-                    @ViewBag.Message
-                   }
-                </div>
-            </div>
-        </div>
 
         <div class="card-body">
             <div class="row">
@@ -87,10 +86,14 @@ setTimeout(function() {
                     </div>
                 }
             </div>
+            @using (Html.BeginForm("DeleteAll", "Debt", FormMethod.Post))  
+            {  
+                    <button type="submit" value="delete" class="btn btn-sm btn-danger rounded-0" onclick="return confirm('Bạn chắc chắn muốn xóa?')"><i class="fa fa-trash-o"></i> Xóa</button> 
             <div class="table-responsive" >
-                <table class="table table-bordered" >
+                <table id="DataTable" class="table table-bordered" >
                     <thead>
                         <tr>
+                         <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>  
                            <th>Mã khách hàng</th>
                            <th>Họ tên khách hàng</th>
                            <th>Tổng số tiền nợ</th>
@@ -103,6 +106,7 @@ setTimeout(function() {
                         @foreach (var item in Model.Items)
                         {
                             <tr>
+                                 <td style="padding:8px 30px 8px 8px"><input  type="checkbox" name="ID" value="@item.GuestID" class="custom-checkbox chkCheckBoxId" /></td>  
                                 <td>
                                     @Html.DisplayFor(modelItem => item.GuestID)
                                 </td>
@@ -113,9 +117,9 @@ setTimeout(function() {
                                     @Html.DisplayFor(modelItem => item.TotalDebt)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new {@class = "btn bg-info text-decoration-none text-white"})
-                                     @Html.ActionLink("Xem chi tiết", "Details", new { id = item.GuestID }, new {@class = "btn bg-info text-decoration-none text-white"})
-                                    @Html.ActionLink("Xóa tất cả", "DeleteAll", new { id = item.GuestID }, new {@class = "btn bg-danger text-decoration-none text-light"})
+                                   
+                                    @Html.ActionLink("Xem chi tiết", "Details", new { id = item.GuestID }, new {@class = "btn bg-info text-decoration-none text-white"})
+                           
 
                                 </td>
                             </tr>
@@ -123,7 +127,52 @@ setTimeout(function() {
                     </tbody>
                 </table>
             </div>
+            }
+              
             @await Component.InvokeAsync("Pager", Model)
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <a asp-action="History" class="btn btn--green"> Lịch sử công nợ</a>
+                @*<div class="table-responsive" >
+                <table id="DataTable" class="table table-bordered" >
+                    <thead>
+                        <tr>
+                           <th>Mã khách hàng</th>
+                           <th>Ngày thanh toán</th>
+                           <th>Số tiền thanh toán</th>
+                            <th>
+                               Ngân hàng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                 
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GuestIDs)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.PayDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DebtFee)
+                                </td>
+                                <td>
+                                   
+                                  @Html.DisplayFor(modelItem => item.BankName)
+                           
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>*@
+            @await Component.InvokeAsync("Pager", Model)
+            </div>
         </div>
     </div>
 </div>

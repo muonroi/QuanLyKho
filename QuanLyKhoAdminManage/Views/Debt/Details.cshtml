@@ -4,21 +4,51 @@
     ViewData["Title"] = "Chi tiết đơn nợ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section checks{
+     <script type="text/javascript">  
+        $(document).ready(function () {  
+            $('#DataTable').DataTable();  
+            $('#checkBoxAll').click(function () {  
+                if ($(this).is(":checked")) {  
+                    $(".chkCheckBoxId").prop("checked", true)  
+                }  
+                else {  
+                    $(".chkCheckBoxId").prop("checked", false)  
+                }  
+            });  
+        });  
+      
+         
+
+    </script> 
+}
+<style>
+    .dataTables_length{
+        display:none;
+    }
+</style>
+@using (Html.BeginForm("Delete", "Debt", FormMethod.Post))  
+            {  
+                    <button type="submit" value="delete" class="m-3 btn btn-sm btn-danger rounded-0" onclick="return confirm('Bạn chắc chắn muốn xóa?')"><i class="fa fa-trash-o"></i> Xóa</button> 
 <div class="table-responsive" >
-<table class="table table-bordered">
+<table id="DataTable" class="table table-bordered">
     <thead>
         <tr>
+             <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>  
             <th>Mã sản phẩm</th>
             <th>Mã khách hàng</th>
             <th>Ngày tạo</th>
              <th>Họ</th>
             <th>Tên</th>
             <th>Số tiền nợ</th>
+            <th>Tên ngân hàng</th>
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model.Items) {
         <tr>
+             <td style="padding:8px 30px 8px 8px"><input  type="checkbox" name="ID" value="@item.ID" class="custom-checkbox chkCheckBoxId" /></td>  
              <td>
                 @Html.DisplayFor(modelItem => item.ProductID)
             </td>
@@ -37,12 +67,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalDebt)
             </td>
+             <td>
+
+                 <select name="cars" id="cars">
+                    <option value="VietcomBank">VietcomBank</option>
+                    <option value="TPBank">TP Bank</option>
+                    <option value="VPBank">VP Bank</option>
+                    <option value="null" selected>-------------</option>
+                </select>
+             </td>  
            
            
         </tr>
-}
+        }
     </tbody>
 </table>
 @await Component.InvokeAsync("Pager", Model)
 </div>
+}
             

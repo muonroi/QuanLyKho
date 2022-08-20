@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using Microsoft.Extensions.Configuration;
 using QuanLyKhoAdminManage.Services;
 using QuanLyKhoData.EF;
@@ -7,6 +8,7 @@ using QuanLyKhoViewModels.Catalog.Debt;
 using QuanLyKhoViewModels.System.Debt;
 using System.Linq;
 using System.Threading.Tasks;
+using QuanLyKhoData.Entities;
 
 namespace QuanLyKhoAdminManage.Controllers
 {
@@ -62,56 +64,77 @@ namespace QuanLyKhoAdminManage.Controllers
             return Json(customers);
         }
         [HttpGet]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> History(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View(new DebtDeleteRequest()
+
+            var request = new GetManageDebtPagingRequest()
             {
-                DebtID = id
-            });
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _ProductApiClient.GetPagingsHis(request);
+            return View(data);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(DebtDeleteRequest request)
+        public IActionResult Delete(IFormCollection formCollection)
         {
+            bool count = false;
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _ProductApiClient.DeleteDebt(request.DebtID);
-            if (result.IsSuccessed)
-            {
-                TempData["result"] = "Xóa hóa đơn thành công";
-                return RedirectToAction("Index");
-            }
+            string[] ids = formCollection["ID"].ToString().Split(new char[] { ',' });
+            string[] id2 = formCollection["cars"].ToString().Split(new char[] { ',' });
 
-            TempData["err"] = result.Message;
+            for (int i = 0; i < ids.Length; i++)
+            {
+                if (!id2[i].Equals("null"))
+                {
+                    var DebtHistory = new HistoryDebt()
+                    {
+                        GuestIDS = this._context.debts.Find(int.Parse(ids[i])).GuestID,
+                        BankName = id2[i],
+                        DebtFee = this._context.debts.Find(int.Parse(ids[i])).TotalDebt,
+                        PayDay = DateTime.Now
+                    };
+                    this._context.Add(DebtHistory);
+                    this._context.SaveChanges();
+                }
+              
+               
+            }
+            foreach (string id in ids)
+            {
+                count = true;
+                TempData["result"] = "Xóa thành công";
+                var employee = this._context.debts.Find(int.Parse(id));
+                this._context.debts.Remove(employee);
+                this._context.SaveChanges();
+            }
+            if (count == false)
+                TempData["err"] = "Xóa thất bại!";
             return RedirectToAction("Index");
 
 
-        }
-
-        [HttpGet("deleteall")]
-        public IActionResult DeleteAll(string id)
-        {
-            return View(new DebtDeleteRequest()
-            {
-                DebtID = id
-            });
         }
         [HttpPost("deleteall")]
-        public async Task<IActionResult> DeleteAll(DebtDeleteRequest request)
+        public IActionResult DeleteAll(IFormCollection formCollection)
         {
+            bool count = false;
             if (!ModelState.IsValid)
                 return View();
-
-            var result = await _ProductApiClient.DeleteDebtAll(request.DebtID);
-
-            if (result.IsSuccessed)
+            string[] ids = formCollection["ID"].ToString().Split(new char[] { ',' });
+            foreach (string id in ids)
             {
-                TempData["result"] = "Xóa tất cả hóa đơn thành công";
-                return RedirectToAction("Index");
+                count = true;
+                TempData["result"] = "Xóa thành công";
+                var employee = this._context.debts.Where(s => s.GuestID.Equals(id)).FirstOrDefault();
+                this._context.debts.Remove(employee);
+                this._context.SaveChanges();
             }
-
-            TempData["err"] = result.Message;
-            return RedirectToAction("Index");
+            if (count == false)
+                TempData["err"] = "Xóa thất bại!";
+             return  RedirectToAction("Index");
 
 
         }

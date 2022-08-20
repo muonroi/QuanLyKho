@@ -30,6 +30,12 @@ namespace QuanLyKhoBackendapi.Controllers
             var debt = await _publicManageDebts.GetAllDebt(request);
             return Ok(debt);
         }
+        [HttpGet("pagings")]
+        public async Task<IActionResult> GetallDebtHis([FromQuery] GetManageDebtPagingRequest request)
+        {
+            var debt = await _publicManageDebts.GetAllDebtHis(request);
+            return Ok(debt);
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

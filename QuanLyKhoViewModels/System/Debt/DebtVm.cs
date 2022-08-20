@@ -22,6 +22,13 @@ namespace QuanLyKhoViewModels.System.Debt
         public string GuestID { get; set; }
         public string GuestFName { get; set; }
         public string GuestLName { get; set; }
-
+        [Display(Name = "Mã khách hàng")]
+        public string GuestIDs { get; set; }
+        [Display(Name = "Số tiện nợ")]
+        public decimal DebtFee { get; set; }
+        [Display(Name = "Ngày thanh toán")]
+        public DateTime PayDay { get; set; }
+        [Display(Name = "Ngân hàng")]
+        public string BankName { get; set; }
     }
 }

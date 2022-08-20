@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyKhoData.EF;
 
 namespace QuanLyKhoData.Migrations
 {
     [DbContext(typeof(QuanLyKhoDbContext))]
-    partial class QuanLyKhoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220819161625_v-historydebt")]
+    partial class vhistorydebt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,7 +151,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             Id = new Guid("15040c7d-32cc-437f-8aa1-268c0655748d"),
-                            ConcurrencyStamp = "a9256d3f-fd7e-45aa-a9fd-5698df11521e",
+                            ConcurrencyStamp = "74550f45-140c-4692-b11e-5a607c72910b",
                             Des = "Administrator role",
                             Name = "muonroi",
                             NormalizedName = "muonroi"
@@ -171,7 +173,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("Dob")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 864, DateTimeKind.Local).AddTicks(7054));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 591, DateTimeKind.Local).AddTicks(8827));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -230,7 +232,7 @@ namespace QuanLyKhoData.Migrations
                         {
                             Id = new Guid("23b1700f-3861-41fe-a39f-19d1fbceaa5c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7ed0d65e-7f72-453d-9c5f-8c2717fc1d1b",
+                            ConcurrencyStamp = "26896ba5-d79d-4ba3-b085-77a765db5882",
                             Dob = new DateTime(2022, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "leanhphi1706@gmail.com",
                             EmailConfirmed = true,
@@ -239,7 +241,7 @@ namespace QuanLyKhoData.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "leanhphi1706@gmail.com",
                             NormalizedUserName = "muonroi",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDB6EKgK7I3gTRzR4+FgPylPwY+jYwBq1btMB3ohsvDNu4miHpg0NYI+isFkpMeshw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBLBCVs78zOMouNjuNdPFIZo4q1VjrWXZ1RmFZZMMdB15I68uBxsCA12kVc5I84kBQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -259,7 +261,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("CreateDateDebt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 857, DateTimeKind.Local).AddTicks(9210));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 586, DateTimeKind.Local).AddTicks(7249));
 
                     b.Property<string>("GuestID")
                         .HasColumnType("nvarchar(450)");
@@ -285,7 +287,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = 1,
-                            CreateDateDebt = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(5001),
+                            CreateDateDebt = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(6449),
                             GuestID = "KH01",
                             ProductID = "PR01",
                             TotalDebt = 90000m
@@ -293,7 +295,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = 2,
-                            CreateDateDebt = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(5870),
+                            CreateDateDebt = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(7145),
                             GuestID = "KH02",
                             ProductID = "PR02",
                             TotalDebt = 55000m
@@ -312,7 +314,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("Dob")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 862, DateTimeKind.Local).AddTicks(8040));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 590, DateTimeKind.Local).AddTicks(6358));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -366,7 +368,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = 1,
-                            Dob = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(9230),
+                            Dob = new DateTime(2022, 8, 19, 23, 16, 24, 596, DateTimeKind.Local).AddTicks(155),
                             Email = "Nguyenvana@gmail.com",
                             FirtName = "Nguyễn",
                             LastName = "Văn A",
@@ -378,7 +380,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = 2,
-                            Dob = new DateTime(2022, 8, 20, 0, 39, 53, 870, DateTimeKind.Local).AddTicks(253),
+                            Dob = new DateTime(2022, 8, 19, 23, 16, 24, 596, DateTimeKind.Local).AddTicks(927),
                             Email = "Nguyenvanb@gmail.com",
                             FirtName = "Nguyễn",
                             LastName = "Văn B",
@@ -401,7 +403,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("ExDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 856, DateTimeKind.Local).AddTicks(5328));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 585, DateTimeKind.Local).AddTicks(5096));
 
                     b.Property<string>("GuestID")
                         .HasColumnType("nvarchar(max)");
@@ -447,7 +449,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             Id = 1,
-                            ExDate = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(7681),
+                            ExDate = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(8915),
                             Quantity = 32,
                             SalesPrice = 120000m,
                             ToTalSum = 32m,
@@ -459,7 +461,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             Id = 2,
-                            ExDate = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(8471),
+                            ExDate = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(9560),
                             Quantity = 20,
                             SalesPrice = 125000m,
                             ToTalSum = 20m,
@@ -478,7 +480,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("Dob")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 864, DateTimeKind.Local).AddTicks(289));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 591, DateTimeKind.Local).AddTicks(4326));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -510,7 +512,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = "KH01",
-                            Dob = new DateTime(2022, 8, 20, 0, 39, 53, 868, DateTimeKind.Local).AddTicks(3565),
+                            Dob = new DateTime(2022, 8, 19, 23, 16, 24, 594, DateTimeKind.Local).AddTicks(8529),
                             Email = "laivanhuan@gmail.com",
                             FirtName = "Lại",
                             LastName = "Văn Huân",
@@ -519,7 +521,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             ID = "KH02",
-                            Dob = new DateTime(2022, 8, 20, 0, 39, 53, 868, DateTimeKind.Local).AddTicks(4268),
+                            Dob = new DateTime(2022, 8, 19, 23, 16, 24, 594, DateTimeKind.Local).AddTicks(9070),
                             Email = "levansi@gmail.com",
                             FirtName = "Lê",
                             LastName = "Văn Sĩ",
@@ -547,7 +549,7 @@ namespace QuanLyKhoData.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(null);
 
-                    b.Property<string>("GuestIDS")
+                    b.Property<string>("GuestID")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
@@ -556,7 +558,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("PayDay")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 866, DateTimeKind.Local).AddTicks(98));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 592, DateTimeKind.Local).AddTicks(8239));
 
                     b.HasKey("ID");
 
@@ -572,7 +574,7 @@ namespace QuanLyKhoData.Migrations
                     b.Property<DateTime>("ImportDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 20, 0, 39, 53, 850, DateTimeKind.Local).AddTicks(5426));
+                        .HasDefaultValue(new DateTime(2022, 8, 19, 23, 16, 24, 578, DateTimeKind.Local).AddTicks(9185));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -609,7 +611,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             Id = "PR01",
-                            ImportDate = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(6217),
+                            ImportDate = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(7517),
                             Name = "Dầu Gội Đầu",
                             OriginPrice = 125000m,
                             Quantity = 32,
@@ -619,7 +621,7 @@ namespace QuanLyKhoData.Migrations
                         new
                         {
                             Id = "PR02",
-                            ImportDate = new DateTime(2022, 8, 20, 0, 39, 53, 869, DateTimeKind.Local).AddTicks(7243),
+                            ImportDate = new DateTime(2022, 8, 19, 23, 16, 24, 595, DateTimeKind.Local).AddTicks(8443),
                             Name = "Lọ thủy tinh",
                             OriginPrice = 150000m,
                             Quantity = 20,

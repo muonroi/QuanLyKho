@@ -74,9 +74,10 @@ namespace QuanLyKhoAppLication.Catalog.Debts
         public async Task<PagedResult<DebtVm>> GetAllDebt(GetManageDebtPagingRequest request)
         {
             var querySearch = (from deb in _dbcontext.debts
+                              // from debthist in _dbcontext.historyDebts
                                join pro in _dbcontext.Improducts on deb.ProductID equals pro.Id
                                join guest in _dbcontext.guests on deb.GuestID equals guest.ID
-                               select new { deb, guest});
+                               select new { deb, guest });
            
             if (!string.IsNullOrEmpty(request.Keyword))
                 querySearch = querySearch.Where(x => x.deb.GuestID.Contains(request.Keyword));
@@ -85,6 +86,10 @@ namespace QuanLyKhoAppLication.Catalog.Debts
                 .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                 .Select(c => new DebtVm()
                 {
+                    //BankName = c.Key.BankName,
+                    //DebtFee = c.Key.DebtFee,
+                    //PayDay = c.Key.PayDay,
+                    //GuestIDs = c.Key.GuestIDS,
                     GuestID = c.Key.GuestID,
                     GuestFName = c.Key.FirtName,
                     GuestLName = c.Key.LastName,
@@ -101,6 +106,35 @@ namespace QuanLyKhoAppLication.Catalog.Debts
             return pageResult;
           
 
+        }
+
+        public async Task<PagedResult<DebtVm>> GetAllDebtHis(GetManageDebtPagingRequest request)
+        {
+            var querySearch = (from debthist in _dbcontext.historyDebts
+                               join guest in _dbcontext.guests on debthist.GuestIDS equals guest.ID
+                               select debthist );
+
+            if (!string.IsNullOrEmpty(request.Keyword))
+                querySearch = querySearch.Where(x => x.GuestIDS.Contains(request.Keyword));
+
+            var data = await querySearch.GroupBy(c => new { c.GuestIDS, c.BankName, c.DebtFee,c.PayDay })
+                .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+                .Select(c => new DebtVm()
+                {
+                    BankName = c.Key.BankName,
+                    DebtFee = c.Key.DebtFee,
+                    PayDay = c.Key.PayDay,
+                    GuestIDs = c.Key.GuestIDS,
+                }).ToListAsync();
+            int totalRow = data.Count();
+            var pageResult = new PagedResult<DebtVm>()
+            {
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
+            };
+            return pageResult;
         }
 
         public async Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID)

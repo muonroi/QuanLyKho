@@ -9,6 +9,7 @@ namespace QuanLyKhoAdminManage.Services
     public interface IDebtApiServices
     {
         Task<PagedResult<DebtVm>> GetPagings(GetManageDebtPagingRequest request);
+        Task<PagedResult<DebtVm>> GetPagingsHis(GetManageDebtPagingRequest request);
         Task<ApiResult<bool>> DeleteDebt(string request);
         Task<ApiResult<bool>> DeleteDebtAll(string request);
         Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID);

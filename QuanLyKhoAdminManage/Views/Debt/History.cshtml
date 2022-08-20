@@ -1,0 +1,49 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoViewModels.System.Debt.DebtVm>
+@{
+    ViewData["Title"] = "History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card-body">
+            <div class="row">
+                <div class="table-responsive" >
+                <table id="DataTable" class="table table-bordered" >
+                    <thead>
+                        <tr>
+                           <th>Mã khách hàng</th>
+                           <th>Ngày thanh toán</th>
+                           <th>Số tiền thanh toán</th>
+                            <th>
+                               Ngân hàng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                 
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GuestIDs)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.PayDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DebtFee)
+                                </td>
+                                <td>
+                                   
+                                  @Html.DisplayFor(modelItem => item.BankName)
+                           
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @await Component.InvokeAsync("Pager", Model)
+            </div>
+        </div>
+
