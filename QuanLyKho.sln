@@ -13,15 +13,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyKhoAdminManage", "Qua
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyKhoViewModels", "QuanLyKhoViewModels\QuanLyKhoViewModels.csproj", "{6AA1228E-8B3C-49C0-B3B4-3A5A69202D76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuanLyKhoUtilities", "QuanLyKhoUtilities\QuanLyKhoUtilities.csproj", "{07F02775-78C1-440C-A59E-52AD9DDA1C30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyKhoUtilities", "QuanLyKhoUtilities\QuanLyKhoUtilities.csproj", "{07F02775-78C1-440C-A59E-52AD9DDA1C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuanLyKhoBackendapi", "QuanLyKhoBackendapi\QuanLyKhoBackendapi.csproj", "{8AFEB97F-96D1-4A28-AA46-8D7BFB526AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyKhoBackendapi", "QuanLyKhoBackendapi\QuanLyKhoBackendapi.csproj", "{8AFEB97F-96D1-4A28-AA46-8D7BFB526AB3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Infrastructure", "1.Infrastructure", "{2AF3A44D-F69A-4E62-99B4-1F183DAA92A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Domain", "2.Domain", "{A72E6D40-C6AA-417D-A3A5-3DAF4FD355E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Host", "3.Host", "{2EAA4BC6-13F4-450D-90B5-80E3503E1C33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1F6C888F-B982-4A13-A424-5F8A04162CF5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

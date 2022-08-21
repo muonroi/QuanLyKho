@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "mdb-ui-kit": "^4.4.0",
     "npm": "^8.15.1",
     "react-currency-input-field": "^3.6.4"
   }

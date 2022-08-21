@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using QuanLyKhoAdminManage.Services;
 using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoData.EF;
+using QuanLyKhoData.Entities;
 using QuanLyKhoViewModels.Catalog.Exporduct;
 using QuanLyKhoViewModels.Catalog.Products;
 using QuanLyKhoViewModels.System.Debt;
@@ -119,6 +120,32 @@ namespace QuanLyKhoAdminManage.Controllers
             
             GetGuestID(_context);
             return View(result.ResultObj);
+        }
+        [HttpGet]
+        public IActionResult Saless()
+        {
+            return View(_context.Exproducts);
+        }
+
+        [Obsolete]
+        public JsonResult InsertCustomers(List<ExportProduct> ExportProduct)
+        {
+                //Truncate Table to delete all old records.
+                _context.Database.ExecuteSqlCommand("TRUNCATE TABLE [exportproduct]");
+
+                //Check for NULL.
+                if (ExportProduct == null)
+                {
+                ExportProduct = new List<ExportProduct>();
+                }
+
+                //Loop and insert records.
+                foreach (ExportProduct customer in ExportProduct)
+                {
+                _context.Exproducts.Add(customer);
+                }
+                int insertedRecords = _context.SaveChanges();
+                return Json(insertedRecords);
         }
 
         [HttpPost]

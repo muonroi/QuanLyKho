@@ -9,6 +9,7 @@ using QuanLyKhoViewModels.System.Debt;
 using System.Linq;
 using System.Threading.Tasks;
 using QuanLyKhoData.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuanLyKhoAdminManage.Controllers
 {
@@ -169,6 +170,31 @@ namespace QuanLyKhoAdminManage.Controllers
             };
             var result = await _ProductApiClient.GetDebtByGuestID(request,id);
             return View(result);
+        }
+        [HttpPost]
+        [Obsolete]
+        public async Task<IActionResult> Pay(string GuestID,decimal fee,string bankname)
+        {
+            var DebtHistory = new HistoryDebt()
+            {
+                GuestIDS = GuestID,
+                BankName = bankname,
+                DebtFee = fee,
+                PayDay = DateTime.Now
+            };
+            _context.historyDebts.Add(DebtHistory);
+             _context.SaveChanges();
+            int result = await _context.debts.Where(x => x.GuestID.Equals(GuestID)).CountAsync();
+            decimal total = fee / result;
+            var rs = _context.Database.ExecuteSqlCommand($"UPDATE DEBT SET TOTALDEBT = TOTALDEBT - {total} WHERE GUESTID = {GuestID}");
+            if (rs > 0)
+            {
+                TempData["result"] = "Thanh toán thành công!";
+                
+            }
+            else
+                TempData["err"] = "Thanh toán thất bại!";
+            return Json(new { redirectToUrl = Url.Action("Index", "debt") });
         }
     }
 }

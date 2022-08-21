@@ -13,34 +13,32 @@ setTimeout(function() {
       
     </script>
 }
-@section xs{
-     <script type="text/javascript">
-        $(function () {
-            $("#FindProducts").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '/Debt/AutoComplete/',
-                        data: { "prefix": request.term },
-                        type: "POST",
-                        success: function (data) {
-                            response($.map(data, function (item) {
-                                return item;
-                            }))
-                        },
-                        error: function (response) {
-                            alert(response.responseText);
-                        },
-                        failure: function (response) {
-                            alert(response.responseText);
-                        }
-                    });
-                },
-                select: function (e, i) {
-                    $("#hfProduct").val(i.item.val);
-                },
-                minLength: 1
-            });
-        });
+@section test{
+    <script>
+        function pay(GuestID)
+        {
+           $('#exampleModal').modal('show');
+             document.querySelector('#exampleFormControlInput1').value = GuestID
+        }
+function getvalue(GuestID) {
+    $('#exampleModal').modal('hide');
+    let paymount = document.querySelector('.dollar').value
+            let bankname = document.querySelector('#cars').value
+            if (paymount != null && bankname != null) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/debt/Pay',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {"GuestID":GuestID, "fee": paymount, "bankname": bankname},
+                    success: function (result) {
+                        window.location.href = result.redirectToUrl;
+            },
+            error: function (result) {
+                window.location.href = result.redirectToUrl;
+            }
+                });
+            }
+}
     </script>
 }
 @section checks{
@@ -63,6 +61,48 @@ setTimeout(function() {
         display:none;
     }
 </style>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nhập thông tin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+      <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Mã khách hàng</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" readonly>
+</div>
+        <div class="input-group mb-3">
+        <span class="input-group-text">vnđ</span>
+        <span class="input-group-text">0.00</span>
+        <input data-type="currency" type="text" class="input--style-1 dollar form-control" aria-label="Dollar amount (with dot and two decimal places)">
+        </div>
+      
+       <select class="form-select" aria-label="Default select example" name="cars" id="cars">
+                    <option value="VietcomBank">VietcomBank</option>
+                    <option value="TPBank">TP Bank</option>
+                    <option value="VPBank">VP Bank</option>
+                    <option value="null" selected>-------------</option>
+                </select>                          
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" onclick="getvalue(exampleFormControlInput1.value)">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center">
+  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Launch
+    Modal Login Form</a>
+</div>  
+
+
 <div class="container-fluid">
     <h1 class="mt-4">Danh sách công nợ</h1>
     <ol class="breadcrumb mb-4">
@@ -93,13 +133,12 @@ setTimeout(function() {
                 <table id="DataTable" class="table table-bordered" >
                     <thead>
                         <tr>
-                         <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>  
+                         <th style="padding:8px 30px 8px 8px"><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>  
                            <th>Mã khách hàng</th>
                            <th>Họ tên khách hàng</th>
                            <th>Tổng số tiền nợ</th>
-                            <th>
-                                Chức năng
-                            </th>
+                            <th>Chức năng</th>
+                            <th>Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,10 +156,10 @@ setTimeout(function() {
                                     @Html.DisplayFor(modelItem => item.TotalDebt)
                                 </td>
                                 <td>
-                                   
                                     @Html.ActionLink("Xem chi tiết", "Details", new { id = item.GuestID }, new {@class = "btn bg-info text-decoration-none text-white"})
-                           
-
+                                </td>
+                                <td>
+                                    <a class="btn bg-danger text-decoration-none text-white" onclick="pay('@item.GuestID')">Thanh toán</a>
                                 </td>
                             </tr>
                         }
@@ -134,43 +173,6 @@ setTimeout(function() {
         <div class="card-body">
             <div class="row">
                 <a asp-action="History" class="btn btn--green"> Lịch sử công nợ</a>
-                @*<div class="table-responsive" >
-                <table id="DataTable" class="table table-bordered" >
-                    <thead>
-                        <tr>
-                           <th>Mã khách hàng</th>
-                           <th>Ngày thanh toán</th>
-                           <th>Số tiền thanh toán</th>
-                            <th>
-                               Ngân hàng
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
-                            <tr>
-                                 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.GuestIDs)
-                                </td>
-                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PayDay)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DebtFee)
-                                </td>
-                                <td>
-                                   
-                                  @Html.DisplayFor(modelItem => item.BankName)
-                           
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>*@
             @await Component.InvokeAsync("Pager", Model)
             </div>
         </div>
