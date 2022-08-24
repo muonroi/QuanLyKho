@@ -152,10 +152,10 @@ setTimeout(function() {
                                     @{
                                         if(item.Quantity <= 0)
                                         {
-                                                    @Html.ActionLink("Bán", "Sales", new { id = item.Id }, new {@class = "cursor-default btn bg-secondary text-decoration-none text-light",onclick = "javascript:return false;",@title="Sản phẩm đã hết số lượng tồn"})
+                                                    @Html.ActionLink("Bán", "Saless", new { id = item.Id }, new {@class = "cursor-default btn bg-secondary text-decoration-none text-light",onclick = "javascript:return false;",@title="Sản phẩm đã hết số lượng tồn"})
                                         }
                                         else
-                                                    @Html.ActionLink("Bán", "Sales", new { id = item.Id }, new {@class = " btn bg-info text-decoration-none text-light"})
+                                                    @Html.ActionLink("Bán", "Saless", new { id = item.Id }, new {@class = " btn bg-info text-decoration-none text-light"})
 
                                     }
                                 

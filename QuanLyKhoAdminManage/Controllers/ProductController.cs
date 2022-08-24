@@ -124,30 +124,68 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpGet]
         public IActionResult Saless()
         {
-            return View(_context.Exproducts);
-        }
-
-        [Obsolete]
-        public JsonResult InsertCustomers(List<ExportProduct> ExportProduct)
-        {
-                //Truncate Table to delete all old records.
-                _context.Database.ExecuteSqlCommand("TRUNCATE TABLE [exportproduct]");
-
-                //Check for NULL.
-                if (ExportProduct == null)
+            // This is only for show by default one row for insert data to the database
+            List<ProductCreateExRequest> ci = new List<ProductCreateExRequest>
+            { new ProductCreateExRequest
                 {
-                ExportProduct = new List<ExportProduct>();
+                    
+                    importID = default,
+                    ToTalSum = default,
+                    Quantity = default,
+                    weight = default,
+                    SalesPrice = default,
+                    tongtien = default,
+                    GuestID=default,
+                    debttotal = default,
+                }
+            };
+            return View(ci);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> BulkData(List<ProductCreateExRequest> ci)
+        {
+
+            if (ModelState.IsValid)
+            {
+                foreach (var item in ci)
+                {
+                    var result = await _ProductApiClient.CreateEXProduct(item);
+                    if (result.IsSuccessed)
+                    {
+                        TempData["result"] = "Lập hóa đơn thành công!";
+                        return RedirectToAction("Index");
+
+                    }
+                    TempData["err"] = result.Message;
+                    
+                }
+            }
+            ModelState.Clear();
+            return RedirectToAction("Index");
+        }
+        [Obsolete]
+        public JsonResult InsertCustomers(List<ExportProduct> customers)
+        {
+            
+                //Truncate Table to delete all old records.  
+                _context.Database.ExecuteSqlCommand("TRUNCATE TABLE exportproduct");
+
+                //Check for NULL.  
+                if (customers == null)
+                {
+                    customers = new List<ExportProduct>();
                 }
 
-                //Loop and insert records.
-                foreach (ExportProduct customer in ExportProduct)
+                //Loop and insert records.  
+                foreach (ExportProduct customer in customers)
                 {
                 _context.Exproducts.Add(customer);
                 }
                 int insertedRecords = _context.SaveChanges();
-                return Json(insertedRecords);
+           return Json(insertedRecords);
+            
         }
-
         [HttpPost]
         public async Task<IActionResult> Sales([FromForm] ProductCreateExRequest request)
         {

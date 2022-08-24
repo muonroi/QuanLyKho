@@ -1,138 +1,474 @@
-﻿@model IEnumerable<QuanLyKhoData.Entities.ExportProduct>
+﻿@using System.Globalization
+@model List<QuanLyKhoViewModels.Catalog.Exporduct.ProductCreateExRequest>
 @{
-    ViewData["Title"] = "Sales";
-    Layout = null;
+	Layout = null;
 }
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    <style type="text/css">
-        body {
-            font-family: Arial;
-            font-size: 10pt;
-        }
-
-        .table {
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-        }
-
-            .table th {
-                background-color: #F7F7F7;
-                color: #333;
-                font-weight: bold;
-            }
-
-            .table th, .table td {
-                padding: 5px;
-                border: 1px solid #ccc;
-            }
-    </style>
+    <meta charset="utf-8">
+    <title>Hóa đơn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+     <!-- select2-bootstrap4-theme -->
+<link href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" rel="stylesheet"> 
+<link href="/product/vendor/select2/select2.min.css" rel="stylesheet" media="all">
 </head>
 <body>
-    <table id="tblCustomers" class="table" cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th style="width:150px">Name</th>
-                <th style="width:150px">Country</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var customer in Model)
+    <style type="text/css">
+body{
+    margin-top:20px;
+    color: #484b51;
+}
+.text-secondary-d1 {
+    color: #728299!important;
+}
+.page-header {
+    margin: 0 0 1rem;
+    padding-bottom: 1rem;
+    padding-top: .5rem;
+    border-bottom: 1px dotted #e2e2e2;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.page-title {
+    padding: 0;
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 300;
+}
+.brc-default-l1 {
+    border-color: #dce9f0!important;
+}
+
+.ml-n1, .mx-n1 {
+    margin-left: -.25rem!important;
+}
+.mr-n1, .mx-n1 {
+    margin-right: -.25rem!important;
+}
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem!important;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.text-grey-m2 {
+    color: #888a8d!important;
+}
+
+.text-success-m2 {
+    color: #86bd68!important;
+}
+
+.font-bolder, .text-600 {
+    font-weight: 600!important;
+}
+
+.text-110 {
+    font-size: 110%!important;
+}
+.text-blue {
+    color: #478fcc!important;
+}
+.pb-25, .py-25 {
+    padding-bottom: .75rem!important;
+}
+
+.pt-25, .py-25 {
+    padding-top: .75rem!important;
+}
+.bgc-default-tp1 {
+    background-color: rgba(121,169,197,.92)!important;
+}
+.bgc-default-l4, .bgc-h-default-l4:hover {
+    background-color: #f3f8fa!important;
+}
+.page-header .page-tools {
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}
+
+.btn-light {
+    color: #757984;
+    background-color: #f5f6f9;
+    border-color: #dddfe4;
+}
+.w-2 {
+    width: 1rem;
+}
+
+.text-120 {
+    font-size: 120%!important;
+}
+.text-primary-m1 {
+    color: #4087d4!important;
+}
+
+.text-danger-m1 {
+    color: #dd4949!important;
+}
+.text-blue-m2 {
+    color: #68a3d5!important;
+}
+.text-150 {
+    font-size: 150%!important;
+}
+.text-60 {
+    font-size: 60%!important;
+}
+.text-grey-m1 {
+    color: #7b7d81!important;
+}
+.align-bottom {
+    vertical-align: bottom!important;
+}
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}
+</style>
+<div class="page-content container">
+    <div class="page-header text-blue-d2">
+        <h1 class="page-title text-secondary-d1">
+            Hóa đơn
+            <small class="page-info">
+                <i class="fa fa-angle-double-right text-80"></i>
+                Mã: 
+            </small>
+        </h1>
+         <small class="page-info page-title text-secondary-d1">
+                <img class="img-fluid rounded float-left" src="/images/d876f2461797d5c98c86.jpg"/>
+         </small>
+    </div>
+    <div class="container px-0">
+        <div class="row mt-4">
+            <div class="col-12 col-lg-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center text-150">
+                            <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
+                            <span class="text-default-d3">HÓA ĐƠN BÁN HÀNG</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="row brc-default-l1 mx-n1 mb-4" />
+                <div class="row">
+                    <div class="col-sm-6">
+                       
+                        <div>
+                            <span class="text-sm text-grey-m2 align-middle">Khách hàng:</span>
+                                    
+                               <select class="col-sm-6 text-600 text-110 text-blue align-middle ajaxSelect2 cs form-select" onchange="viewroomSelected()">                                   
+                               </select>
+                           
+                            
+                            
+                                   
+                        </div>
+                        <div class="text-grey-m2">
+                            <br />
+                            <span class="text-sm text-grey-m2 align-middle">Công nợ trước:</span>
+                            <input readonly placeholder="1.000.000 vnđ" data-type="currency" class="no-border test input--style-1" type="text"> Vnđ
+                        </div>
+                    </div>
+
+                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                        <hr class="d-sm-none" />
+                        <div class="text-grey-m2">
+                            <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                Hóa đơn
+                            </div>
+
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Mã hóa đơn:</span></div>
+
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Ngày tạo: </span>@DateTime.Now</div>
+
+                           
+                               
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="mt-4">
+                    <div><a href="#" id="addNew">Thêm mới</a></div>
+                     <div class="d-none d-sm-block col-9 py-25">1. Nội Dung Hóa đơn</div>
+                    <div class="row text-800 text-black py-0 d-flex align-items-center">
+                         <div class="border-right border-left border-top border-dark d-none d-sm-block text-center py-25 col-sm-1">STT</div>
+                        <div class="border-right border-top border-dark col-sm-2 text-center py-25">Tên hàng</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Quy Cách</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-1 text-center py-25">SL</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Trọng lượng</div>
+                        <div class="border-right border-top border-dark d-none d-sm-block col-2 text-center py-25">Giá bán</div>
+                        <div class="border-right border-top border-dark col-2 text-center py-25">Giá tiền</div>
+                    </div>
+                   
+                    <div class="text-95 text-secondary-d3">
+                        @using (Html.BeginForm("BulkData","Product", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        
+        
+        <table id="dataTable" border="0" cellpadding="0" cellspacing="0">
+            @if (Model != null && Model.Count > 0)
             {
-                <tr>
-                    <td>@customer.importID</td>
-                    <td>@customer.SalesPrice</td>
-                    <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
-                </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td><input type="text" id="txtName" /></td>
-                <td><input type="text" id="txtCountry" /></td>
-                <td><input type="button" id="btnAdd" value="Add" onclick="myfunc()" /></td>
-            </tr>
-        </tfoot>
-    </table>
-    <br />
-    <input type="button" id="btnSave" value="Save All" />
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-    <script type="text/javascript">
-         $('#btnAdd').on("click") = function myfunc() {
-            alert('a')
-            //Reference the Name and Country TextBoxes.
-            var txtName = $("#txtName");
-            var txtCountry = $("#txtCountry");
+                int j = 0;
+                foreach (var i in Model)
+                {
+                   
+                     
+                    <tr class="row mb-2 mb-sm-0 py-0">
+                        <td id="stt" class="border-top border-left border-right border-dark d-none d-sm-block text-center col-sm-1">1</td>
+                        <td class="border-top border-right border-dark col-sm-2 text-center">@Html.TextBoxFor(a=>a[j].importID,new{style="margin:-10%"})</td>
+                        <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].ToTalSum,new{style="margin:-10%"})</td>
+                         @{
+                                CultureInfo culs = CultureInfo.GetCultureInfo("vi-VN");
+                                string we = i.weight.ToString("#,###", culs.NumberFormat);
+                            }
+                        <td class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@Html.TextBoxFor(a=>a[j].Quantity,new{style="margin:-35%;width:153%"})</td>
+                         <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].weight,new{style="margin:-10%"})</td>
+                          <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%"})</td>
+                          <td class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@Html.TextBoxFor(a=>a[j].tongtien,new{style="margin:-10%"})</td>
+                          <td>@Html.TextBoxFor(a =>a[j].GuestID,new {@class = "guestid"})</td>
+                          <td>
+                    @Html.TextBoxFor(a =>a[j].debttotal,new {@class = "debttotal"})
 
-            //Get the reference of the Table's TBODY element.
-            var tBody = $("#tblCustomers > TBODY")[0];
-
-            //Add Row.
-            var row = tBody.insertRow(-1);
-
-            //Add Name cell.
-            var cell = $(row.insertCell(-1));
-            cell.html(txtName.val());
-
-            //Add Country cell.
-            cell = $(row.insertCell(-1));
-            cell.html(txtCountry.val());
-
-            //Add Button cell.
-            cell = $(row.insertCell(-1));
-            var btnRemove = $("<input />");
-            btnRemove.attr("type", "button");
-            btnRemove.attr("onclick", "Remove(this);");
-            btnRemove.val("Remove");
-            cell.append(btnRemove);
-
-            //Clear the TextBoxes.
-            txtName.val("");
-            txtCountry.val("");
-        });
-
-        function Remove(button) {
-            //Determine the reference of the Row using the Button.
-            var row = $(button).closest("TR");
-            var name = $("TD", row).eq(0).html();
-            if (confirm("Do you want to delete: " + name)) {
-                //Get the reference of the Table.
-                var table = $("#tblCustomers")[0];
-
-                //Delete the Table row using it's Index.
-                table.deleteRow(row[0].rowIndex);
-            }
-        };
-
-        $("body").on("click", "#btnSave", function () {
-            //Loop through the Table rows and build a JSON array.
-            var customers = new Array();
-            $("#tblCustomers TBODY TR").each(function () {
-                var row = $(this);
-                var customer = {};
-                customer.Name = row.find("TD").eq(0).html();
-                customer.Country = row.find("TD").eq(1).html();
-                customers.push(customer);
-            });
-
-            //Send the JSON array to Controller using AJAX.
-            $.ajax({
-                type: "POST",
-                url: "/Product/InsertCustomers",
-                data: JSON.stringify(customers),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (r) {
-                    alert(r + " record(s) inserted.");
+                          </td>
+                          <td>
+                            @if (j > 0)
+                            {
+                                <a style="position: relative;top: -105%;" href="#" class="remove btn bg-warning">Xóa</a>
+                            }
+                        </td>
+                    </tr>
+                    j++;
                 }
+            }
+        </table>
+        <input type="submit" value="Xuất hóa đơn" />
+    }
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="~/lib/select2/js/select2.full.min.js"></script>
+<script src="~/js/select2/js/select2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" type="text/javascript"></script>
+<script>
+    $(".ajaxSelect2").select2({
+    placeholder: "Nhập mã khách hàng",
+    theme: "bootstrap4",
+    allowClear: true,
+    ajax: {
+        type: "GET",
+        url: "/Product/Search/",
+        contentType: "application/json; charset=utf-8",
+        data: function (params) {
+            var query =
+            {
+                term: params.term,
+            };
+            return query;
+        },
+        processResults: function (result) {
+            return {
+                results: $.map(result, function (item) {
+                    return {
+                        id: item.id,
+                        text: item.id
+                    };
+                }),
+            };
+        }
+    }
+});
+    </script>
+<script>
+    function viewroomSelected()
+    {
+        let x = document.querySelector(".cs").value;
+        $(".guestid").val(x)
+         $.ajax({
+                    type: "POST",
+                    url: "/Product/AjaxMethod",
+                    data: { "sessionName": $(".cs").val() },
+                    success: function (response) {
+                        if (response != null) {
+                            $(".test").val(response)
+                           $(".debttotal").val(response)
+                        } else {
+                            $(".test").val("0")
+                            $(".debttotal").val("0")
+                        }
+                    },
+                    failure: function (response) {
+                        $(".test").val("0");
+                    },
+                    error: function (response) {
+                        $(".test").val("0");
+                    }
+         });
+        document.querySelector(".cs").setAttribute("readonly", "readonly");
+
+    }
+</script>
+<script>
+        // Jquery Dependency
+
+$("input[data-type='currency']").on({
+    keyup: function() {
+      formatCurrency($(this));
+    },
+    blur: function() { 
+      formatCurrency($(this), "blur");
+    }
+});
+
+
+function formatNumber(n) {
+  // format number 1000000 to 1,234,567
+  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+
+function formatCurrency(input, blur) {
+  // appends $ to value, validates decimal side
+  // and puts cursor back in right position.
+  
+  // get input value
+  var input_val = input.val();
+  
+  // don't validate empty input
+  if (input_val === "") { return; }
+  
+  // original length
+  var original_len = input_val.length;
+
+  // initial caret position 
+  var caret_pos = input.prop("selectionStart");
+    
+  // check for decimal
+  if (input_val.indexOf(".") >= 0) {
+
+    // get position of first decimal
+    // this prevents multiple decimals from
+    // being entered
+    var decimal_pos = input_val.indexOf(".");
+
+    // split number by decimal point
+    var left_side = input_val.substring(0, decimal_pos);
+    var right_side = input_val.substring(decimal_pos);
+
+    // add commas to left side of number
+    left_side = formatNumber(left_side);
+
+    // validate right side
+    right_side = formatNumber(right_side);
+    
+    // On blur make sure 2 numbers after decimal
+    if (blur === "blur") {
+      right_side += "00";
+    }
+    
+    // Limit decimal to only 2 digits
+    right_side = right_side.substring(0, 2);
+
+    // join number by .
+    input_val = left_side + "." + right_side;
+
+  } else {
+    // no decimal entered
+    // add commas to number
+    // remove all non-digits
+    input_val = formatNumber(input_val);
+    input_val = input_val;
+    
+    // final formatting
+    if (blur === "blur") {
+      input_val += ".00";
+    }
+  }
+  
+  // send updated string to input
+  input.val(input_val);
+
+  // put caret back in the right position
+  var updated_len = input_val.length;
+  caret_pos = updated_len - original_len + caret_pos;
+  input[0].setSelectionRange(caret_pos, caret_pos);
+}
+
+    </script>
+    <script type="text/javascript">
+       $(document).ready(function () {
+            
+            //1. Add new row
+            $("#addNew").click(function (e) {
+                
+                e.preventDefault();
+                
+                var $tableBody = $("#dataTable");
+                var $trLast = $tableBody.find("tr:last");
+                var $trNew = $trLast.clone();
+ 
+                var suffix = $trNew.find(':input:first').attr('name').match(/\d+/);
+                $trNew.find("td:last").html('<a style="position: relative;top: -89%;left:1451%" href="#" class="remove btn bg-warning">Xóa</a>');
+                $.each($trNew.find(':input'), function (i, val) {
+                    // Replaced Name
+                    var oldN = $(this).attr('name');
+                    var newN = oldN.replace('[' + suffix + ']', '[' + (parseInt(suffix) + 1) + ']');
+                    $(this).attr('name', newN);
+                    //Replaced value
+                    var type = $(this).attr('type');
+                    if (type.toLowerCase() == "text") {
+                        $(this).attr('value', '');
+                    }
+ 
+                    // If you have another Type then replace with default value
+                    $(this).removeClass("input-validation-error");
+ 
+                });
+                $trLast.after($trNew);
+ 
+                // Re-assign Validation 
+                var form = $("form")
+                    .removeData("validator")
+                    .removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse(form);
             });
+ 
+            // 2. Remove 
+           
+            $("a.remove").on("click" ,function (e) {
+                e.preventDefault();
+                $(this).parent().parent().remove();
+            });
+ 
         });
     </script>
 </body>
+
 </html>

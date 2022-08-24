@@ -34,5 +34,6 @@ namespace QuanLyKhoViewModels.Catalog.Exporduct
         public string EmF { get; set; }
         public bool status { get; set; }
         public decimal weight { get; set; }
+        public decimal tongtien { get; set; }
     }
 }

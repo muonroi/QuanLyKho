@@ -56,8 +56,8 @@ namespace QuanLyKhoAdminManage
             services.AddTransient<IGuestApiServices, GuestApiServices>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddReact();
+            
 
-            // Make sure a JS engine is registered, or you will get an error!
             services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
               .AddV8();
 

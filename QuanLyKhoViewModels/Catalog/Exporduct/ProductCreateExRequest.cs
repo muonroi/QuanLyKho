@@ -24,6 +24,6 @@ namespace QuanLyKhoViewModels.Catalog.Exporduct
         public bool status { get; set; }
         public decimal weight { get; set; }
         public string StatusDebt { get; set; }
-
+        public decimal tongtien { get; set; }
     }
 }
