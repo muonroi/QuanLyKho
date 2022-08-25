@@ -112,6 +112,17 @@ namespace QuanLyKhoAdminManage.Controllers
 
             return Json(HttpContext.Session.GetString(sessionName));
         }
+
+        [HttpPost]
+        public IActionResult AutoComplete2(string prefix)
+        {
+            var customers = (from product in _context.Improducts
+                             where product.Id.Equals(prefix)
+                             select product).ToList();
+
+            return Json(customers);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Sales(string id)
         {
@@ -137,6 +148,7 @@ namespace QuanLyKhoAdminManage.Controllers
                     tongtien = default,
                     GuestID=default,
                     debttotal = default,
+                    StatusDebt = default
                 }
             };
             return View(ci);
@@ -144,7 +156,7 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> BulkData(List<ProductCreateExRequest> ci)
-        {
+       {
 
             if (ModelState.IsValid)
             {
@@ -154,12 +166,14 @@ namespace QuanLyKhoAdminManage.Controllers
                     if (result.IsSuccessed)
                     {
                         TempData["result"] = "Lập hóa đơn thành công!";
-                        return RedirectToAction("Index");
 
                     }
-                    TempData["err"] = result.Message;
-                    
                 }
+            }
+            else if(!(ModelState.IsValid))
+            {
+                TempData["err"] = "Vui lòng nhập đúng thông tin!";
+
             }
             ModelState.Clear();
             return RedirectToAction("Index");
@@ -328,6 +342,22 @@ namespace QuanLyKhoAdminManage.Controllers
                 || a.LastName.Contains(term, StringComparison.OrdinalIgnoreCase)
                 || a.PhoneNumber.ToString().Contains(term, StringComparison.OrdinalIgnoreCase
                 )).ToList().AsReadOnly();
+                return Ok(data);
+            }
+            else
+            {
+                return Ok();
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Search2(string term)
+        {
+            if (!string.IsNullOrEmpty(term))
+            {
+                var states = await _context.Improducts.ToListAsync();
+                var data = states.Where(a => a.Id.Contains(term, StringComparison.OrdinalIgnoreCase)
+                || a.Name.Contains(term, StringComparison.OrdinalIgnoreCase)
+                ).ToList().AsReadOnly();
                 return Ok(data);
             }
             else

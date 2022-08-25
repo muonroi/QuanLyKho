@@ -175,9 +175,16 @@ hr {
                                <select class="col-sm-6 text-600 text-110 text-blue align-middle ajaxSelect2 cs form-select" onchange="viewroomSelected()">                                   
                                </select>
                            
+                               <select class="statusDebt form-select" name="StatusDebt" onchange="viewr()">
+                                             <option disabled="disabled">--Hình thức thanh toán--</option>
+                                             <option selected="selected" selected="selected" value="true">Đã TT</option>
+                                             <option selected="selected" value ="false">Trả sau</option>
+                                   </select>
+                                   <div class="select-dropdown"></div>
                             
-                            
-                                   
+                               <select class="col-sm-6 text-600 text-110 text-blue align-middle ajaxSelect3 cs2 form-select" onchange="viewroom()">                                   
+                               </select>
+                               <label class="d-block sl">aaa</label>
                         </div>
                         <div class="text-grey-m2">
                             <br />
@@ -240,19 +247,21 @@ hr {
                                 CultureInfo culs = CultureInfo.GetCultureInfo("vi-VN");
                                 string we = i.weight.ToString("#,###", culs.NumberFormat);
                             }
-                        <td class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@Html.TextBoxFor(a=>a[j].Quantity,new{style="margin:-35%;width:153%"})</td>
+                        <td class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@Html.TextBoxFor(a=>a[j].Quantity,new{style="margin:-35%;width:153%",onchange = "sets()"})</td>
                          <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].weight,new{style="margin:-10%"})</td>
                           <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%"})</td>
                           <td class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@Html.TextBoxFor(a=>a[j].tongtien,new{style="margin:-10%"})</td>
-                          <td>@Html.TextBoxFor(a =>a[j].GuestID,new {@class = "guestid"})</td>
+                          <td>@Html.TextBoxFor(a =>a[j].GuestID,new {@class = "guestid d-none"})</td>
                           <td>
-                    @Html.TextBoxFor(a =>a[j].debttotal,new {@class = "debttotal"})
-
+                            @Html.TextBoxFor(a =>a[j].debttotal,new {@class = "debttotal d-none"})
+                          </td>
+                            <td>
+                            @Html.TextBoxFor(a =>a[j].StatusDebt,new {@class = "statusDeb d-none",@Value = "true"})
                           </td>
                           <td>
                             @if (j > 0)
                             {
-                                <a style="position: relative;top: -105%;" href="#" class="remove btn bg-warning">Xóa</a>
+                                <a style="position: relative;top: -89%;left:-100%%" href="#" class="remove btn bg-warning">Xóa</a>
                             }
                         </td>
                     </tr>
@@ -306,22 +315,72 @@ hr {
     }
 });
     </script>
-<script>
-    function viewroomSelected()
+
+    <script>
+    $(".ajaxSelect3").select2({
+    placeholder: "Nhập mã sản phẩm",
+    theme: "bootstrap4",
+    allowClear: true,
+    ajax: {
+        type: "GET",
+        url: "/Product/Search2/",
+        contentType: "application/json; charset=utf-8",
+        data: function (params) {
+            var query =
+            {
+                term: params.term,
+            };
+            return query;
+        },
+        processResults: function (result) {
+            return {
+                results: $.map(result, function (item) {
+                    return {
+                        id: item.id,
+                        text: item.id
+                    };
+                }),
+            };
+        }
+    }
+});
+    </script>
+
+    <script>
+        function viewr()
+        {
+             let x = document.querySelector(".statusDebt").value;
+             if(x != null)
+                $('.statusDeb').val(x)
+        }
+    </script>
+    <script>
+    function viewroom()
     {
         let x = document.querySelector(".cs").value;
-        $(".guestid").val(x)
+        var last = null;
+        $('table:first tr').each(function() {
+        last =  $(this).find(':last-child')
+        });
          $.ajax({
                     type: "POST",
-                    url: "/Product/AjaxMethod",
-                    data: { "sessionName": $(".cs").val() },
+                    url: "/Product/AutoComplete2",
+                    data: { "prefix": $(".cs2").val() },
                     success: function (response) {
                         if (response != null) {
-                            $(".test").val(response)
-                           $(".debttotal").val(response)
-                        } else {
+                            //alert(JSON.stringify(response))
+                            $(response).each(function(i, item) {
+                                $('.sl').text("Tổng số lượng là: " + item.quantity)
+                                last[0].value = item.id;
+                                last[1].value = item.toTalSum;
+                              
+                                last[4].value = item.salesPrice;
+                                
+                            })
+                        } 
+                        else {
                             $(".test").val("0")
-                            $(".debttotal").val("0")
+                            last[7].value = 0
                         }
                     },
                     failure: function (response) {
@@ -331,7 +390,59 @@ hr {
                         $(".test").val("0");
                     }
          });
-        document.querySelector(".cs").setAttribute("readonly", "readonly");
+
+    }
+</script>
+<script>
+function sets() {
+     var last = null;
+        $('table:first tr').each(function() {
+        last =  $(this).find(':last-child')
+        });
+        var s1 = $('.sl').text() 
+        var text = s1.slice(18)
+    if (parseInt(last[2].value) > parseInt(text)) {
+        alert("Số lượng không đủ!")
+    }
+    else
+    {
+        
+       last[3].value = parseFloat(last[1].value).toFixed(2) * parseFloat(last[2].value).toFixed(2)
+       last[5].value = parseFloat(last[4].value).toFixed(2) * parseFloat(last[2].value).toFixed(2)
+    }
+    
+}
+</script>
+<script>
+    function viewroomSelected()
+    {
+        let x = document.querySelector(".cs").value;
+        var last = null;
+        $('table:first tr').each(function() {
+        last =  $(this).find(':last-child')
+        });
+        last[6].value = x
+         $.ajax({
+                    type: "POST",
+                    url: "/Product/AjaxMethod",
+                    data: { "sessionName": $(".cs").val() },
+                    success: function (response) {
+                        if (response != null) {
+                            $(".test").val(response)
+                             last[7].value = response
+                        } else {
+                            $(".test").val("0")
+                            last[7].value = 0
+                        }
+                    },
+                    failure: function (response) {
+                        $(".test").val("0");
+                    },
+                    error: function (response) {
+                        $(".test").val("0");
+                    }
+         });
+        document.querySelector(".cs").setAttribute("disabled", "disabled");
 
     }
 </script>
@@ -435,7 +546,7 @@ function formatCurrency(input, blur) {
                 var $trNew = $trLast.clone();
  
                 var suffix = $trNew.find(':input:first').attr('name').match(/\d+/);
-                $trNew.find("td:last").html('<a style="position: relative;top: -89%;left:1451%" href="#" class="remove btn bg-warning">Xóa</a>');
+                $trNew.find("td:last").html('<a style="position: relative;top: -89%;left:-100%%" href="#" class="remove btn bg-warning">Xóa</a>');
                 $.each($trNew.find(':input'), function (i, val) {
                     // Replaced Name
                     var oldN = $(this).attr('name');
