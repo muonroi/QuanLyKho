@@ -256,12 +256,12 @@ hr {
                             @Html.TextBoxFor(a =>a[j].debttotal,new {@class = "debttotal d-none"})
                           </td>
                             <td>
-                            @Html.TextBoxFor(a =>a[j].StatusDebt,new {@class = "statusDeb d-none",@Value = "true"})
+                            @Html.TextBoxFor(a =>a[j].StatusDebt,new {@class = "statusDeb d-none"})
                           </td>
                           <td>
                             @if (j > 0)
                             {
-                                <a style="position: relative;top: -89%;left:-100%%" href="#" class="remove btn bg-warning">Xóa</a>
+                                <a style="position: relative;top: -89%;left:-100%" href="#" class="remove btn bg-warning">Xóa</a>
                             }
                         </td>
                     </tr>
@@ -269,6 +269,16 @@ hr {
                 }
             }
         </table>
+         <div class="row mb-2 mb-sm-0 py-0 border-top border-dark">
+                       <table class="table table-info" style="border-style:hidden">
+                            <tbody>
+                              <tr>
+                                <td style="width: 64%" class="solug text-right" colspan="3"></td>
+                                <td  class="tien text-right" colspan="2"></td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
         <input type="submit" value="Xuất hóa đơn" />
     }
                     </div>
@@ -401,6 +411,7 @@ function sets() {
         });
         var s1 = $('.sl').text() 
         var text = s1.slice(18)
+        
     if (parseInt(last[2].value) > parseInt(text)) {
         alert("Số lượng không đủ!")
     }
@@ -409,6 +420,15 @@ function sets() {
         
        last[3].value = parseFloat(last[1].value).toFixed(2) * parseFloat(last[2].value).toFixed(2)
        last[5].value = parseFloat(last[4].value).toFixed(2) * parseFloat(last[2].value).toFixed(2)
+        var sum = 0,sums = 0;
+         $('#dataTable tr').each(function() {
+         var keval = parseInt($(this).find("td:nth-child(4) input").val());
+         sum += keval?keval:0
+         var kevala = parseInt($(this).find("td:nth-child(7) input").val());
+         sums += kevala?kevala:0
+         });
+         $(".solug").text("Tổng số lượng: " + sum);
+          $(".tien").text("Tổng tiền: " + sums);
     }
     
 }
@@ -416,6 +436,7 @@ function sets() {
 <script>
     function viewroomSelected()
     {
+        $('.statusDeb').val("true")
         let x = document.querySelector(".cs").value;
         var last = null;
         $('table:first tr').each(function() {
@@ -538,9 +559,7 @@ function formatCurrency(input, blur) {
             
             //1. Add new row
             $("#addNew").click(function (e) {
-                
                 e.preventDefault();
-                
                 var $tableBody = $("#dataTable");
                 var $trLast = $tableBody.find("tr:last");
                 var $trNew = $trLast.clone();
@@ -573,10 +592,13 @@ function formatCurrency(input, blur) {
  
             // 2. Remove 
            
-            $("a.remove").on("click" ,function (e) {
-                e.preventDefault();
-                $(this).parent().parent().remove();
-            });
+           $("table").on("click", ".remove", function() {
+            $("table tbody").find('tr td').each(function() {
+            $("table").on("click", ".remove", function() {
+            $(this).parents("tr").remove();
+        })
+    });
+});
  
         });
     </script>

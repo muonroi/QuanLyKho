@@ -60,8 +60,11 @@ setTimeout(function() {
                 <div class="col-md-6 col-xs-12 d-flex align-items-center">
                     <a class="btn btn-success" asp-action="Create" asp-controller="Product">Nhập sản phẩm</a>
                 </div>
+                <div class="col-md-6 col-xs-12 d-flex align-items-center justify-content-end">
+                    <a asp-action="Saless" class = "btn bg-info text-decoration-none text-light">Bán sản phẩm</a>
+                  </div>
                 <div class="col-md-6 col-xs-12">
-                      @using (Html.BeginForm("Index", "Product", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
+                   @*   @using (Html.BeginForm("Index", "Product", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
                     {
                         <div class="row d-flex">
                             <div class="col-md-4 d-flex" style="flex:auto">
@@ -72,7 +75,7 @@ setTimeout(function() {
                         </div>
                         <br/><br/>
                     @ViewBag.Message
-                   }
+                   }*@
                 </div>
             </div>
         </div>
@@ -93,7 +96,7 @@ setTimeout(function() {
                 }
             </div>
             <div class="table-responsive" >
-                <table class="table table-bordered" >
+                <table class="table table-bordered" id = "datatablesSimple">
                     <thead>
                         <tr>
                             <th>
@@ -146,36 +149,17 @@ setTimeout(function() {
                                     @Html.DisplayFor(modelItem => item.ToTalSum)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Xem", "Details", new { id = item.Id }, new {@class = "btn bg-info text-decoration-none text-light"}) |
+                                    @*@Html.ActionLink("Xem", "Details", new { id = item.Id }, new {@class = "btn bg-info text-decoration-none text-light"}) |*@
                                     @Html.ActionLink("Sửa", "Update", new {  id = item.Id }, new {@class = "btn bg-warning text-decoration-none text-light"}) |
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new {@class = "btn bg-danger text-decoration-none text-light"}) |
-                                    @{
-                                        if(item.Quantity <= 0)
-                                        {
-                                                    @Html.ActionLink("Bán", "Saless", new { id = item.Id }, new {@class = "cursor-default btn bg-secondary text-decoration-none text-light",onclick = "javascript:return false;",@title="Sản phẩm đã hết số lượng tồn"})
-                                        }
-                                        else
-                                                    @Html.ActionLink("Bán", "Saless", new { id = item.Id }, new {@class = " btn bg-info text-decoration-none text-light"})
+                                    @*@Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new {@class = "btn bg-danger text-decoration-none text-light"}) |*@
+                                                                                               
 
-                                    }
                                 
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                <div class="row row-space">
-                            <div class="col-2">
-                                 <div class="p-t-20">
-                                    
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                          <form asp-action="Sales" asp-controller="Product" method="POST">
-                            <input asp-action="Report" class="btn bg-primary btn--radius btn--dark" type = "submit" value = "Xuất hóa đơn" />
-                        </form>    
-                        </div>
-                        </div>
             </div>
             @await Component.InvokeAsync("Pager", Model)
         </div>

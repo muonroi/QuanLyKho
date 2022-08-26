@@ -176,7 +176,7 @@ namespace QuanLyKhoAdminManage.Controllers
 
             }
             ModelState.Clear();
-            return RedirectToAction("Index");
+            return RedirectToAction("Report");
         }
         [Obsolete]
         public JsonResult InsertCustomers(List<ExportProduct> customers)
@@ -291,7 +291,7 @@ namespace QuanLyKhoAdminManage.Controllers
             var a = Json(vehicle_trs);
             return a;
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Report(string vehicle_tr, string vehicle_take)
         {
             var data = await _ProductApiClient.Report(strings);
