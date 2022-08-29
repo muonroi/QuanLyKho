@@ -8,6 +8,5 @@ namespace QuanLyKhoViewModels.Catalog.Debt
     public class GetManageDebtPagingRequest : PagingRequestBase
     {
         public string Keyword { get; set; }
-
     }
 }

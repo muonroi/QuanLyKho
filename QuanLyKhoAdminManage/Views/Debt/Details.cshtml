@@ -68,7 +68,6 @@
                 @Html.DisplayFor(modelItem => item.TotalDebt)
             </td>
              <td>
-
                  <select name="cars" id="cars">
                     <option value="VietcomBank">VietcomBank</option>
                     <option value="TPBank">TP Bank</option>
@@ -82,7 +81,44 @@
         }
     </tbody>
 </table>
-@await Component.InvokeAsync("Pager", Model)
 </div>
 }
+<div class="card-body">
+            <div class="row">
+                <div class="table-responsive" >
+                <table id="DataTable" class="table table-bordered" >
+                    <thead>
+                        <tr>
+                           <th>Mã khách hàng</th>
+                           <th>Ngày thanh toán</th>
+                           <th>Số tiền thanh toán</th>
+                            <th>
+                               Ngân hàng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GuestID)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.PayDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DebtFee)
+                                </td>
+                                <td>
+                                  @Html.DisplayFor(modelItem => item.BankName)                        
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @await Component.InvokeAsync("Pager", Model)
+            </div>
+        </div>
             

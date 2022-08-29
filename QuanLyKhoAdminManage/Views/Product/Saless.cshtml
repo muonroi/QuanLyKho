@@ -175,21 +175,21 @@ hr {
                                <select class="col-sm-6 text-600 text-110 text-blue align-middle ajaxSelect2 cs form-select" onchange="viewroomSelected()">                                   
                                </select>
                            
-                               <select class="statusDebt form-select" name="StatusDebt" onchange="viewr()">
+                               <select class="statusDebt pr form-select" name="StatusDebt" onchange=" viewr()">
                                              <option disabled="disabled">--Hình thức thanh toán--</option>
-                                             <option selected="selected" selected="selected" value="true">Đã TT</option>
-                                             <option selected="selected" value ="false">Trả sau</option>
+                                             <option selected="selected" value="true">Đã TT</option>
+                                             <option value ="false">Trả sau</option>
                                    </select>
                                    <div class="select-dropdown"></div>
                             
                                <select class="col-sm-6 text-600 text-110 text-blue align-middle ajaxSelect3 cs2 form-select" onchange="viewroom()">                                   
                                </select>
-                               <label class="d-block sl">aaa</label>
+                               <label class="d-block sl"></label>
                         </div>
                         <div class="text-grey-m2">
                             <br />
                             <span class="text-sm text-grey-m2 align-middle">Công nợ trước:</span>
-                            <input readonly placeholder="1.000.000 vnđ" data-type="currency" class="no-border test input--style-1" type="text"> Vnđ
+                            <input readonly placeholder="0.000.000 vnđ" data-type="currency" class="no-border test input--style-1" type="text"> Vnđ
                         </div>
                     </div>
 
@@ -241,22 +241,22 @@ hr {
                      
                     <tr class="row mb-2 mb-sm-0 py-0">
                         <td id="stt" class="border-top border-left border-right border-dark d-none d-sm-block text-center col-sm-1">1</td>
-                        <td class="border-top border-right border-dark col-sm-2 text-center">@Html.TextBoxFor(a=>a[j].importID,new{style="margin:-10%"})</td>
-                        <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].ToTalSum,new{style="margin:-10%"})</td>
+                        <td class="border-top border-right border-dark col-sm-2 text-center">@Html.TextBoxFor(a=>a[j].importID,new{style="margin:-10%",@readonly = true})</td>
+                        <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].ToTalSum,new{style="margin:-10%",@readonly = true})</td>
                          @{
                                 CultureInfo culs = CultureInfo.GetCultureInfo("vi-VN");
                                 string we = i.weight.ToString("#,###", culs.NumberFormat);
                             }
                         <td class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@Html.TextBoxFor(a=>a[j].Quantity,new{style="margin:-35%;width:153%",onchange = "sets()"})</td>
-                         <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].weight,new{style="margin:-10%"})</td>
-                          <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%"})</td>
-                          <td class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@Html.TextBoxFor(a=>a[j].tongtien,new{style="margin:-10%"})</td>
+                         <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].weight,new{style="margin:-10%",@readonly = true})</td>
+                          <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%",@readonly = true})</td>
+                          <td class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@Html.TextBoxFor(a=>a[j].tongtien,new{style="margin:-10%",@readonly = true})</td>
                           <td>@Html.TextBoxFor(a =>a[j].GuestID,new {@class = "guestid d-none"})</td>
                           <td>
                             @Html.TextBoxFor(a =>a[j].debttotal,new {@class = "debttotal d-none"})
                           </td>
                             <td>
-                            @Html.TextBoxFor(a =>a[j].StatusDebt,new {@class = "statusDeb d-none"})
+                            @Html.TextBoxFor(a =>a[j].StatusDebt,new {@class = "statusDeb-sub d-none"})
                           </td>
                           <td>
                             @if (j > 0)
@@ -279,7 +279,7 @@ hr {
                             </tbody>
                         </table>
                     </div>
-        <input type="submit" value="Xuất hóa đơn" />
+        <input onclick="checks()" type="submit" value="Xuất hóa đơn" />
     }
                     </div>
             </div>
@@ -359,9 +359,9 @@ hr {
     <script>
         function viewr()
         {
-             let x = document.querySelector(".statusDebt").value;
+             let x = $(".pr").val();
              if(x != null)
-                $('.statusDeb').val(x)
+                $('.statusDeb-sub').val(x)
         }
     </script>
     <script>
@@ -436,7 +436,7 @@ function sets() {
 <script>
     function viewroomSelected()
     {
-        $('.statusDeb').val("true")
+        $('.statusDeb-sub').val('true')
         let x = document.querySelector(".cs").value;
         var last = null;
         $('table:first tr').each(function() {
@@ -463,7 +463,7 @@ function sets() {
                         $(".test").val("0");
                     }
          });
-        document.querySelector(".cs").setAttribute("disabled", "disabled");
+        
 
     }
 </script>
@@ -593,9 +593,19 @@ function formatCurrency(input, blur) {
             // 2. Remove 
            
            $("table").on("click", ".remove", function() {
+               
             $("table tbody").find('tr td').each(function() {
             $("table").on("click", ".remove", function() {
             $(this).parents("tr").remove();
+             var sum = 0,sums = 0;
+                 $('#dataTable tr').each(function() {
+                var keval = parseInt($(this).find("td:nth-child(4) input").val());
+                 sum += keval?keval:0
+                var kevala = parseInt($(this).find("td:nth-child(7) input").val());
+                sums += kevala?kevala:0
+                });
+                 $(".solug").text("Tổng số lượng: " + sum);
+                 $(".tien").text("Tổng tiền: " + sums);
         })
     });
 });

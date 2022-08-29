@@ -139,10 +139,13 @@ namespace QuanLyKhoAppLication.Catalog.Debts
 
         public async Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID)
         {
+            
+           
             var querySearch = from debt in _dbcontext.debts
                               join gu in _dbcontext.guests on debt.GuestID equals gu.ID
+                              join debthist in _dbcontext.historyDebts on debt.GuestID equals debthist.GuestIDS
                               where debt.GuestID.Equals(ID)
-                              select new { gu, debt };
+                              select new { gu, debt,debthist };
           var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
                Select(x => new DebtVm()
                {
@@ -152,7 +155,10 @@ namespace QuanLyKhoAppLication.Catalog.Debts
                    CreateDateDebt = x.debt.CreateDateDebt,
                    GuestFName = x.gu.FirtName,
                    GuestLName = x.gu.LastName,
-                   TotalDebt = x.debt.TotalDebt
+                   TotalDebt = x.debt.TotalDebt,
+                   BankName = x.debthist.BankName,
+                   DebtFee = x.debthist.DebtFee,
+                   PayDay = x.debthist.PayDay
                }).ToListAsync();
             int totalRow = querySearch.Count();
             var pageResult = new PagedResult<DebtVm>()
