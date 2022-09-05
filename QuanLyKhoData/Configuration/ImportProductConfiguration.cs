@@ -11,6 +11,7 @@ namespace QuanLyKhoData.Configuration
     {
         public void Configure(EntityTypeBuilder<ImportProduct> builder)
         {
+            //status 0 is sale, 1 is import
             builder.ToTable("ImportProduct");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasMaxLength(25);
@@ -29,6 +30,8 @@ namespace QuanLyKhoData.Configuration
                 .HasDefaultValue(0);
             builder.Property(x => x.ToTalSum)
                 .HasDefaultValue(0);
+            builder.Property(x => x.status)
+                .HasDefaultValue(true);
         }
     }
 }

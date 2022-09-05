@@ -560,6 +560,11 @@ function formatCurrency(input, blur) {
             //1. Add new row
             $("#addNew").click(function (e) {
                 e.preventDefault();
+                 var lasts = null;
+                    $('table:first tr').each(function() {
+                    lasts =  $(this).find(':last-child')
+                    });
+                parseInt($('#stt').html())
                 var $tableBody = $("#dataTable");
                 var $trLast = $tableBody.find("tr:last");
                 var $trNew = $trLast.clone();

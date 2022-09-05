@@ -26,6 +26,8 @@ namespace QuanLyKhoData.EF
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
             modelBuilder.ApplyConfiguration(new HistoryDebtConfiguration());
+            modelBuilder.ApplyConfiguration(new BankConfiguration());
+
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaim");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRole").HasKey(x => new { x.RoleId, x.UserId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin").HasKey(x => x.UserId);
@@ -43,5 +45,7 @@ namespace QuanLyKhoData.EF
         public DbSet<AppRole> approles { get; set; }
         public DbSet<AppUser> appusers { get; set; }
         public DbSet<HistoryDebt> historyDebts { get; set; }
+        public DbSet<BankName> bankname { get; set; }
+
     }
 }

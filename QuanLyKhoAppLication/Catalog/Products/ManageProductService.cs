@@ -70,7 +70,8 @@ namespace QuanLyKhoAppLication.Catalog.Products
                                 debttotal = no,
                                 GuestID = request.GuestID,
                                 weight = request.ToTalSum * request.Quantity,
-                                status = true
+                                status = true,
+                                
                             };
                             var expro = await _dbcontext.Exproducts.AddAsync(products);
                         }
@@ -275,7 +276,8 @@ namespace QuanLyKhoAppLication.Catalog.Products
                     OriginPrice = request.OriginPrice,
                     SalesPrice = request.SalesPrice,
                     ToTalSum = request.ToTalSum,
-                    ImportDate = request.ImportDate
+                    status = true,
+                    //ImportDate = request.ImportDate
                 };
                 var result = await _dbcontext.Improducts.AddAsync(products);
                 if (result != null)

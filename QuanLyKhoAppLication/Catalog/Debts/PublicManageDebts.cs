@@ -144,6 +144,7 @@ namespace QuanLyKhoAppLication.Catalog.Debts
             var querySearch = from debt in _dbcontext.debts
                               join gu in _dbcontext.guests on debt.GuestID equals gu.ID
                               join debthist in _dbcontext.historyDebts on debt.GuestID equals debthist.GuestIDS
+                              join debthist2 in _dbcontext.historyDebts on gu.ID equals debthist2.GuestIDS
                               where debt.GuestID.Equals(ID)
                               select new { gu, debt,debthist };
           var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).

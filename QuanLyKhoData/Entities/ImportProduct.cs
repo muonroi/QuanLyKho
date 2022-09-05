@@ -12,5 +12,6 @@ namespace QuanLyKhoData.Entities
         public decimal OriginPrice { get; set; }
         public decimal SalesPrice { get; set; }
         public decimal ToTalSum { get; set; }
+        public bool status { get; set; }    
     }
 }

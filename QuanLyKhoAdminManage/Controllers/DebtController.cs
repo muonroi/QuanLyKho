@@ -196,5 +196,6 @@ namespace QuanLyKhoAdminManage.Controllers
                 TempData["err"] = "Thanh toán thất bại!";
             return Json(new { redirectToUrl = Url.Action("Index", "debt") });
         }
+       
     }
 }

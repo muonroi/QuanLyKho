@@ -13,4 +13,18 @@ namespace QuanLyKhoData.Entities
         public string GuestID { get; set; }
         public Guest guest { get; set; }
     }
+    public class HistoryDebt2
+    {
+
+        public int ID { get; set; }
+        public string GuestIDS { get; set; }
+        public decimal DebtFee { get; set; }
+        public DateTime PayDay { get; set; }
+        public string BankName { get; set; }
+    }
+    public class ViewModel
+    {
+        public IEnumerable<Debt> Teachers { get; set; }
+        public IEnumerable<HistoryDebt2> Students { get; set; }
+    }
 }
