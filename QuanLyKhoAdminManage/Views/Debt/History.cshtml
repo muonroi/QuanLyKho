@@ -11,11 +11,8 @@
                     <thead>
                         <tr>
                            <th>Mã khách hàng</th>
-                           <th>Ngày thanh toán</th>
-                           <th>Số tiền thanh toán</th>
-                            <th>
-                               Ngân hàng
-                            </th>
+                           <th>Tên khách hàng</th>
+                           <th>Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,20 +21,14 @@
                             <tr>
                                  
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.GuestIDs)
+                                @Html.DisplayFor(modelItem => item.GuestID)
                                 </td>
                                  <td>
-                                    @Html.DisplayFor(modelItem => item.PayDay)
+                                @Html.DisplayFor(modelItem => item.GuestFName)   @Html.DisplayFor(modelItem => item.GuestLName)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DebtFee)
-                                </td>
-                                <td>
-                                   
-                                  @Html.DisplayFor(modelItem => item.BankName)
-                           
-
-                                </td>
+                            <td>
+                                @Html.ActionLink("Chi tiết", "HistoryById", new {  id = item.GuestID }, new {@class = "btn bg-warning text-decoration-none text-light"})
+                            </td>
                             </tr>
                         }
                     </tbody>

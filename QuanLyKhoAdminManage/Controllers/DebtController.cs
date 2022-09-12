@@ -77,6 +77,18 @@ namespace QuanLyKhoAdminManage.Controllers
             var data = await _ProductApiClient.GetPagingsHis(request);
             return View(data);
         }
+        [HttpGet]
+        public async Task<IActionResult> HistoryById(string keyWord, string id,int pageIndex = 1, int pageSize = 10)
+        {
+            var request = new GetManageDebtPagingRequest()
+            {
+                Keyword = keyWord,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _ProductApiClient.GetPagingsHisById(request,id);
+            return View(data);
+        }
         [HttpPost]
         public IActionResult Delete(IFormCollection formCollection)
         {

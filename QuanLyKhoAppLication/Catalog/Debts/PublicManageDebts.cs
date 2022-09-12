@@ -14,6 +14,7 @@ namespace QuanLyKhoAppLication.Catalog.Debts
     public class PublicManageDebts : IPublicManageDebts
     {
         private readonly QuanLyKhoDbContext _dbcontext;
+
         public PublicManageDebts(QuanLyKhoDbContext dbcontext)
         {
             _dbcontext = dbcontext;
@@ -111,20 +112,20 @@ namespace QuanLyKhoAppLication.Catalog.Debts
         public async Task<PagedResult<DebtVm>> GetAllDebtHis(GetManageDebtPagingRequest request)
         {
             var querySearch = (from debthist in _dbcontext.historyDebts
+                               join pro in _dbcontext.Exproducts on debthist.GuestIDS equals pro.GuestID
                                join guest in _dbcontext.guests on debthist.GuestIDS equals guest.ID
-                               select debthist );
+                               select new { debthist, pro, guest });
 
             if (!string.IsNullOrEmpty(request.Keyword))
-                querySearch = querySearch.Where(x => x.GuestIDS.Contains(request.Keyword));
+                querySearch = querySearch.Where(x => x.debthist.GuestIDS.Contains(request.Keyword));
 
-            var data = await querySearch.GroupBy(c => new { c.GuestIDS, c.BankName, c.DebtFee,c.PayDay })
+            var data = await querySearch.GroupBy(c => new { c.debthist.GuestIDS, c.guest.FirtName, c.guest.LastName })
                 .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                 .Select(c => new DebtVm()
                 {
-                    BankName = c.Key.BankName,
-                    DebtFee = c.Key.DebtFee,
-                    PayDay = c.Key.PayDay,
-                    GuestIDs = c.Key.GuestIDS,
+                    GuestID = c.Key.GuestIDS,
+                    GuestFName = c.Key.FirtName,
+                    GuestLName = c.Key.LastName,
                 }).ToListAsync();
             int totalRow = data.Count();
             var pageResult = new PagedResult<DebtVm>()
@@ -137,10 +138,32 @@ namespace QuanLyKhoAppLication.Catalog.Debts
             return pageResult;
         }
 
+        public async Task<PagedResult<DebtVm>> GetAllDebtHisById(GetManageDebtPagingRequest request,string Id)
+        {
+            var querySearch = from hist in _dbcontext.historyDebts
+                              where hist.GuestIDS.Equals(Id)
+                              select hist;
+            var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
+                 Select(x => new DebtVm()
+                 {
+                     GuestID = x.GuestIDS,
+                     BankName = x.BankName,
+                     DebtFee = x.DebtFee,
+                     PayDay = x.PayDay
+                 }).ToListAsync();
+            int totalRow = querySearch.Count();
+            var pageResult = new PagedResult<DebtVm>()
+            {
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
+            };
+            return pageResult;
+        }
+
         public async Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID)
         {
-            
-           
             var querySearch = from debt in _dbcontext.debts
                               join gu in _dbcontext.guests on debt.GuestID equals gu.ID
                               join debthist in _dbcontext.historyDebts on debt.GuestID equals debthist.GuestIDS

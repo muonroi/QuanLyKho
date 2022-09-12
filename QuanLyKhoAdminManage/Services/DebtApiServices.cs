@@ -82,5 +82,13 @@ namespace QuanLyKhoAdminManage.Services
                $"&keyword={request.Keyword}");
             return data;
         }
+        public async Task<PagedResult<DebtVm>> GetPagingsHisById(GetManageDebtPagingRequest request,string Id)
+        {
+            var data = await GetAsync<PagedResult<DebtVm>>(
+               $"/api/debt/pagings/{Id}?pageIndex={request.PageIndex}" +
+               $"&pageSize={request.PageSize}" +
+               $"&keyword={request.Keyword}");
+            return data;
+        }
     }
 }

@@ -1,0 +1,44 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoViewModels.System.Debt.DebtVm>
+
+@{
+    ViewData["Title"] = "HistoryById";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Mã khách hàng
+            </th>
+            <th>
+                Số tiền thanh toán
+            </th>
+            <th>
+                Ngày thanh toán
+            </th>
+            <th>
+                Tên ngân hàng
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Items) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.GuestID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DebtFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

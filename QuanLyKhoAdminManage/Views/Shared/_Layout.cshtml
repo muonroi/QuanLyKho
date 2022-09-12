@@ -37,46 +37,38 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand ps-3" href="index.html">Quản lí kho</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             </form>
             <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">@User.Identity.Name</a></li>
-                        <li> <form method="post" asp-controller="User" asp-action="Logout">
-                            <button type="submit" class="dropdown-item" value="Logout">Đăng xuất</button>
-                        </form>
-                        </li>
-                       
-                    </ul>
-                </li>
-            </ul>
+                <form method="post" asp-controller="User" asp-action="Logout">
+                    <button type="submit" value="Logout">
+                <span class="navbar-brand ps-3"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</span>
+            </button>
+                </form>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Tài khoản ngân hàng</div>
+                           @* <div class="sb-sidenav-menu-heading">Tài khoản ngân hàng</div>
                            
                                 <div class="sb-nav-link-icon">
                                      <a class="nav-link" asp-controller="debt" asp-action="bankname">
                                          <i class="fas fa-tachometer-alt"></i> &emsp; Tài khoản ngân hàng
                                     </a>                                   
-                                </div>                              
+                                </div>  *@                            
                             <div class="sb-sidenav-menu-heading">Hàng hóa</div>
                             <a class="nav-link" asp-action="Saless" asp-controller="Product">
-                                <i class="fas fa-columns"> </i> &emsp; Quản lý hàng bán
+                            <i class="fa fa-balance-scale" aria-hidden="true"></i> &emsp; Quản lý hàng bán
                                 
                             </a>
                             <a  asp-action="Index" asp-controller="Product" class="nav-link">
-                                <i class="fas fa-table"></i> &emsp; Quản lí hàng nhập
+                                <i class="fa fa-reply" aria-hidden="true"></i> &emsp; Quản lí hàng nhập
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
@@ -106,16 +98,21 @@
                             </div>
                             <div class="sb-sidenav-menu-heading">Quản lí</div>
                             <a class="nav-link" asp-controller="Debt" asp-action="Index">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
                                 Quản lí công nợ
                             </a>
-                           
+                        <a class="nav-link" asp-controller="Debt" asp-action="History">
+                            <div class="sb-nav-link-icon">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                            </div>
+                            Lịch sử thanh toán
+                        </a>
                             <a class="nav-link" asp-controller="user" asp-action="Index">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa fa-user" aria-hidden="true"></i></div>
                                 Quản lí tài khoản
                             </a>
                              <a class="nav-link" asp-controller="Guest" asp-action="Index">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa fa-users" aria-hidden="true"></i></div>
                                 Thông tin khách hàng
                             </a>
                             

@@ -16,5 +16,6 @@ namespace QuanLyKhoAppLication.Catalog.Debts
         Task<ApiResult<bool>> Delete(int iddebt);
         Task<ApiResult<bool>> DeleteALL(string guestID);
         Task<PagedResult<DebtVm>> GetAllDebtHis(GetManageDebtPagingRequest request);
+       Task<PagedResult<DebtVm>> GetAllDebtHisById(GetManageDebtPagingRequest request, string Id);
     }
 }
