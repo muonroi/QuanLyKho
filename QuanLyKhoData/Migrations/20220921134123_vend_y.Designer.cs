@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyKhoData.EF;
 
 namespace QuanLyKhoData.Migrations
 {
     [DbContext(typeof(QuanLyKhoDbContext))]
-    partial class QuanLyKhoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921134123_vend_y")]
+    partial class vend_y
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

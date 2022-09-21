@@ -243,7 +243,7 @@ hr {
                             }
                         <td class="border-top border-right border-dark d-none d-sm-block col-1 text-center">@Html.TextBoxFor(a=>a[j].Quantity,new{style="margin:-35%;width:153%",onchange = "sets()"})</td>
                          <td class="border-top border-right border-dark col-2 text-center">@Html.TextBoxFor(a=>a[j].weight,new{style="margin:-10%",@readonly = true})</td>
-                          <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%",@readonly = true})</td>
+                          <td class="border-top border-right border-dark d-none d-sm-block col-2 text-95 text-center">@Html.TextBoxFor(a=>a[j].SalesPrice,new{style="margin:-10%", @Value = 0})</td>
                           <td class="border-top border-right border-dark col-2 text-secondary-d2 text-center">@Html.TextBoxFor(a=>a[j].tongtien,new{style="margin:-10%",@readonly = true})</td>
                           <td>@Html.TextBoxFor(a =>a[j].GuestID,new {@class = "guestid d-none"})</td>
                           <td>
@@ -291,6 +291,10 @@ hr {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" type="text/javascript"></script>
 <script>
+        function checks(){
+
+        }
+
     $(".ajaxSelect2").select2({
     placeholder: "Nhập mã khách hàng",
     theme: "bootstrap4",
@@ -405,7 +409,11 @@ function sets() {
         });
         var s1 = $('.sl').text() 
         var text = s1.slice(18)
-        
+            if (last[4].value === "undefined")
+            {
+                alert("Vui lòng nhập giá bán!");
+                return;
+            }
     if (parseInt(last[2].value) > parseInt(text)) {
         alert("Số lượng không đủ!")
     }

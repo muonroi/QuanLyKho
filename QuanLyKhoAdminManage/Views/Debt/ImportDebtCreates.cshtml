@@ -1,0 +1,57 @@
+﻿@model QuanLyKhoViewModels.Catalog.Debt.DebtCreateRequest
+
+@{
+    ViewData["Title"] = "ImportDebtCreates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+
+    </script>
+}
+
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-body">
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-danger" role="alert">
+                    @ViewBag.SuccessMsg
+                </div>
+            }
+            <h2 class="title">Nhập thông tin hóa đơn</h2>
+            <form asp-action="ImportDebtCreate" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row row-space">
+                    <div class="col-2">
+                        <div class="input-group">
+                            <input asp-for="ProductID" class="input--style-1" type="text" placeholder="Mã sản phẩm">
+                        </div>
+                        <span asp-validation-for="ProductID" class="text-danger"></span>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <input asp-for="GuestID" class="input--style-1" type="text" placeholder="Mã khách hàng">
+                        </div>
+                        <span asp-validation-for="GuestID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row row-space">
+                    <div class="col-2">
+                        <div class="input-group">
+                            <input asp-for="TotalDebt" data-type="currency" class="input--style-1" type="text" placeholder="Giá nhập: 0.000.000 vnđ">
+                        </div>
+                        <span asp-validation-for="TotalDebt" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="p-t-20">
+                    <button class="btn btn--radius btn--green" type="submit">Tạo hóa đơn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

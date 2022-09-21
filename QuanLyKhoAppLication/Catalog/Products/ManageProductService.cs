@@ -40,14 +40,14 @@ namespace QuanLyKhoAppLication.Catalog.Products
                     {
                         if (total > 0)
                         {
-                            var productim = await _dbcontext.Improducts.FindAsync(request.importID);
-                            var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
+                            var productim = await _dbcontext.importPros.FindAsync(request.importID);
+                            var productupdate = await _dbcontext.importPros.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
                             productupdate.Quantity = total - request.Quantity;
                         }
                         else
                         {
-                            var productim = _dbcontext.Improducts.FindAsync(request.importID);
-                            var productupdate = await _dbcontext.Improducts.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
+                            var productim = _dbcontext.importPros.FindAsync(request.importID);
+                            var productupdate = await _dbcontext.importPros.FirstOrDefaultAsync(x => x.Id.Equals(request.importID));
                             productupdate.Quantity = 0;
 
                         }
@@ -82,7 +82,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
                                 GuestID = request.GuestID,
                                 ProductID = request.importID,
                                 CreateDateDebt = request.ExDate,
-                                TotalDebt = request.SalesPrice
+                                TotalDebt = request.debttotal + (request.SalesPrice * request.Quantity)
                             };
                             var adddebt = await _dbcontext.debts.AddAsync(debt);
                             if (adddebt != null)
@@ -118,13 +118,13 @@ namespace QuanLyKhoAppLication.Catalog.Products
         }
         public async Task<ApiResult<bool>> Delete(string idProduct)
         {
-            var product = await _dbcontext.Improducts.FindAsync(idProduct);
+            var product = await _dbcontext.importPros.FindAsync(idProduct);
 
             if (product == null)
             {
                 return new ApiErrorResult<bool>("Sản phẩm không tồn tại");
             }
-            var reult = _dbcontext.Improducts.Remove(product);
+            var reult = _dbcontext.importPros.Remove(product);
 
             if (reult != null)
             {
@@ -138,22 +138,21 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
         public int GetTotal(string idProduct)
         {
-            var Total = (from s in _dbcontext.Improducts
-                        where s.Id.Equals(idProduct)
+            var Total = (from s in _dbcontext.importPros
+                         where s.Id.Equals(idProduct)
                         select s.Quantity).FirstOrDefault();
             return Total;
         }
 
         public async Task<ApiResult<bool>> Update(string ID,ProductEditRequest request)
         {
-            var productim = await _dbcontext.Improducts.FindAsync(ID);
+            var productim = await _dbcontext.importPros.FindAsync(ID);
             if (productim != null)
             {
                 productim.Name = request.Name;
-                productim.SalesPrice = request.SalesPrice;
                 productim.Quantity = request.Quantity;
                 productim.ToTalSum = request.ToTalSum;
-                var result = _dbcontext.Improducts.Update(productim);
+                var result = _dbcontext.importPros.Update(productim);
                 if (result != null)
                 {
                     await _dbcontext.SaveChangesAsync();
@@ -197,7 +196,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
         }
         public async Task<List<ProductViewModel>> GetAllImport()
         {
-            var querySearch = from product in _dbcontext.Improducts
+            var querySearch = from product in _dbcontext.importPros
                               join ex in _dbcontext.Exproducts on product.Id equals ex.importID
                               join de in _dbcontext.guests on ex.GuestID equals de.ID
                               select new {product, de};
@@ -209,9 +208,9 @@ namespace QuanLyKhoAppLication.Catalog.Products
                    Name = x.product.Name,
                    Quantity = x.product.Quantity,
                    OriginPrice = x.product.OriginPrice,
-                   SalesPrice = x.product.SalesPrice,
+                 //  SalesPrice = x.product.SalesPrice,
                    ToTalSum = x.product.ToTalSum,
-                   ImportDate = x.product.ImportDate,
+                 //  ImportDate = x.product.ImportDate,
                   
                }).ToListAsync();
             return data;
@@ -219,16 +218,16 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
         public async Task<ApiResult<ProductViewBindingModel>> GetImportByID(string ID)
         {
-            var querySearch = await _dbcontext.Improducts.Where(x => x.Id.StartsWith(ID)).FirstOrDefaultAsync();
+            var querySearch = await _dbcontext.importPros.Where(x => x.Id.StartsWith(ID)).FirstOrDefaultAsync();
             var data = new ProductViewBindingModel()
             {
                 Name = querySearch.Name,
                 importID = querySearch.Id,
                 Quantity = querySearch.Quantity,
-                SalesPrice = querySearch.SalesPrice,
+              //  SalesPrice = querySearch.SalesPrice,
                 origin = querySearch.OriginPrice,
                 ToTalSum = querySearch.ToTalSum,
-                ImportDate = querySearch.ImportDate,
+               // ImportDate = querySearch.ImportDate,
                 
             };
 
@@ -237,7 +236,7 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
         public async Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request)
         {
-            var querySearch = from product in _dbcontext.Improducts
+            var querySearch = from product in _dbcontext.importPros
                               select new { product };
             if (!string.IsNullOrEmpty(request.Keyword))
                 querySearch = querySearch.Where(x => x.product.Id.Contains(request.Keyword));
@@ -247,10 +246,8 @@ namespace QuanLyKhoAppLication.Catalog.Products
                 {
                     Id = x.product.Id,
                     Quantity = x.product.Quantity,
-                    SalesPrice = x.product.SalesPrice,
                     OriginPrice =x.product.OriginPrice,
                     ToTalSum = x.product.ToTalSum,
-                    ImportDate = x.product.ImportDate,
                     Name = x.product.Name
                 }).ToListAsync();
             var pageResult = new PagedResult<ProductVm>()
@@ -265,35 +262,32 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
         public async Task<ApiResult<bool>> Create(ProductCreateRequest request)
         {
-            var productim = await _dbcontext.Improducts.FindAsync(request.Id);
+            var productim = await _dbcontext.importPros.FindAsync(request.Id);
             if (productim == null)
             {
-                var products = new ImportProduct()
+                var products = new ImportPro()
                 {
                     Id = request.Id,
                     Name = request.Name,
                     Quantity = request.Quantity,
                     OriginPrice = request.OriginPrice,
-                    SalesPrice = request.SalesPrice,
-                    ToTalSum = request.ToTalSum,
-                    status = true,
-                    //ImportDate = request.ImportDate
+                    ToTalSum = request.ToTalSum
                 };
-                var result = await _dbcontext.Improducts.AddAsync(products);
+                var result = await _dbcontext.importPros.AddAsync(products);
                 if (result != null)
                 {
                     await _dbcontext.SaveChangesAsync();
                     return new ApiSuccessResult<bool>();
                 }
             }
-            return new ApiErrorResult<bool>("Thêm sản phẩm không thành công");
+            return new ApiErrorResult<bool>("Mã sản phẩm đã tồn tại!");
         }
         public async Task<PagedResult<ProductViewDetalModel>> Report(string username)
         {
             MyClass.count = 0;
             var querySearch = from debt in _dbcontext.Exproducts
                               from em in _dbcontext.appusers
-                              join pro in _dbcontext.Improducts on debt.importID equals pro.Id
+                              join pro in _dbcontext.importPros on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
                               where em.UserName.Equals(username)
                               where debt.status.Equals(true)
@@ -330,22 +324,22 @@ namespace QuanLyKhoAppLication.Catalog.Products
         public async Task<decimal> SumToTal()
         {
             var querySearch = from debt in _dbcontext.Exproducts
-                              join pro in _dbcontext.Improducts on debt.importID equals pro.Id
+                              join pro in _dbcontext.importPros on debt.importID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
                               where debt.status.Equals(true)
                               select new { debt, pro, guest };
             var totalRow = await querySearch.SumAsync(x => x.debt.SalesPrice);
             return totalRow;
         }
-        public async Task<decimal> Sumdebt(bool check)
+        public async Task<decimal> Sumdebt(string check)
         {
 
-            var querySearch = from debt in _dbcontext.Exproducts
-                              join pro in _dbcontext.Improducts on debt.importID equals pro.Id
+            var querySearch = from debt in _dbcontext.debts
+                              join pro in _dbcontext.importPros on debt.ProductID equals pro.Id
                               join guest in _dbcontext.guests on debt.GuestID equals guest.ID
-                              where debt.status.Equals(check) 
+                              where debt.GuestID.Equals(check) 
                               select new { debt, pro, guest };
-            var totalRow = await querySearch.SumAsync(x => x.debt.debttotal);
+            var totalRow = await querySearch.SumAsync(x => x.debt.TotalDebt);
             return totalRow;
         }
         [Obsolete]
@@ -364,12 +358,12 @@ namespace QuanLyKhoAppLication.Catalog.Products
 
         public async Task<ApiResult<ProductEditRequest>> GetByIdim(string id)
         {
-            var querySearch = await _dbcontext.Improducts.Where(x => x.Id.StartsWith(id)).FirstOrDefaultAsync();
+            var querySearch = await _dbcontext.importPros.Where(x => x.Id.StartsWith(id)).FirstOrDefaultAsync();
             var data = new ProductEditRequest()
             {
                 Name = querySearch.Name,
                 Quantity = querySearch.Quantity,
-                SalesPrice = querySearch.SalesPrice,
+                //SalesPrice = querySearch.SalesPrice,
                 ToTalSum = querySearch.ToTalSum,
             };
 

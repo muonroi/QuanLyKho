@@ -1,0 +1,97 @@
+﻿@using QuanLyKhoViewModels.Common
+@model PagedResult<QuanLyKhoViewModels.System.Debt.DebtVm>
+
+@{
+    ViewData["Title"] = "Danh sách công nợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+
+    </script>
+}
+    @section checks{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+            $('#checkBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkCheckBoxId").prop("checked", true)
+                }
+                else {
+                    $(".chkCheckBoxId").prop("checked", false)
+                }
+            });
+        });
+    </script>
+}
+<style>
+     .dataTables_length {
+            display: none;
+        }
+</style>
+    <div class="container-fluid">
+        <h1 class="mt-4">Danh sách công nợ mua</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Danh sách công nợ mua</li>
+        </ol>
+        <div class="card mb-12">
+
+            <div class="card-body">
+                <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+                @if (ViewBag.Err != null)
+                {
+                    <div id="msgAlert" class="alert alert-danger" role="alert">
+                        @ViewBag.Err
+                    </div>
+                }
+            </div>
+            @using (Html.BeginForm("DeleteImoprtAll", "Debt", FormMethod.Post))
+            {
+                <button type="submit" value="delete" class="btn btn-sm btn-danger rounded-0" onclick="return confirm('Bạn chắc chắn muốn xóa?')"><i class="fa fa-trash-o"></i> Xóa</button>
+                <a style="padding-left: 20px" asp-action="ImportDebtCreates" asp-controller="debt" class="btn bg-info text-decoration-none text-white">Tạo mới</a>
+                <div class="table-responsive">
+                    <table id="DataTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="padding:8px 30px 8px 8px"><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th>Mã khách hàng</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Tổng số tiền nợ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td style="padding:8px 30px 8px 8px"><input type="checkbox" name="ID" value="@item.GuestID" class="custom-checkbox chkCheckBoxId" /></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.GuestID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProductID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalDebt)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+    </div>
+</div>

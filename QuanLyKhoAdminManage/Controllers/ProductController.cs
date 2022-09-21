@@ -90,7 +90,7 @@ namespace QuanLyKhoAdminManage.Controllers
         public async Task<IActionResult> AjaxMethod(string sessionName)
         {
             var querySearch = (from deb in _context.debts
-                               join pro in _context.Improducts on deb.ProductID equals pro.Id
+                               join pro in _context.importPros on deb.ProductID equals pro.Id
                                join guest in _context.guests on deb.GuestID equals guest.ID
                                select new { deb, guest });
             var data = await querySearch.GroupBy(c => new { c.deb.GuestID, c.guest.FirtName, c.guest.LastName })
@@ -116,7 +116,7 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpPost]
         public IActionResult AutoComplete2(string prefix)
         {
-            var customers = (from product in _context.Improducts
+            var customers = (from product in _context.importPros
                              where product.Id.Equals(prefix)
                              select product).ToList();
 
@@ -157,11 +157,12 @@ namespace QuanLyKhoAdminManage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> BulkData(List<ProductCreateExRequest> ci)
        {
-
+           
             if (ModelState.IsValid)
             {
                 foreach (var item in ci)
                 {
+                    TempData["kh"] = item.GuestID;
                     var result = await _ProductApiClient.CreateEXProduct(item);
                     if (result.IsSuccessed)
                     {
@@ -274,7 +275,7 @@ namespace QuanLyKhoAdminManage.Controllers
         [HttpPost]
         public IActionResult AutoComplete(string prefix)
         {
-            var customers = (from product in _context.Improducts
+            var customers = (from product in _context.importPros
                              where product.Id.StartsWith(prefix)
                              group product by product.Id into g
                              select new
@@ -301,7 +302,8 @@ namespace QuanLyKhoAdminManage.Controllers
                 return RedirectToAction("Index");
             }
             decimal sumtt = await _ProductApiClient.SumToTal();
-            decimal sumdebts = await _ProductApiClient.Sumdebt(true);
+            
+            decimal sumdebts = await _ProductApiClient.Sumdebt(TempData["kh"].ToString());
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
             Random res = new Random();
             String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -354,7 +356,7 @@ namespace QuanLyKhoAdminManage.Controllers
         {
             if (!string.IsNullOrEmpty(term))
             {
-                var states = await _context.Improducts.ToListAsync();
+                var states = await _context.importPros.ToListAsync();
                 var data = states.Where(a => a.Id.Contains(term, StringComparison.OrdinalIgnoreCase)
                 || a.Name.Contains(term, StringComparison.OrdinalIgnoreCase)
                 ).ToList().AsReadOnly();

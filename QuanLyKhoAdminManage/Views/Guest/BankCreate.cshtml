@@ -1,0 +1,67 @@
+﻿@model QuanLyKhoViewModels.Catalog.Bank.BankCreateRequest
+
+@{
+    ViewData["Title"] = "ImportDebtCreates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+
+    </script>
+}
+
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-body">
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-danger" role="alert">
+                    @ViewBag.SuccessMsg
+                </div>
+            }
+            <h2 class="title">Nhập thông tin</h2>
+            <form asp-action="BankCreate" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row row-space">
+                    <div class="col-2">
+                        <div class="input-group">
+                        <select asp-for="BankName" required class="form-select">
+                            <option value="VietcomBank">VietcomBank</option>
+                            <option value="TPBank">TP Bank</option>
+                            <option value="VPBank" selected>VP Bank</option>
+                        </select>
+                        </div>
+                        <span asp-validation-for="BankName" class="text-danger"></span>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <input asp-for="GuestId" class="input--style-1" type="text" placeholder="Mã khách hàng">
+                        </div>
+                        <span asp-validation-for="GuestId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row row-space">
+                    <div class="col-2">
+                        <div class="input-group">
+                            <input asp-for="TotalFee" data-type="currency" class="input--style-1" type="text" placeholder="Giá tiền: 0.000.000 vnđ">
+                        </div>
+                        <span asp-validation-for="TotalFee" class="text-danger"></span>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <textarea asp-for="Detail" class="form-control" type="text" id="exampleFormControlTextarea1" placeholder="Ghi chú"></textarea>
+                        </div>
+                        <span asp-validation-for="Detail" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="p-t-20">
+                    <button class="btn btn--radius btn--green" type="submit">Tạo mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

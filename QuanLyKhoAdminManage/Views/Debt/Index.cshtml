@@ -93,10 +93,6 @@ function getvalue(GuestID) {
     }
 </style>
 
-<select class="js-example-data-ajax form-control">
-  <option value="3620194" selected="selected">select2/select2</option>
-</select>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -116,10 +112,10 @@ function getvalue(GuestID) {
         <input required data-type="currency" type="text" class="input--style-1 dollar form-control" aria-label="Dollar amount (with dot and two decimal places)">
         </div>
       
-       <select class="form-select" aria-label="Default select example" name="cars" id="cars">
-                    @*<option value="VietcomBank">VietcomBank</option>
+       <select required class="form-select" aria-label="Default select example" name="cars" id="cars">
+                    <option value="VietcomBank">VietcomBank</option>
                     <option value="TPBank">TP Bank</option>
-                    <option value="VPBank" selected>VP Bank</option>*@
+                    <option value="VPBank" selected>VP Bank</option>
                 </select>                          
       
       </div>

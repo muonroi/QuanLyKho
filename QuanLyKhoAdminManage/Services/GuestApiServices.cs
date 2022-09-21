@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using QuanLyKhoViewModels.Catalog.Bank;
 using QuanLyKhoViewModels.Catalog.Guest;
 using QuanLyKhoViewModels.Common;
+using QuanLyKhoViewModels.System.Bank;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -21,6 +23,22 @@ namespace QuanLyKhoAdminManage.Services
             _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+        }
+
+        public async Task<ApiResult<bool>> CreateBank(BankCreateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddr"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/api/guest/bank", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
         public async Task<ApiResult<bool>> CreateGuest(GuestCreateRequest request)
@@ -57,6 +75,15 @@ namespace QuanLyKhoAdminManage.Services
         {
             var data = await GetAsync<PagedResult<GuestViewModels>>(
                $"/api/Guest/paging?pageIndex={request.PageIndex}" +
+               $"&pageSize={request.PageSize}" +
+               $"&keyword={request.Keyword}");
+            return data;
+        }
+
+        public async Task<PagedResult<BankVM>> GetPagingsBank(GetManageBankPagingRequest request)
+        {
+            var data = await GetAsync<PagedResult<BankVM>>(
+               $"/api/Guest/pagings?pageIndex={request.PageIndex}" +
                $"&pageSize={request.PageSize}" +
                $"&keyword={request.Keyword}");
             return data;

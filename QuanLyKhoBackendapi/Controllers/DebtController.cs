@@ -4,6 +4,8 @@ using QuanLyKhoAppLication.Catalog.Debts;
 using QuanLyKhoAppLication.Catalog.Products;
 using QuanLyKhoViewModels.Catalog.Debt;
 using QuanLyKhoViewModels.Catalog.Products;
+using QuanLyKhoViewModels.System.Debt;
+using QuanLyKhoViewModels.System.Products;
 using System.Threading.Tasks;
 
 namespace QuanLyKhoBackendapi.Controllers
@@ -25,9 +27,15 @@ namespace QuanLyKhoBackendapi.Controllers
             return Ok(debt);
         }
         [HttpGet("paging")]
-        public async Task<IActionResult> GetallDebt([FromQuery] GetManageDebtPagingRequest request)
+        public async Task<IActionResult> GetallDebts([FromQuery] GetManageDebtPagingRequest request)
         {
             var debt = await _publicManageDebts.GetAllDebt(request);
+            return Ok(debt);
+        }
+        [HttpGet("pagingss")]
+        public async Task<IActionResult> GetallDebt([FromQuery] GetManageDebtPagingRequest request)
+        {
+            var debt = await _publicManageDebts.GetImportDebt(request);
             return Ok(debt);
         }
         [HttpGet("pagings")]
@@ -54,6 +62,13 @@ namespace QuanLyKhoBackendapi.Controllers
         {
             var DelProduct = await _publicManageDebts.DeleteALL(id);
             return Ok(DelProduct);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateImport([FromBody] DebtCreateRequest request)
+        {
+            var CreateProduct = await _publicManageDebts.CreateDebtImport(request);
+            return Ok(CreateProduct);
         }
     }
 }

@@ -64,46 +64,11 @@
     </script>
     
 }
-@section select2{
-    <script>
-    $(".ajaxSelect2").select2({
-    placeholder: "Nhập mã khách hàng",
-    theme: "bootstrap4",
-    allowClear: true,
-    ajax: {
-        type: "GET",
-        url: "/Product/Search/",
-        contentType: "application/json; charset=utf-8",
-        data: function (params) {
-            var query =
-            {
-                term: params.term,
-            };
-            return query;
-        },
-        processResults: function (result) {
-            return {
-                results: $.map(result, function (item) {
-                    return {
-                        id: item.id,
-                        text: item.id
-                    };
-                }),
-            };
-        }
-    }
-});
-    </script>
-}
-@*<div class="form-group">
-    <label>Example of AJAX Select</label>
-    <select name="ajaxSelect2" class="form-control" id="ajaxSelect2">
-    </select>
-</div>*@
+
 <div class="wrapper wrapper--w680">
             <div class="card card-1">
                 <div class="card-body">
-                    <h2 class="title">Lập hóa đơn bán hàng</h2>
+                    <h2 class="title">Nhập bán</h2>
                     <form asp-action="Sales" asp-controller="Product" method="POST">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="row row-space">

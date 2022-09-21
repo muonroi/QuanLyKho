@@ -64,18 +64,6 @@ setTimeout(function() {
                 <div class="col-md-6 col-xs-12 d-flex align-items-center justify-content-end">
                   </div>
                 <div class="col-md-6 col-xs-12">
-                   @*   @using (Html.BeginForm("Index", "Product", FormMethod.Post, new {@class = "d-flex align-items-center flex-row-reverse"}))
-                    {
-                        <div class="row d-flex">
-                            <div class="col-md-4 d-flex" style="flex:auto">
-                                <input id="FindProducts" type="text" placeholder="Tìm kiếm theo mã" value="@ViewBag.Keyword" name="keyword" class="form-control" />
-                                <input type="hidden" id="hfProduct" name="CustomerId"/> 
-                                <button type="submit" class="btn btn-primary">Tìm</button>
-                            </div>                               
-                        </div>
-                        <br/><br/>
-                    @ViewBag.Message
-                   }*@
                 </div>
             </div>
         </div>
@@ -107,7 +95,7 @@ setTimeout(function() {
                             </th>
                           
                             <th>
-                                Giá bán
+                                Giá nhập
                             </th>
                             <th>
                                 Số lượng tồn
@@ -135,7 +123,7 @@ setTimeout(function() {
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>                             
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SalesPrice)
+                                    @Html.DisplayFor(modelItem => item.OriginPrice)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Quantity)

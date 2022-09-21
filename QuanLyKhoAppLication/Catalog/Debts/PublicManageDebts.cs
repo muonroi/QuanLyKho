@@ -24,13 +24,35 @@ namespace QuanLyKhoAppLication.Catalog.Debts
         {
             var data = new Debt()
             {
-                CreateDateDebt = request.CreateDateDebt,
+                CreateDateDebt = DateTime.Now,
                 TotalDebt = request.TotalDebt,
                 ProductID = request.ProductID,
                 GuestID = request.GuestID,
             };
             _dbcontext.debts.Add(data);
             return await _dbcontext.SaveChangesAsync();
+        }   
+
+        public async Task<ApiResult<bool>> CreateDebtImport(DebtCreateRequest request)
+        {
+            var data = new DebtImports()
+            {
+                CreateDateDebt = DateTime.Now,
+                TotalDebt = request.TotalDebt,
+                ProductID = request.ProductID,
+                GuestID = request.GuestID,
+            };
+            _dbcontext.debtImports.Add(data);
+            var rs = await _dbcontext.SaveChangesAsync();
+            if (rs <= 0)
+            {
+                return new ApiErrorResult<bool>("Vui lòng thử lại");
+            }
+            else if (rs > 0)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Vui lòng thử lại");
         }
 
         public async Task<ApiResult<bool>> Delete(int iddebt)
@@ -166,10 +188,8 @@ namespace QuanLyKhoAppLication.Catalog.Debts
         {
             var querySearch = from debt in _dbcontext.debts
                               join gu in _dbcontext.guests on debt.GuestID equals gu.ID
-                              join debthist in _dbcontext.historyDebts on debt.GuestID equals debthist.GuestIDS
-                              join debthist2 in _dbcontext.historyDebts on gu.ID equals debthist2.GuestIDS
                               where debt.GuestID.Equals(ID)
-                              select new { gu, debt,debthist };
+                              select new { gu, debt };
           var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
                Select(x => new DebtVm()
                {
@@ -179,10 +199,7 @@ namespace QuanLyKhoAppLication.Catalog.Debts
                    CreateDateDebt = x.debt.CreateDateDebt,
                    GuestFName = x.gu.FirtName,
                    GuestLName = x.gu.LastName,
-                   TotalDebt = x.debt.TotalDebt,
-                   BankName = x.debthist.BankName,
-                   DebtFee = x.debthist.DebtFee,
-                   PayDay = x.debthist.PayDay
+                   TotalDebt = x.debt.TotalDebt
                }).ToListAsync();
             int totalRow = querySearch.Count();
             var pageResult = new PagedResult<DebtVm>()
@@ -195,6 +212,48 @@ namespace QuanLyKhoAppLication.Catalog.Debts
             return pageResult;
         }
 
-       
+        public async Task<PagedResult<DebtVm>> GetImportDebt(GetManageDebtPagingRequest request)
+        {
+            var querySearch = from deb in _dbcontext.debtImports
+                              select deb;
+            if (!string.IsNullOrEmpty(request.Keyword))
+                querySearch = querySearch.Where(x => x.GuestID.Contains(request.Keyword));
+            var data = await querySearch.Select(x =>x)
+                .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+                .Select(c => new DebtVm()
+                {
+                    GuestID = c.GuestID,
+                    ProductID = c.ProductID,
+                    CreateDateDebt = c.CreateDateDebt,
+                    TotalDebt = c.TotalDebt
+                }).ToListAsync();
+            int totalRow = data.Count();
+            //var querySearch = (from deb in _dbcontext.debtImports
+            //                   join pro in _dbcontext.importPros on deb.ProductID equals pro.Id
+            //                   join guest in _dbcontext.guests on deb.GuestID equals guest.ID
+            //                   select new { deb, guest });
+
+            //if (!string.IsNullOrEmpty(request.Keyword))
+            //    querySearch = querySearch.Where(x => x.deb.GuestID.Contains(request.Keyword));
+
+            //var data = await querySearch.GroupBy(c => new { c.deb.GuestID, c.guest.FirtName, c.guest.LastName })
+            //    .Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+            //    .Select(c => new DebtVm()
+            //    {
+            //        GuestID = c.Key.GuestID,
+            //        GuestFName = c.Key.FirtName,
+            //        GuestLName = c.Key.LastName,
+            //        TotalDebt = c.Sum((x => x.deb.TotalDebt)),
+            //    }).ToListAsync();
+            //int totalRow = data.Count();
+            var pageResult = new PagedResult<DebtVm>()
+            {
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
+            };
+            return pageResult;
+        }
     }
 }

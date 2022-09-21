@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuanLyKhoData.EF;
 using QuanLyKhoData.Entities;
+using QuanLyKhoViewModels.Catalog.Bank;
 using QuanLyKhoViewModels.Catalog.Emp;
 using QuanLyKhoViewModels.Catalog.Guest;
 using QuanLyKhoViewModels.Common;
+using QuanLyKhoViewModels.System.Bank;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,24 @@ namespace QuanLyKhoAppLication.Catalog.Guests
             return new ApiErrorResult<bool>("Thêm thất bại");
         }
 
+        public async Task<ApiResult<bool>> CreateBank(BankCreateRequest request)
+        {
+            var products = new Bank()
+            {
+                BankName = request.BankName,
+                GuestId = request.GuestId,
+                Detail = request.GuestId,
+                TotalFee = request.TotalFee,
+            };
+            var result = await _dbcontext.banks.AddAsync(products);
+            if (result != null)
+            {
+                await _dbcontext.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Thêm thất bại");
+        }
+
         public async Task<ApiResult<bool>> Delete(string ID)
         {
             var product = await _dbcontext.guests.FindAsync(ID);
@@ -67,7 +87,31 @@ namespace QuanLyKhoAppLication.Catalog.Guests
 
             return new ApiErrorResult<bool>("Xóa không thành công");
         }
-
+        public async Task<PagedResult<BankVM>> GetAllBank(GetManageBankPagingRequest request)
+        {
+            var querySearch = (from bank in _dbcontext.banks
+                               select bank);
+            if (!string.IsNullOrEmpty(request.Keyword))
+                querySearch = querySearch.Where(x => x.BankName.Contains(request.Keyword));
+            int totalRow = await querySearch.CountAsync();
+            var data = await querySearch.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).
+                Select(x => new BankVM()
+                {
+                    ID = x.ID,
+                    BankName = x.BankName,
+                    GuestId = x.GuestId,
+                    TotalFee = x.TotalFee,
+                    Detail = x.Detail
+                }).ToListAsync();
+            var pageResult = new PagedResult<BankVM>()
+            {
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
+            };
+            return pageResult;
+        }
         public async Task<PagedResult<GuestViewModels>> GetAllEmp(GetManageGuestPagingRequest request)
         {
             var querySearch = (from deb in _dbcontext.guests

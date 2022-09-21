@@ -99,7 +99,7 @@ namespace QuanLyKhoBackendapi.Controllers
 
         }
         [HttpGet("debtotal/{check}")]
-        public async Task<IActionResult> debttotal(bool check)
+        public async Task<IActionResult> debttotal(string check)
         {
             var DelProduct = await _manageProductService.Sumdebt(check);
             return Ok(DelProduct);

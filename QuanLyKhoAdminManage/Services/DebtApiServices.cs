@@ -73,7 +73,14 @@ namespace QuanLyKhoAdminManage.Services
                 $"&keyword={request.Keyword}");
             return data;
         }
-
+        public async Task<PagedResult<DebtVm>> GetImportPagings(GetManageDebtPagingRequest request)
+        {
+            var data = await GetAsync<PagedResult<DebtVm>>(
+                $"/api/debt/pagingss?pageIndex={request.PageIndex}" +
+                $"&pageSize={request.PageSize}" +
+                $"&keyword={request.Keyword}");
+            return data;
+        }
         public async Task<PagedResult<DebtVm>> GetPagingsHis(GetManageDebtPagingRequest request)
         {
             var data = await GetAsync<PagedResult<DebtVm>>(
@@ -89,6 +96,22 @@ namespace QuanLyKhoAdminManage.Services
                $"&pageSize={request.PageSize}" +
                $"&keyword={request.Keyword}");
             return data;
+        }
+
+        public async Task<ApiResult<bool>> CreateDebtImport(DebtCreateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddr"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/api/debt", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
     }
 }

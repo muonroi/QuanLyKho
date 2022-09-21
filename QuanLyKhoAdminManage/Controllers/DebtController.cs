@@ -49,6 +49,52 @@ namespace QuanLyKhoAdminManage.Controllers
             ViewBag.Info = info;
             return View(data);
         }
+        [HttpGet]
+        public async Task<IActionResult> ImportDebt(string keyword, int pageIndex = 1, int pageSize = 10)
+        {
+            var request = new GetManageDebtPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _ProductApiClient.GetImportPagings(request);
+            ViewBag.Keyword = keyword;
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["result"];
+            }
+            if (TempData["err"] != null)
+            {
+                ViewBag.Err = TempData["err"];
+            }
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            ViewBag.Info = info;
+            return View(data);
+        }
+        [HttpGet]
+        public IActionResult ImportDebtCreates()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ImportDebtCreate(DebtCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var result = await _ProductApiClient.CreateDebtImport(request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Thêm hóa đơn thành công!";
+                return RedirectToAction("Index");
+
+            }
+            TempData["err"] = result.Message;
+            return RedirectToAction("ImportDebt");
+        }
         [HttpPost]
         public IActionResult AutoComplete(string prefix)
         {
@@ -148,6 +194,69 @@ namespace QuanLyKhoAdminManage.Controllers
             if (count == false)
                 TempData["err"] = "Xóa thất bại!";
              return  RedirectToAction("Index");
+
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteImoprt(IFormCollection formCollection)
+        {
+            bool count = false;
+            if (!ModelState.IsValid)
+                return View();
+
+            string[] ids = formCollection["ID"].ToString().Split(new char[] { ',' });
+            string[] id2 = formCollection["cars"].ToString().Split(new char[] { ',' });
+
+            for (int i = 0; i < ids.Length; i++)
+            {
+                if (!id2[i].Equals("null"))
+                {
+                    var DebtHistory = new HistoryDebt()
+                    {
+                        GuestIDS = this._context.debtImports.Find(int.Parse(ids[i])).GuestID,
+                        BankName = id2[i],
+                        DebtFee = this._context.debtImports.Find(int.Parse(ids[i])).TotalDebt,
+                        PayDay = DateTime.Now
+                    };
+                    this._context.Add(DebtHistory);
+                    this._context.SaveChanges();
+                }
+
+
+            }
+            foreach (string id in ids)
+            {
+                count = true;
+                TempData["result"] = "Xóa thành công";
+                var employee = this._context.debtImports.Find(int.Parse(id));
+                this._context.debtImports.Remove(employee);
+                this._context.SaveChanges();
+            }
+            if (count == false)
+                TempData["err"] = "Xóa thất bại!";
+            return RedirectToAction("ImportDebt");
+
+
+        }
+        [HttpPost]
+        public IActionResult DeleteImoprtAll(IFormCollection formCollection)
+        {
+            bool count = false;
+            if (!ModelState.IsValid)
+                return View();
+            string[] ids = formCollection["ID"].ToString().Split(new char[] { ',' });
+            foreach (string id in ids)
+            {
+                count = true;
+                TempData["result"] = "Xóa thành công";
+                var employee = this._context.debtImports.Where(s => s.GuestID.Equals(id)).FirstOrDefault();
+                this._context.debtImports.Remove(employee);
+                this._context.SaveChanges();
+            }
+            if (count == false)
+                TempData["err"] = "Xóa thất bại!";
+            return RedirectToAction("ImportDebt");
 
 
         }

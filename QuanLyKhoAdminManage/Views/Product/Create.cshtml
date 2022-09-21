@@ -67,16 +67,9 @@ setTimeout(function() {
                                 <div class="input-group">
                                     <input asp-for="OriginPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá nhập: 0.000.000 vnđ">
                                 </div>
-                                <span asp-validation-for="SalesPrice" class="text-danger"></span>
+                                <span asp-validation-for="OriginPrice" class="text-danger"></span>
                             </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <input asp-for="SalesPrice" data-type="currency" class="input--style-1" type="text"  placeholder="Giá bán: 0.000.000 vnđ">
-                                </div>
-                                <span asp-validation-for="SalesPrice" class="text-danger"></span>
-                            </div>
-                        </div>
-                       
+                        </div>                 
                         <div class="p-t-20">
                             <button class="btn btn--radius btn--green" type="submit">Nhập mua</button>
                         </div>

@@ -14,5 +14,8 @@ namespace QuanLyKhoAdminManage.Services
         Task<ApiResult<bool>> DeleteDebtAll(string request);
         Task<PagedResult<DebtVm>> GetDebtByGuestID(GetManageDebtPagingRequest request,string ID);
         Task<PagedResult<DebtVm>> GetPagingsHisById(GetManageDebtPagingRequest request, string Id);
+        Task<PagedResult<DebtVm>>  GetImportPagings(GetManageDebtPagingRequest request);
+        Task<ApiResult<bool>> CreateDebtImport(DebtCreateRequest request);
+
     }
 }

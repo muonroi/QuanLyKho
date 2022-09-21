@@ -35,17 +35,17 @@ namespace QuanLyKhoAdminManage.Controllers
         }
 
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
-        {
-            var sumdebts = _context.guests.Select(x => x).Count();
-            var querySearch = _context.Exproducts.Select(x => x).Count();
-            var querySearch34 = _context.Exproducts.Select(x => x);
+         {
+            var sumdebts = _context.guests.AsNoTracking().Select(x => x).Count();
+            var querySearch = _context.Exproducts.AsNoTracking().Select(x => x).Count();
+            var querySearch34 = _context.Exproducts.AsNoTracking().Select(x => x);
 
-            var querySearch2 = _context.debts.Select(x => x);
-            var querySearch3 = _context.Improducts.Select(x => x);
-            var totalFee = await querySearch34.SumAsync(x => x.SalesPrice);
-            var totalFeeImport = await querySearch3.SumAsync(x => x.OriginPrice);
+            var querySearch2 = _context.debts.AsNoTracking().Select(x => x);
+            var querySearch3 = _context.Improducts.AsNoTracking().Select(x => x);
+            var totalFee = await querySearch34.AsNoTracking().SumAsync(x => x.SalesPrice);
+            var totalFeeImport = await querySearch3.AsNoTracking().SumAsync(x => x.OriginPrice);
             var interest = totalFee - totalFeeImport;
-            var totalDebt = await querySearch2.SumAsync(x => x.TotalDebt);
+            var totalDebt = await querySearch2.AsNoTracking().SumAsync(x => x.TotalDebt);
             ViewBag.Debt = sumdebts;
             ViewBag.TotalRow = querySearch;
             ViewBag.TotalFee = interest;

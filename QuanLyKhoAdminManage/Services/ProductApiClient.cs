@@ -133,7 +133,7 @@ namespace QuanLyKhoAdminManage.Services
             return data;
         }
 
-        public async Task<decimal> Sumdebt(bool check)
+        public async Task<decimal> Sumdebt(string check)
         {
             var data = await GetAsync<decimal>($"/api/Product/debtotal/{check}");
             return data;
